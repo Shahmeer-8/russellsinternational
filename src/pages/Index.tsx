@@ -14,9 +14,9 @@ const Index = () => (
     <Navbar />
     <HeroSection />
     <DualFocusSection />
-    <WhyChooseUs />
     <FeaturedCourses />
     <StudyDestinations />
+    <WhyChooseUs />
     <Testimonials />
     <CTASection />
     <ContactSection />

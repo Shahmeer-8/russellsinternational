@@ -1,5 +1,7 @@
-import heroImg from "@/assets/hero-cinematic.jpg";
-import { ArrowRight, BookOpen, Sparkles, Zap, GraduationCap } from "lucide-react";
+import heroImg from "@/assets/hero-students-clean.jpg";
+import { ArrowRight, Sparkles, TrendingUp, Globe } from "lucide-react";
+
+const ticker = ["🎓 Admissions Open 2026", "🚀 New AI & ML Batch Starting", "🌍 UK September Intake Open", "💻 Free Career Counseling"];
 
 const stats = [
   { value: "10+", label: "Years Experience" },
@@ -9,78 +11,90 @@ const stats = [
 ];
 
 const HeroSection = () => (
-  <section className="relative min-h-screen flex flex-col">
-    {/* Background image with overlay */}
-    <div className="absolute inset-0">
-      <img src={heroImg} alt="" className="w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[hsl(224,71%,10%)/0.92] via-[hsl(240,60%,15%)/0.85] to-[hsl(260,50%,18%)/0.75]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[hsl(224,71%,10%)] via-transparent to-transparent opacity-60" />
+  <section className="relative pt-16">
+    {/* Ticker bar */}
+    <div className="bg-primary text-primary-foreground py-2.5 overflow-hidden">
+      <div className="flex animate-[scroll_20s_linear_infinite] whitespace-nowrap gap-12">
+        {[...ticker, ...ticker].map((t, i) => (
+          <span key={i} className="text-xs font-medium tracking-wide">{t}</span>
+        ))}
+      </div>
     </div>
 
-    {/* Floating glow orbs */}
-    <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-accent/20 rounded-full blur-[100px] animate-glow-pulse" />
-    <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[hsl(260,80%,60%)]/15 rounded-full blur-[120px] animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
-
-    {/* Content */}
-    <div className="relative z-10 flex-1 flex items-center pt-24 pb-16">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="max-w-3xl">
-          {/* Floating badges */}
-          <div className="flex flex-wrap gap-3 mb-8 animate-fade-up">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/15 px-4 py-2 rounded-full text-sm text-white/90 font-medium animate-float">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              Admissions Open 2026
-            </div>
-            <div className="hidden sm:inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/15 px-4 py-2 rounded-full text-sm text-white/90 font-medium animate-float-delayed">
-              <Zap className="w-3.5 h-3.5 text-yellow-400" />
-              New AI & ML Courses
-            </div>
-            <div className="hidden md:inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/15 px-4 py-2 rounded-full text-sm text-white/90 font-medium animate-float" style={{ animationDelay: "1s" }}>
-              <GraduationCap className="w-3.5 h-3.5 text-accent" />
-              UK Intake 2026
-            </div>
+    {/* Split hero */}
+    <div className="container mx-auto px-4 md:px-8">
+      <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center py-16 md:py-24">
+        {/* Left: Text */}
+        <div>
+          <div className="flex items-center gap-2 mb-6">
+            <span className="inline-flex items-center gap-1.5 bg-accent/10 text-accent text-xs font-semibold px-3 py-1.5 rounded-full">
+              <Sparkles className="w-3.5 h-3.5" /> Trusted by 5,000+ Students
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] font-heading animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            Build Future Skills.{" "}
-            <span className="text-gradient">Study Abroad.</span>
-            <br />
-            <span className="text-white/90">Unlock Global Opportunities.</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-foreground leading-[1.12] font-heading">
+            Master In-Demand Skills or Study Abroad —{" "}
+            <span className="text-gradient">Your Global Career Starts Here</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/60 max-w-xl leading-relaxed mt-6 animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            Launch your career with cutting-edge IT training or explore world-class education at top universities across the globe.
+          <p className="text-lg text-muted-foreground max-w-lg leading-relaxed mt-6">
+            Join thousands who've launched successful careers through our industry-certified IT training and expert study abroad consultancy.
           </p>
 
-          <div className="flex flex-wrap gap-4 mt-10 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-            <a href="#courses" className="btn-accent inline-flex items-center gap-2 text-base group">
-              <BookOpen className="w-4 h-4" /> Explore Programs
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <div className="flex flex-wrap gap-4 mt-8">
+            <a href="#contact" className="btn-accent inline-flex items-center gap-2 group">
+              Start Your Journey <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="#contact" className="btn-glass inline-flex items-center gap-2 text-base">
-              <Sparkles className="w-4 h-4" /> Apply Now
+            <a href="#courses" className="btn-outline inline-flex items-center gap-2">
+              Explore Programs
             </a>
+          </div>
+
+          {/* Trust indicators */}
+          <div className="flex items-center gap-6 mt-10 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-accent" /> Career-Focused</span>
+            <span className="flex items-center gap-1.5"><Globe className="w-4 h-4 text-accent" /> Global Network</span>
+          </div>
+        </div>
+
+        {/* Right: Image */}
+        <div className="relative">
+          <div className="rounded-3xl overflow-hidden shadow-2xl">
+            <img src={heroImg} alt="Diverse international students on campus" width={1280} height={960} className="w-full h-auto object-cover" />
+          </div>
+          {/* Floating stat cards */}
+          <div className="absolute -bottom-6 -left-4 bg-background rounded-2xl shadow-lg border border-border p-4 hidden md:flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <div className="font-bold text-foreground text-sm">95% Visa Success</div>
+              <div className="text-xs text-muted-foreground">Proven track record</div>
+            </div>
+          </div>
+          <div className="absolute -top-4 -right-4 bg-background rounded-2xl shadow-lg border border-border p-4 hidden md:flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <Globe className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <div className="font-bold text-foreground text-sm">50+ Universities</div>
+              <div className="text-xs text-muted-foreground">Worldwide partners</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    {/* Stats bar - glass */}
-    <div className="relative z-10">
+    {/* Stats bar */}
+    <div className="bg-primary">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl mb-8 mx-0 lg:mx-12">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={`py-6 md:py-8 text-center ${i < 3 ? "border-r border-white/10" : ""} animate-count-up`}
-                style={{ animationDelay: `${0.4 + i * 0.1}s` }}
-              >
-                <div className="text-2xl md:text-3xl font-extrabold text-gradient font-heading">{s.value}</div>
-                <div className="text-xs md:text-sm text-white/50 mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4">
+          {stats.map((s, i) => (
+            <div key={s.label} className={`py-6 md:py-8 text-center ${i < 3 ? "border-r border-primary-foreground/10" : ""}`}>
+              <div className="text-2xl md:text-3xl font-extrabold text-primary-foreground font-heading">{s.value}</div>
+              <div className="text-xs text-primary-foreground/60 mt-1">{s.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
