@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 220 25% 97%;
+    --background: 0 0% 100%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -18,33 +18,29 @@
     --primary: 224 71% 16%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 220 20% 96%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 217 91% 60%;
+    --accent: 24 95% 53%;
     --accent-foreground: 0 0% 100%;
+
+    --cta: 160 84% 39%;
+    --cta-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 90%;
-    --input: 220 20% 90%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Premium gradients */
-    --hero-gradient: linear-gradient(135deg, hsl(224 71% 10%) 0%, hsl(240 60% 18%) 50%, hsl(260 50% 22%) 100%);
-    --accent-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(260 80% 60%) 100%);
-    --cta-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(240 70% 50%) 100%);
-    --surface-glow: 0 8px 32px -8px hsl(217 91% 60% / 0.25);
-    --card-shadow: 0 4px 24px -4px hsl(222 47% 11% / 0.06);
-    --card-shadow-hover: 0 20px 60px -12px hsl(222 47% 11% / 0.15);
-    --glow-blue: 0 0 40px hsl(217 91% 60% / 0.3);
-    --glow-purple: 0 0 40px hsl(260 80% 60% / 0.3);
+    --card-shadow: 0 1px 3px hsl(222 47% 11% / 0.04), 0 4px 16px hsl(222 47% 11% / 0.06);
+    --card-shadow-hover: 0 8px 32px hsl(222 47% 11% / 0.1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -71,67 +67,46 @@
 
 @layer components {
   .btn-primary {
-    background: var(--cta-gradient);
-    @apply text-primary-foreground px-7 py-3.5 rounded-2xl font-semibold
-           transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:brightness-110;
+    @apply bg-primary text-primary-foreground px-7 py-3.5 rounded-xl font-semibold
+           transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
   }
   .btn-accent {
-    background: var(--accent-gradient);
-    @apply text-accent-foreground px-7 py-3.5 rounded-2xl font-semibold
+    @apply bg-accent text-accent-foreground px-7 py-3.5 rounded-xl font-semibold
            transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:brightness-110;
   }
   .btn-cta {
-    background: var(--cta-gradient);
-    @apply text-accent-foreground px-7 py-3.5 rounded-2xl font-semibold
+    @apply px-7 py-3.5 rounded-xl font-semibold text-white
            transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:brightness-110;
+    background: hsl(var(--cta));
   }
-  .btn-glass {
-    @apply bg-white/10 backdrop-blur-xl text-white px-7 py-3.5 rounded-2xl font-semibold
-           border border-white/20 transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5;
+  .btn-outline {
+    @apply bg-transparent border-2 border-primary text-primary px-7 py-3.5 rounded-xl font-semibold
+           transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
   }
   .section-label {
-    @apply text-xs font-bold uppercase tracking-[0.2em] text-accent inline-block;
+    @apply text-xs font-bold uppercase tracking-[0.2em] inline-block;
+    color: hsl(var(--accent));
   }
   .section-title {
     @apply text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight;
   }
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-xl rounded-2xl border border-white/50 transition-all duration-500;
+  .premium-card {
+    @apply bg-card rounded-2xl border border-border transition-all duration-300;
     box-shadow: var(--card-shadow);
   }
-  .glass-card:hover {
+  .premium-card:hover {
     box-shadow: var(--card-shadow-hover);
-    @apply -translate-y-1.5;
-  }
-  .glass-card-dark {
-    @apply bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 transition-all duration-500;
-  }
-  .glass-card-dark:hover {
-    @apply bg-white/10 -translate-y-1.5 border-white/20;
-    box-shadow: var(--glow-blue);
-  }
-  .glow-accent {
-    box-shadow: var(--glow-blue);
-  }
-  .glow-purple {
-    box-shadow: var(--glow-purple);
+    @apply -translate-y-1;
   }
 }
 
 @layer utilities {
-  .hero-bg {
-    background: var(--hero-gradient);
-  }
   .text-gradient {
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, hsl(217 91% 60%), hsl(200 80% 50%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .bg-mesh {
-    background-image:
-      radial-gradient(at 40% 20%, hsl(217 91% 60% / 0.15) 0px, transparent 50%),
-      radial-gradient(at 80% 0%, hsl(260 80% 60% / 0.1) 0px, transparent 50%),
-      radial-gradient(at 0% 50%, hsl(217 91% 60% / 0.08) 0px, transparent 50%),
-      radial-gradient(at 80% 50%, hsl(260 80% 60% / 0.06) 0px, transparent 50%);
+  .bg-section-alt {
+    background: hsl(var(--muted));
   }
 }
