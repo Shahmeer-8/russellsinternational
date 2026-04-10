@@ -1,5 +1,5 @@
 import heroImg from "@/assets/hero-cinematic.jpg";
-import { ArrowRight, BookOpen, Globe, Sparkles, Zap, GraduationCap } from "lucide-react";
+import { ArrowRight, BookOpen, Sparkles, Zap, GraduationCap } from "lucide-react";
 
 const stats = [
   { value: "10+", label: "Years Experience" },
