@@ -1,10 +1,11 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import DualFocusSection from "@/components/DualFocusSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
 import FeaturedCourses from "@/components/FeaturedCourses";
 import StudyDestinations from "@/components/StudyDestinations";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
+import NewsEvents from "@/components/NewsEvents";
 import CTASection from "@/components/CTASection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -18,6 +19,7 @@ const Index = () => (
     <StudyDestinations />
     <WhyChooseUs />
     <Testimonials />
+    <NewsEvents />
     <CTASection />
     <ContactSection />
     <Footer />
