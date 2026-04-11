@@ -1,26 +1,26 @@
 import { Star, Quote } from "lucide-react";
+import ayeshaImg from "@/assets/student-ayesha.jpg";
+import omerImg from "@/assets/student-omer.jpg";
+import mariaImg from "@/assets/student-maria.jpg";
 
 const reviews = [
   {
     name: "Ayesha Khan",
     program: "Study Abroad – UK",
     text: "Russell's International made my dream of studying in the UK a reality. Their guidance was phenomenal from application to visa approval.",
-    avatar: "AK",
-    color: "bg-blue-100 text-blue-700",
+    image: ayeshaImg,
   },
   {
     name: "Omer Ali",
     program: "Full Stack Development",
     text: "The web development course was incredibly hands-on. I landed a job within two months of completing the program. Highly recommended!",
-    avatar: "OA",
-    color: "bg-purple-100 text-purple-700",
+    image: omerImg,
   },
   {
     name: "Maria Santos",
     program: "Study Abroad – Canada",
     text: "I was overwhelmed by the university options, but the team helped me choose the perfect fit. Now I'm thriving at a top Canadian university.",
-    avatar: "MS",
-    color: "bg-green-100 text-green-700",
+    image: mariaImg,
   },
 ];
 
@@ -35,7 +35,7 @@ const Testimonials = () => (
 
       <div className="grid md:grid-cols-3 gap-6">
         {reviews.map((r) => (
-          <div key={r.name} className="premium-card p-7 relative">
+          <div key={r.name} className="premium-card p-7 relative group">
             <Quote className="w-8 h-8 text-muted/80 absolute top-6 right-6" />
             <div className="flex gap-1 mb-4">
               {[...Array(5)].map((_, i) => (
@@ -44,9 +44,14 @@ const Testimonials = () => (
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">"{r.text}"</p>
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full ${r.color} flex items-center justify-center text-sm font-bold`}>
-                {r.avatar}
-              </div>
+              <img
+                src={r.image}
+                alt={r.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-border"
+                loading="lazy"
+                width={512}
+                height={512}
+              />
               <div>
                 <div className="font-semibold text-foreground text-sm">{r.name}</div>
                 <div className="text-xs text-muted-foreground">{r.program}</div>
