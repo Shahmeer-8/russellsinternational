@@ -1,12 +1,17 @@
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
+  const { ref, visible } = useScrollReveal();
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-section-alt">
-      <div className="container mx-auto px-4 md:px-8">
+      <div
+        ref={ref}
+        className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      >
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div>
             <span className="section-label">Get In Touch</span>
@@ -14,7 +19,6 @@ const ContactSection = () => {
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Fill in the form and our team will get back to you within 24 hours with personalized guidance.
             </p>
-
             <div className="space-y-4">
               {[
                 { icon: Phone, label: "+92 304 111 2233" },
