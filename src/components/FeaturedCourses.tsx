@@ -22,11 +22,11 @@ const FeaturedCourses = () => {
   const { ref, visible } = useScrollReveal();
   const [tab, setTab] = useState<"paid" | "navttc">("paid");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<typeof paidCourses[0] | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
   const courses = tab === "paid" ? paidCourses : navttcCourses;
 
-  const openDrawer = (course: typeof paidCourses[0]) => {
+  const openDrawer = (course: any) => {
     setSelectedCourse(course);
     setDrawerOpen(true);
   };
