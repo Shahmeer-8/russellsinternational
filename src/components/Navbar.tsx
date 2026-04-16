@@ -3,10 +3,14 @@ import { GraduationCap, Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#" },
-  { label: "About", href: "#why-us" },
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
   { label: "Programs", href: "#courses" },
   { label: "Study Abroad", href: "#destinations" },
-  { label: "Stories", href: "#testimonials" },
+  { label: "Internships", href: "#internships" },
+  { label: "Jobs", href: "#jobs" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Community", href: "#community" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -36,25 +40,25 @@ const Navbar = () => {
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden lg:flex items-center gap-5">
           {navLinks.map((l) => (
-            <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <a key={l.label} href={l.href} className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors">
               {l.label}
             </a>
           ))}
         </div>
 
-        <a href="#contact" className="hidden md:inline-flex btn-accent text-sm px-5 py-2.5">
+        <a href="#contact" className="hidden lg:inline-flex btn-accent text-sm px-5 py-2.5">
           Start Your Journey
         </a>
 
-        <button className="md:hidden p-2" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-background border-t border-border px-4 pb-4 animate-fade-in">
+        <div className="lg:hidden bg-background border-t border-border px-4 pb-4 animate-fade-in max-h-[70vh] overflow-y-auto">
           {navLinks.map((l) => (
             <a key={l.label} href={l.href} className="block py-3 text-sm font-medium text-muted-foreground hover:text-foreground" onClick={() => setOpen(false)}>
               {l.label}

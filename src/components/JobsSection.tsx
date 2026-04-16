@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import DetailDrawer from "@/components/DetailDrawer";
-import { Briefcase, MapPin, Clock, DollarSign, ArrowRight, Building2 } from "lucide-react";
-import jobsImg from "@/assets/jobs-career.jpg";
+import { Briefcase, MapPin, DollarSign, ArrowRight, Building2 } from "lucide-react";
 
 const jobs = [
   { title: "Full Stack Developer", company: "Partner Tech Firm", location: "Islamabad", type: "Full-Time", salary: "PKR 80K–120K", desc: "Build and maintain web applications using React and Node.js.", requirements: ["2+ years experience", "React & Node.js", "REST APIs", "Git & CI/CD"] },
