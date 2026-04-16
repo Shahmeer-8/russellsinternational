@@ -126,6 +126,8 @@ export default {
         shimmer: "shimmer 3s linear infinite",
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
         "slide-up-fade": "slide-up-fade 0.8s ease-out forwards",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+        "scale-in": "scale-in 0.2s ease-out",
       },
     },
   },
