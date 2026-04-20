@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import HomePreviews from "@/components/HomePreviews";
+import HomeNewsCarousel from "@/components/HomeNewsCarousel";
 import AboutSection from "@/components/AboutSection";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
@@ -15,6 +16,7 @@ const Index = () => (
     <HomePreviews />
     <AboutSection />
     <WhyChooseUs />
+    <HomeNewsCarousel />
     <Testimonials />
     <CTASection />
     <ContactSection />
