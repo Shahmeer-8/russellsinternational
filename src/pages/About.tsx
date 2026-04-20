@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { Target, Eye, Heart, Users, Award, GraduationCap } from "lucide-react";
+import { Target, Eye, Heart, Users } from "lucide-react";
 import aboutHero from "@/assets/about-hero.jpg";
 import campusLife from "@/assets/campus-life.jpg";
 import founderImg from "@/assets/founder-portrait.jpg";
