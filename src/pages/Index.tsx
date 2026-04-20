@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import HomePreviews from "@/components/HomePreviews";
 import HomeNewsCarousel from "@/components/HomeNewsCarousel";
-import AboutSection from "@/components/AboutSection";
+import AboutPreview from "@/components/AboutPreview";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import CTASection from "@/components/CTASection";
@@ -14,7 +14,7 @@ const Index = () => (
     <Navbar />
     <HeroCarousel />
     <HomePreviews />
-    <AboutSection />
+    <AboutPreview />
     <WhyChooseUs />
     <HomeNewsCarousel />
     <Testimonials />
