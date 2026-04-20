@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import JobsSection from "@/components/JobsSection";
 import InternshipsSection from "@/components/InternshipsSection";
+import CareerApplyForm from "@/components/CareerApplyForm";
 import CTASection from "@/components/CTASection";
 import jobsImg from "@/assets/jobs-career.jpg";
 
@@ -18,6 +19,7 @@ const Careers = () => (
     />
     <JobsSection />
     <InternshipsSection />
+    <CareerApplyForm />
     <CTASection />
     <Footer />
   </div>
