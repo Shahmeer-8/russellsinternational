@@ -1,4 +1,26 @@
 import { GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const cols = [
+  { title: "Quick Links", links: [
+    { label: "Home", to: "/" },
+    { label: "Skills", to: "/skills" },
+    { label: "Study Abroad", to: "/study-abroad" },
+    { label: "Contact", to: "/#contact" },
+  ]},
+  { title: "Programs", links: [
+    { label: "Web Development", to: "/skills" },
+    { label: "AI & ML", to: "/skills" },
+    { label: "Languages", to: "/languages" },
+    { label: "NAVTTC (Free)", to: "/skills" },
+  ]},
+  { title: "More", links: [
+    { label: "Careers", to: "/careers" },
+    { label: "Events & News", to: "/events" },
+    { label: "Gallery", to: "/events" },
+    { label: "About", to: "/#about" },
+  ]},
+];
 
 const Footer = () => (
   <footer className="bg-primary text-primary-foreground">
@@ -16,17 +38,13 @@ const Footer = () => (
           </p>
         </div>
 
-        {[
-          { title: "Quick Links", links: ["About Us", "Courses", "Study Abroad", "Contact"] },
-          { title: "Programs", links: ["Web Development", "AI & ML", "Digital Marketing", "Cybersecurity"] },
-          { title: "Study Abroad", links: ["UK Universities", "Canada Programs", "Australia Options", "USA Admissions"] },
-        ].map((col) => (
+        {cols.map((col) => (
           <div key={col.title}>
             <h4 className="font-heading font-bold text-sm mb-4">{col.title}</h4>
             <ul className="space-y-2.5">
               {col.links.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors">{l}</a>
+                <li key={l.label}>
+                  <Link to={l.to} className="text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors">{l.label}</Link>
                 </li>
               ))}
             </ul>
