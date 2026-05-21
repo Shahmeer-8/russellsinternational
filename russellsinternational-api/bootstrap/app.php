@@ -16,6 +16,8 @@ return Application::configure(dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
+
         $middleware->redirectGuestsTo('/admin/login');
 
         $middleware->api(prepend: [
