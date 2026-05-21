@@ -38,7 +38,8 @@ lighthouse-*
 russellsinternational-api/vendor
 russellsinternational-api/.env
 russellsinternational-api/.phpunit.result.cache
-russellsinternational-api/public/storage
+russellsinternational-api/public/storage/applications
+russellsinternational-api/public/storage/livewire-tmp
 russellsinternational-api/storage/app/*
 !russellsinternational-api/storage/app/.gitignore
 !russellsinternational-api/storage/app/public/

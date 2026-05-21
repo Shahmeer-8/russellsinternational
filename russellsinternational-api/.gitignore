@@ -2,7 +2,8 @@
 /.phpunit.result.cache
 /vendor/
 /node_modules/
-/public/storage
+/public/storage/applications
+/public/storage/livewire-tmp
 /storage/*.key
 /storage/app/*
 !/storage/app/.gitignore
