@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "Russell's International Public API Smoke Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "api_base_url", "value": "{{base_url}}/api/v1" }
+  ],
+  "item": [
+    {
+      "name": "GET public collections",
+      "item": [
+        { "name": "Hero slides", "request": { "method": "GET", "url": "{{api_base_url}}/hero-slides" } },
+        { "name": "Ticker items", "request": { "method": "GET", "url": "{{api_base_url}}/ticker-items" } },
+        { "name": "Stats", "request": { "method": "GET", "url": "{{api_base_url}}/stats" } },
+        { "name": "Services", "request": { "method": "GET", "url": "{{api_base_url}}/services" } },
+        { "name": "Why choose us", "request": { "method": "GET", "url": "{{api_base_url}}/why-choose-us" } },
+        { "name": "Courses", "request": { "method": "GET", "url": "{{api_base_url}}/courses" } },
+        { "name": "Paid courses", "request": { "method": "GET", "url": "{{api_base_url}}/courses?type=paid" } },
+        { "name": "NAVTTC courses", "request": { "method": "GET", "url": "{{api_base_url}}/courses?type=navttc" } },
+        { "name": "Study destinations", "request": { "method": "GET", "url": "{{api_base_url}}/study-destinations" } },
+        { "name": "Language programs", "request": { "method": "GET", "url": "{{api_base_url}}/language-programs" } },
+        { "name": "Jobs", "request": { "method": "GET", "url": "{{api_base_url}}/jobs" } },
+        { "name": "Full-time jobs", "request": { "method": "GET", "url": "{{api_base_url}}/jobs?type=Full-Time" } },
+        { "name": "Job search", "request": { "method": "GET", "url": "{{api_base_url}}/jobs?search=test" } },
+        { "name": "Internships", "request": { "method": "GET", "url": "{{api_base_url}}/internships" } },
+        { "name": "Events", "request": { "method": "GET", "url": "{{api_base_url}}/events" } },
+        { "name": "Event type", "request": { "method": "GET", "url": "{{api_base_url}}/events?type=event" } },
+        { "name": "News type", "request": { "method": "GET", "url": "{{api_base_url}}/events?type=news" } },
+        { "name": "Featured events", "request": { "method": "GET", "url": "{{api_base_url}}/events?featured=true" } },
+        { "name": "Gallery", "request": { "method": "GET", "url": "{{api_base_url}}/gallery" } },
+        { "name": "Campus gallery", "request": { "method": "GET", "url": "{{api_base_url}}/gallery?category=campus" } },
+        { "name": "Testimonials", "request": { "method": "GET", "url": "{{api_base_url}}/testimonials" } },
+        { "name": "Written testimonials", "request": { "method": "GET", "url": "{{api_base_url}}/testimonials?type=written" } },
+        { "name": "Video testimonials", "request": { "method": "GET", "url": "{{api_base_url}}/testimonials?type=video" } },
+        { "name": "Team", "request": { "method": "GET", "url": "{{api_base_url}}/team" } },
+        { "name": "Settings", "request": { "method": "GET", "url": "{{api_base_url}}/settings" } },
+        { "name": "Contact settings", "request": { "method": "GET", "url": "{{api_base_url}}/settings?group=contact" } },
+        { "name": "Navigation", "request": { "method": "GET", "url": "{{api_base_url}}/navigation" } }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));",
+              "pm.test('returns success boolean', () => pm.expect(pm.response.json()).to.have.property('success', true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST contact valid",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"API Smoke User\",\"phone\":\"+923001234567\",\"email\":\"smoke@example.com\",\"interest\":\"Study Abroad\",\"message\":\"Please contact me.\"}"
+        },
+        "url": "{{api_base_url}}/contact"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('created', () => pm.response.to.have.status(201));", "pm.test('success true', () => pm.expect(pm.response.json().success).to.eql(true));"] } }]
+    },
+    {
+      "name": "POST contact invalid",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"email\":\"not-an-email\"}" },
+        "url": "{{api_base_url}}/contact"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('validation status', () => pm.response.to.have.status(422));", "pm.test('success false', () => pm.expect(pm.response.json().success).to.eql(false));"] } }]
+    },
+    {
+      "name": "POST career application valid without CV",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"application_type\":\"job\",\"position_title\":\"Web Developer\",\"name\":\"API Applicant\",\"email\":\"applicant@example.com\"}"
+        },
+        "url": "{{api_base_url}}/careers/apply"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('created', () => pm.response.to.have.status(201));", "pm.test('success true', () => pm.expect(pm.response.json().success).to.eql(true));"] } }]
+    },
+    {
+      "name": "POST career application invalid",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"application_type\":\"invalid\",\"email\":\"bad\"}" },
+        "url": "{{api_base_url}}/careers/apply"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('validation status', () => pm.response.to.have.status(422));", "pm.test('success false', () => pm.expect(pm.response.json().success).to.eql(false));"] } }]
+    }
+  ]
+}

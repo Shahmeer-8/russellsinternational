@@ -14,7 +14,15 @@ interface Props {
 const PageHero = ({ eyebrow, title, description, image, crumbs }: Props) => (
   <section className="relative pt-16">
     <div className="relative h-[360px] md:h-[440px] overflow-hidden">
-      <img src={image} alt={title} className="w-full h-full object-cover" />
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      )}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/40" />
       <div className="absolute inset-0 flex items-center">
         <div className="container mx-auto px-4 md:px-8 text-primary-foreground">

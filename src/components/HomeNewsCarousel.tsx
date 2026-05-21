@@ -7,51 +7,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import workshopImg from "@/assets/event-workshop.jpg";
-import seminarImg from "@/assets/event-seminar.jpg";
-import admissionsImg from "@/assets/event-admissions.jpg";
-import campusImg from "@/assets/gallery-campus.jpg";
-import graduationImg from "@/assets/gallery-graduation.jpg";
+import { useEvents } from "@/hooks/api";
 
 type Tag = "Event" | "News" | "Workshop";
-
-const items: { image: string; title: string; desc: string; date: string; tag: Tag }[] = [
-  {
-    image: workshopImg,
-    title: "Free AI & Web Dev Workshop",
-    desc: "Hands-on session with industry mentors.",
-    date: "Apr 28, 2026",
-    tag: "Workshop",
-  },
-  {
-    image: admissionsImg,
-    title: "UK Admissions Open Day",
-    desc: "Meet university representatives in person.",
-    date: "May 04, 2026",
-    tag: "Event",
-  },
-  {
-    image: seminarImg,
-    title: "IELTS Strategy Seminar",
-    desc: "Score band 7+ with proven techniques.",
-    date: "May 12, 2026",
-    tag: "Event",
-  },
-  {
-    image: graduationImg,
-    title: "NAVTTC Batch Graduation",
-    desc: "200+ students complete government program.",
-    date: "Apr 18, 2026",
-    tag: "News",
-  },
-  {
-    image: campusImg,
-    title: "New Skill Development Campus",
-    desc: "Expanded labs and modern classrooms.",
-    date: "Apr 10, 2026",
-    tag: "News",
-  },
-];
 
 const tagColor: Record<Tag, string> = {
   Event: "bg-accent text-accent-foreground",
@@ -59,7 +17,17 @@ const tagColor: Record<Tag, string> = {
   Workshop: "bg-cta text-cta-foreground",
 };
 
-const HomeNewsCarousel = () => (
+const HomeNewsCarousel = () => {
+  const { data, isLoading } = useEvents();
+  const displayItems = (data?.data?.data ?? []).slice(0, 8).map((event) => ({
+    image: event.image_url,
+    title: event.title,
+    desc: event.short_description,
+    date: event.formatted_date ?? event.event_date ?? "",
+    tag: (event.content_type === "news" ? "News" : event.tag === "Workshop" ? "Workshop" : "Event") as Tag,
+  }));
+
+  return (
   <section className="py-20 md:py-28 bg-background">
     <div className="container mx-auto px-4 md:px-8">
       <div className="text-center mb-12">
@@ -70,9 +38,14 @@ const HomeNewsCarousel = () => (
         </p>
       </div>
 
-      <Carousel opts={{ align: "start", loop: true }} className="relative">
-        <CarouselContent className="-ml-4">
-          {items.map((it) => (
+      {isLoading ? (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => <div key={i} className="h-72 rounded-2xl bg-muted animate-pulse" />)}
+        </div>
+      ) : displayItems.length === 0 ? null : (
+        <Carousel opts={{ align: "start", loop: true }} className="relative">
+          <CarouselContent className="-ml-4">
+            {displayItems.map((it) => (
             <CarouselItem
               key={it.title}
               className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
@@ -82,12 +55,15 @@ const HomeNewsCarousel = () => (
                 className="group block h-full bg-card rounded-2xl overflow-hidden ring-1 ring-border shadow-[var(--card-shadow)] hover:shadow-[var(--card-shadow-hover)] hover:-translate-y-1.5 transition-all duration-500"
               >
                 <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
+                  {it.image && (
+                    <img
+                      src={it.image}
+                      alt={it.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                  )}
                   <span
                     className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${tagColor[it.tag]}`}
                   >
@@ -106,22 +82,26 @@ const HomeNewsCarousel = () => (
                 </div>
               </Link>
             </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:flex -left-4" />
-        <CarouselNext className="hidden md:flex -right-4" />
-      </Carousel>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex -left-4" />
+          <CarouselNext className="hidden md:flex -right-4" />
+        </Carousel>
+      )}
 
-      <div className="text-center mt-12">
+      {displayItems.length > 0 && (
+        <div className="text-center mt-12">
         <Link
           to="/events"
           className="btn-accent inline-flex items-center gap-2"
         >
           Explore More <ArrowRight className="w-4 h-4" />
         </Link>
-      </div>
+        </div>
+      )}
     </div>
   </section>
-);
+  );
+};
 
 export default HomeNewsCarousel;

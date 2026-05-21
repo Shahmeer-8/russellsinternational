@@ -2,28 +2,38 @@ import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import DetailDrawer from "@/components/DetailDrawer";
 import { Rocket, Clock, MapPin, ArrowRight, BadgeCheck } from "lucide-react";
-import internshipImg from "@/assets/internship.jpg";
+import { useInternships } from "@/hooks/api";
 
-const internships = [
-  { title: "Frontend Development Intern", company: "Russell's International", location: "Islamabad", duration: "3 Months", type: "Paid", desc: "Build real-world React applications and contribute to live projects.", skills: ["React", "TypeScript", "Tailwind CSS"] },
-  { title: "Digital Marketing Intern", company: "Russell's International", location: "Islamabad / Remote", duration: "2 Months", type: "Paid", desc: "Run campaigns, manage social media, and learn SEO/SEM strategies.", skills: ["SEO", "Google Ads", "Social Media"] },
-  { title: "Data Science Intern", company: "Partner Company", location: "Islamabad", duration: "3 Months", type: "Unpaid (Stipend)", desc: "Work with real datasets, build models, and present insights.", skills: ["Python", "Pandas", "Machine Learning"] },
-  { title: "UI/UX Design Intern", company: "Russell's International", location: "Remote", duration: "2 Months", type: "Paid", desc: "Design user interfaces for education platforms and marketing materials.", skills: ["Figma", "Prototyping", "User Research"] },
-];
+type InternshipCard = {
+  title: string;
+  company: string;
+  location: string;
+  duration: string;
+  type: string;
+  desc: string;
+  skills: string[];
+  gains?: string[];
+  image: string | null;
+};
 
 const InternshipsSection = () => {
   const { ref, visible } = useScrollReveal();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selected, setSelected] = useState<typeof internships[0] | null>(null);
+  const [selected, setSelected] = useState<InternshipCard | null>(null);
 
-  const openDrawer = (item: typeof internships[0]) => { setSelected(item); setDrawerOpen(true); };
+  const { data: internshipsData, isLoading } = useInternships();
+  const apiInternships = (internshipsData?.data?.data ?? []).map((i) => ({ title: i.title, company: i.company, location: i.location, duration: i.duration, type: i.type, desc: i.description, skills: i.skills ?? [], gains: i.gains ?? [], image: i.image_url }));
+  const internshipsList = apiInternships;
+  const introImage = internshipsList.find((item) => item.image)?.image;
+
+  const openDrawer = (item: InternshipCard) => { setSelected(item); setDrawerOpen(true); };
 
   return (
     <>
       <section id="internships" className="py-20 md:py-28">
         <div
           ref={ref}
-          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-14">
             <div>
@@ -33,13 +43,20 @@ const InternshipsSection = () => {
                 Bridge the gap between learning and working. Our internship programs place you in real projects with industry mentors, giving you hands-on experience that employers value.
               </p>
             </div>
-            <div className="rounded-3xl overflow-hidden shadow-xl">
-              <img src={internshipImg} alt="Students working on internship projects" className="w-full h-auto object-cover" loading="lazy" width={960} height={640} />
-            </div>
+            {introImage && (
+              <div className="rounded-3xl overflow-hidden shadow-xl">
+                <img src={introImage} alt="" className="w-full h-auto object-cover" loading="lazy" decoding="async" width={960} height={640} />
+              </div>
+            )}
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
-            {internships.map((item) => (
+          {isLoading ? (
+            <div className="grid sm:grid-cols-2 gap-6">
+              {[...Array(2)].map((_, i) => <div key={i} className="premium-card h-64 animate-pulse" />)}
+            </div>
+          ) : internshipsList.length === 0 ? null : (
+            <div className="grid sm:grid-cols-2 gap-6">
+              {internshipsList.map((item) => (
               <div key={item.title} className="premium-card p-6 group cursor-pointer" onClick={() => openDrawer(item)}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
@@ -64,8 +81,9 @@ const InternshipsSection = () => {
                   View Details <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -96,7 +114,7 @@ const InternshipsSection = () => {
             <div>
               <h5 className="font-semibold text-foreground mb-3">What You'll Gain</h5>
               <ul className="space-y-2">
-                {["Real-world project experience", "Mentorship from industry experts", "Portfolio-worthy work samples", "Certificate of completion", "Potential full-time offer"].map((item) => (
+                {(selected.gains ?? []).map((item: string) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
                     <BadgeCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
                     {item}

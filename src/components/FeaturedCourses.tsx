@@ -1,32 +1,52 @@
 import { Code, Brain, TrendingUp, Shield, Palette, Server, Clock, Users, ArrowRight, BadgeCheck, Crown } from "lucide-react";
+import type { ElementType } from "react";
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import DetailDrawer from "@/components/DetailDrawer";
+import { useCourses } from "@/hooks/api";
 
-const paidCourses = [
-  { icon: Code, title: "Full Stack Web Development", duration: "6 Months", students: "450+", tag: "Bestseller", price: "PKR 45,000", color: "bg-blue-50 text-blue-600" },
-  { icon: Brain, title: "AI & Machine Learning", duration: "4 Months", students: "320+", tag: "New", price: "PKR 55,000", color: "bg-purple-50 text-purple-600" },
-  { icon: TrendingUp, title: "Digital Marketing & SEO", duration: "3 Months", students: "580+", tag: "", price: "PKR 30,000", color: "bg-green-50 text-green-600" },
-  { icon: Shield, title: "Cybersecurity Essentials", duration: "5 Months", students: "210+", tag: "", price: "PKR 50,000", color: "bg-red-50 text-red-600" },
-  { icon: Palette, title: "UI/UX Design Mastery", duration: "4 Months", students: "390+", tag: "Popular", price: "PKR 35,000", color: "bg-pink-50 text-pink-600" },
-  { icon: Server, title: "Cloud & DevOps", duration: "5 Months", students: "270+", tag: "", price: "PKR 48,000", color: "bg-indigo-50 text-indigo-600" },
-];
+type CourseCard = {
+  icon: ElementType;
+  title: string;
+  description: string;
+  duration: string;
+  students: string;
+  tag: string;
+  color: string;
+  price?: string;
+  whatYouLearn: string[];
+  highlights: string[];
+};
 
-const navttcCourses = [
-  { icon: Code, title: "Web Development Fundamentals", duration: "3 Months", students: "800+", tag: "NAVTTC", color: "bg-emerald-50 text-emerald-600" },
-  { icon: Brain, title: "Python Programming", duration: "3 Months", students: "650+", tag: "NAVTTC", color: "bg-teal-50 text-teal-600" },
-  { icon: TrendingUp, title: "E-Commerce & Freelancing", duration: "2 Months", students: "1,200+", tag: "NAVTTC", color: "bg-cyan-50 text-cyan-600" },
-];
+const ICON_MAP: Record<string, ElementType> = { Code, Brain, TrendingUp, Shield, Palette, Server };
 
 const FeaturedCourses = () => {
   const { ref, visible } = useScrollReveal();
   const [tab, setTab] = useState<"paid" | "navttc">("paid");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [selectedCourse, setSelectedCourse] = useState<CourseCard | null>(null);
 
-  const courses = tab === "paid" ? paidCourses : navttcCourses;
+  const { data: paidData, isLoading: paidLoading } = useCourses('paid');
+  const { data: navttcData, isLoading: navttcLoading } = useCourses('navttc');
 
-  const openDrawer = (course: any) => {
+  const mapCourse = (c: import("@/types/api").Course): CourseCard => ({
+    ...c,
+    icon: ICON_MAP[c.icon_name] ?? Code,
+    color: c.color_class ?? '',
+    description: c.description ?? '',
+    students: c.students_count ?? '',
+    price: c.price ?? undefined,
+    tag: c.tag ?? '',
+    whatYouLearn: c.what_you_learn ?? [],
+    highlights: c.highlights ?? [],
+  });
+  const apiPaid   = (paidData?.data   ?? []).map(mapCourse);
+  const apiNavttc = (navttcData?.data ?? []).map(mapCourse);
+
+  const courses = tab === "paid" ? apiPaid : apiNavttc;
+  const loading = tab === "paid" ? paidLoading : navttcLoading;
+
+  const openDrawer = (course: CourseCard) => {
     setSelectedCourse(course);
     setDrawerOpen(true);
   };
@@ -36,7 +56,7 @@ const FeaturedCourses = () => {
       <section id="courses" className="py-20 md:py-28">
         <div
           ref={ref}
-          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
           <div className="text-center mb-10">
             <span className="section-label">Featured Programs</span>
@@ -75,8 +95,15 @@ const FeaturedCourses = () => {
             </div>
           )}
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((c) => (
+          {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="premium-card p-6 h-64 animate-pulse" />
+              ))}
+            </div>
+          ) : courses.length === 0 ? null : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((c) => (
               <div
                 key={c.title}
                 className="premium-card p-6 group cursor-pointer"
@@ -100,14 +127,15 @@ const FeaturedCourses = () => {
                   <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{c.students} enrolled</span>
                 </div>
                 {"price" in c && (
-                  <div className="font-bold text-foreground text-base mb-4">{(c as any).price}</div>
+                  <div className="font-bold text-foreground text-base mb-4">{c.price}</div>
                 )}
                 <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
                   {tab === "navttc" ? "Apply Now" : "Learn More"} <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -124,7 +152,7 @@ const FeaturedCourses = () => {
             <div>
               <h4 className="font-heading font-bold text-xl text-foreground mb-2">{selectedCourse.title}</h4>
               {"price" in selectedCourse && (
-                <div className="text-2xl font-bold text-accent mb-1">{(selectedCourse as any).price}</div>
+                <div className="text-2xl font-bold text-accent mb-1">{selectedCourse.price}</div>
               )}
               {tab === "navttc" && (
                 <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-sm font-medium px-3 py-1 rounded-full">
@@ -136,25 +164,32 @@ const FeaturedCourses = () => {
               <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {selectedCourse.duration}</span>
               <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {selectedCourse.students} enrolled</span>
             </div>
-            <div>
-              <h5 className="font-semibold text-foreground mb-3">What You'll Learn</h5>
-              <ul className="space-y-2">
-                {["Industry-standard tools and frameworks", "Real-world project-based learning", "Portfolio development and career prep", "Certification upon completion"].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h5 className="font-semibold text-foreground mb-3">Program Highlights</h5>
-              <div className="grid grid-cols-2 gap-3">
-                {["Expert Trainers", "Hands-On Labs", "Job Placement", "Flexible Schedule"].map((h) => (
-                  <div key={h} className="bg-muted/50 rounded-xl p-3 text-center text-sm font-medium text-foreground">{h}</div>
-                ))}
+            {selectedCourse.description && (
+              <p className="text-muted-foreground leading-relaxed">{selectedCourse.description}</p>
+            )}
+            {selectedCourse.whatYouLearn.length > 0 && (
+              <div>
+                <h5 className="font-semibold text-foreground mb-3">What You'll Learn</h5>
+                <ul className="space-y-2">
+                  {selectedCourse.whatYouLearn.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            )}
+            {selectedCourse.highlights.length > 0 && (
+              <div>
+                <h5 className="font-semibold text-foreground mb-3">Program Highlights</h5>
+                <div className="grid grid-cols-2 gap-3">
+                  {selectedCourse.highlights.map((h) => (
+                    <div key={h} className="bg-muted/50 rounded-xl p-3 text-center text-sm font-medium text-foreground">{h}</div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </DetailDrawer>

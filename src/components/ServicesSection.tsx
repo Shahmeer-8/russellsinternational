@@ -61,7 +61,7 @@ const ServicesSection = () => {
       <section id="services" className="py-20 md:py-28 bg-section-alt">
         <div
           ref={ref}
-          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
           <div className="text-center mb-14">
             <span className="section-label">Our Services</span>

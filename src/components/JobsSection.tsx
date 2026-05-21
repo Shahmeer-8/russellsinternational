@@ -2,27 +2,35 @@ import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import DetailDrawer from "@/components/DetailDrawer";
 import { Briefcase, MapPin, DollarSign, ArrowRight, Building2 } from "lucide-react";
+import { useJobs } from "@/hooks/api";
 
-const jobs = [
-  { title: "Full Stack Developer", company: "Partner Tech Firm", location: "Islamabad", type: "Full-Time", salary: "PKR 80K–120K", desc: "Build and maintain web applications using React and Node.js.", requirements: ["2+ years experience", "React & Node.js", "REST APIs", "Git & CI/CD"] },
-  { title: "Digital Marketing Executive", company: "Russell's International", location: "Islamabad", type: "Full-Time", salary: "PKR 50K–70K", desc: "Plan and execute digital marketing campaigns across multiple channels.", requirements: ["1+ year experience", "Google Ads certified", "SEO/SEM", "Analytics"] },
-  { title: "IELTS Instructor", company: "Russell's International", location: "Islamabad", type: "Part-Time", salary: "PKR 40K–60K", desc: "Teach IELTS preparation classes and conduct mock tests.", requirements: ["IELTS Band 8+", "Teaching experience", "British Council trained preferred"] },
-  { title: "Education Counselor", company: "Russell's International", location: "Islamabad / Remote", type: "Full-Time", salary: "PKR 45K–65K", desc: "Guide students through the study abroad application process.", requirements: ["Counseling experience", "Knowledge of UK/Canada/AUS admissions", "Excellent communication"] },
-];
+type JobCard = {
+  title: string;
+  company: string;
+  location: string;
+  type: string;
+  salary: string;
+  desc: string;
+  requirements: string[];
+};
 
 const JobsSection = () => {
   const { ref, visible } = useScrollReveal();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selected, setSelected] = useState<typeof jobs[0] | null>(null);
+  const [selected, setSelected] = useState<JobCard | null>(null);
 
-  const openDrawer = (job: typeof jobs[0]) => { setSelected(job); setDrawerOpen(true); };
+  const { data: jobsData, isLoading } = useJobs();
+  const apiJobs = (jobsData?.data?.data ?? []).map((j) => ({ title: j.title, company: j.company, location: j.location, type: j.type, salary: j.salary ?? '', desc: j.description, requirements: j.requirements ?? [] }));
+  const jobsList = apiJobs;
+
+  const openDrawer = (job: JobCard) => { setSelected(job); setDrawerOpen(true); };
 
   return (
     <>
       <section id="jobs" className="py-20 md:py-28 bg-section-alt">
         <div
           ref={ref}
-          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
           <div className="text-center mb-14">
             <span className="section-label">Career Opportunities</span>
@@ -30,8 +38,13 @@ const JobsSection = () => {
             <p className="text-muted-foreground mt-4 max-w-lg mx-auto">Explore open positions at Russell's International and our partner organizations.</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
-            {jobs.map((job) => (
+          {isLoading ? (
+            <div className="grid sm:grid-cols-2 gap-6">
+              {[...Array(2)].map((_, i) => <div key={i} className="premium-card h-64 animate-pulse" />)}
+            </div>
+          ) : jobsList.length === 0 ? null : (
+            <div className="grid sm:grid-cols-2 gap-6">
+              {jobsList.map((job) => (
               <div key={job.title} className="premium-card p-6 group cursor-pointer" onClick={() => openDrawer(job)}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -52,8 +65,9 @@ const JobsSection = () => {
                   View & Apply <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -113,3 +113,25 @@
     background: hsl(var(--muted));
   }
 }
+
+@keyframes navBlink {
+  50% { opacity: 0.28; }
+}
+
+@keyframes navShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-1px); }
+  40% { transform: translateX(1px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+@keyframes navGlow {
+  0%, 100% { box-shadow: 0 0 0 hsl(var(--accent) / 0); }
+  50% { box-shadow: 0 0 14px hsl(var(--accent) / 0.35); }
+}
+
+@keyframes navShine {
+  0% { transform: translateX(0) skewX(-20deg); }
+  45%, 100% { transform: translateX(220%) skewX(-20deg); }
+}

@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
 import { GraduationCap, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-
-const navLinks = [
-  { label: "Home", to: "/" },
-  { label: "About Us", to: "/about" },
-  { label: "Skills", to: "/skills" },
-  { label: "Study Abroad", to: "/study-abroad" },
-  { label: "Languages", to: "/languages" },
-  { label: "Careers", to: "/careers" },
-  { label: "Events", to: "/events" },
-];
+import { useNavigation, useSettings } from "@/hooks/api";
+import type { NavigationItem } from "@/types/api";
+import { badgeClass, isExternalUrl } from "@/lib/navigation";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { data: navigationData, isLoading: navigationLoading } = useNavigation();
+  const { data: settingsData } = useSettings();
+  const navLinks = navigationData?.data.header ?? [];
+  const settings = settingsData?.data ?? {};
+  const siteName = settings.site_name ?? "Russell's International";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -28,7 +26,33 @@ const Navbar = () => {
     setOpen(false);
   }, [location.pathname]);
 
-  const isActive = (to: string) => location.pathname === to;
+  const isActive = (to: string) => !isExternalUrl(to) && location.pathname === to;
+
+  const renderLink = (item: NavigationItem, mobile = false) => {
+    const content = (
+      <>
+        <span>{item.label}</span>
+        {item.badge_label && <span className={badgeClass(item)}>{item.badge_label}</span>}
+      </>
+    );
+    const className = mobile
+      ? `flex items-center gap-2 py-3 text-sm font-medium ${isActive(item.url) ? "text-accent" : "text-muted-foreground hover:text-foreground"}`
+      : `inline-flex items-center gap-1.5 text-[13px] font-medium transition-colors ${isActive(item.url) ? "text-accent" : "text-muted-foreground hover:text-foreground"}`;
+
+    if (isExternalUrl(item.url)) {
+      return (
+        <a key={item.id} href={item.url} target={item.target} rel={item.target === "_blank" ? "noreferrer" : undefined} className={className}>
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <Link key={item.id} to={item.url} className={className} onClick={() => mobile && setOpen(false)}>
+        {content}
+      </Link>
+    );
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -42,22 +66,16 @@ const Navbar = () => {
             <GraduationCap className="w-5 h-5 text-primary-foreground" />
           </div>
           <span className="font-heading font-bold text-lg text-foreground">
-            Russell's <span className="text-gradient">International</span>
+            {siteName}
           </span>
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((l) => (
-            <Link
-              key={l.label}
-              to={l.to}
-              className={`text-[13px] font-medium transition-colors ${
-                isActive(l.to) ? "text-accent" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {navigationLoading ? (
+            <div className="h-4 w-96 rounded bg-muted animate-pulse" />
+          ) : (
+            navLinks.map((item) => renderLink(item))
+          )}
         </div>
 
         <Link to="/#contact" className="hidden lg:inline-flex btn-accent text-sm px-5 py-2.5">
@@ -71,18 +89,7 @@ const Navbar = () => {
 
       {open && (
         <div className="lg:hidden bg-background border-t border-border px-4 pb-4 animate-fade-in max-h-[70vh] overflow-y-auto">
-          {navLinks.map((l) => (
-            <Link
-              key={l.label}
-              to={l.to}
-              className={`block py-3 text-sm font-medium ${
-                isActive(l.to) ? "text-accent" : "text-muted-foreground hover:text-foreground"
-              }`}
-              onClick={() => setOpen(false)}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {navLinks.map((item) => renderLink(item, true))}
           <Link to="/#contact" className="block mt-2 btn-accent text-sm text-center" onClick={() => setOpen(false)}>
             Start Your Journey
           </Link>

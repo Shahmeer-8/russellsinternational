@@ -1,8 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
-import HomePreviews from "@/components/HomePreviews";
 import HomeNewsCarousel from "@/components/HomeNewsCarousel";
-import AboutPreview from "@/components/AboutPreview";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import CTASection from "@/components/CTASection";
@@ -13,20 +11,12 @@ const Index = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
     <HeroCarousel />
-    <HomePreviews />
-    <AboutPreview />
     <WhyChooseUs />
     <HomeNewsCarousel />
     <Testimonials />
     <CTASection />
     <ContactSection />
     <Footer />
-    {/* Floating mobile CTA */}
-    <div className="fixed bottom-6 right-6 z-40 lg:hidden">
-      <a href="#contact" className="btn-accent flex items-center gap-2 text-sm px-5 py-3 rounded-full shadow-lg">
-        💬 Inquire Now
-      </a>
-    </div>
   </div>
 );
 
