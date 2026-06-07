@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SettingSeeder::class,
+            LanguageProgramSeeder::class,
             HeroSlideSeeder::class,
             CourseSeeder::class,
             JobSeeder::class,

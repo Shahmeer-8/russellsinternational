@@ -13,7 +13,14 @@ class LanguageProgramController extends Controller
         $query = LanguageProgram::active();
 
         if ($request->filled('code')) {
-            $query->where('language_code', $request->code);
+            $codes = match ($request->code) {
+                'english' => ['english', 'ielts', 'pte', 'toefl', 'languagecert'],
+                'german' => ['german', 'goethe', 'testdaf', 'telc'],
+                'korean' => ['korean', 'topik', 'eps-topik'],
+                default => [$request->code],
+            };
+
+            $query->whereIn('language_code', $codes);
         }
 
         return response()->json(['success' => true, 'data' => $query->get()]);

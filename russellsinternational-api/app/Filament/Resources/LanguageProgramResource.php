@@ -23,18 +23,35 @@ class LanguageProgramResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('flag_emoji')->required()->placeholder('🇬🇧'),
+            Forms\Components\TextInput::make('flag_emoji')
+                ->label('Short Code / Flag')
+                ->required()
+                ->placeholder('GB'),
             Forms\Components\Select::make('language_code')
-                ->options(['ielts' => 'IELTS', 'german' => 'German', 'korean' => 'Korean'])
+                ->label('Language Section')
+                ->options([
+                    'english' => 'English Tests',
+                    'german' => 'German Tests',
+                    'korean' => 'Korean Tests',
+                    'ielts' => 'IELTS (legacy English)',
+                ])
+                ->helperText('Choose the page section this program appears under.')
                 ->required(),
-            Forms\Components\TextInput::make('title')->required()->maxLength(200),
+            Forms\Components\TextInput::make('title')
+                ->label('Test / Program Name')
+                ->required()
+                ->placeholder('IELTS Preparation')
+                ->maxLength(200),
             Forms\Components\TextInput::make('duration')->required()->placeholder('8 Weeks'),
             Forms\Components\TextInput::make('badge')->required()->placeholder('Most Popular'),
             Forms\Components\TextInput::make('color_class')->default('bg-blue-50 text-blue-600'),
             Forms\Components\Textarea::make('description')->required()->rows(3)->columnSpanFull(),
             Forms\Components\Repeater::make('benefits')
+                ->label('What is included')
                 ->schema([Forms\Components\TextInput::make('item')->required()])
-                ->defaultItems(4)->collapsible()->columnSpanFull(),
+                ->defaultItems(4)
+                ->collapsible()
+                ->columnSpanFull(),
             Forms\Components\FileUpload::make('image')
                 ->image()
                 ->disk('public')
@@ -56,12 +73,22 @@ class LanguageProgramResource extends Resource
         return $table
             ->reorderable('sort_order')
             ->columns([
-                Tables\Columns\TextColumn::make('flag_emoji')->label(''),
-                Tables\Columns\TextColumn::make('language_code')->badge(),
+                Tables\Columns\TextColumn::make('flag_emoji')->label('Code'),
+                Tables\Columns\TextColumn::make('language_code')->label('Section')->badge(),
                 Tables\Columns\TextColumn::make('title')->searchable(),
                 Tables\Columns\TextColumn::make('duration'),
                 Tables\Columns\TextColumn::make('badge'),
                 Tables\Columns\ToggleColumn::make('is_active'),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('language_code')
+                    ->label('Language Section')
+                    ->options([
+                        'english' => 'English Tests',
+                        'ielts' => 'IELTS (legacy English)',
+                        'german' => 'German Tests',
+                        'korean' => 'Korean Tests',
+                    ]),
             ])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
