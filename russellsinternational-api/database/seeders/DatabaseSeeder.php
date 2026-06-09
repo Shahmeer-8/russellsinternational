@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SettingSeeder::class,
+            HomePageSectionSeeder::class,
             LanguageProgramSeeder::class,
             HeroSlideSeeder::class,
             CourseSeeder::class,

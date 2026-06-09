@@ -9,6 +9,7 @@ use App\Models\Page;
 use App\Models\PageSection;
 use App\Models\Setting;
 use App\Support\Media;
+use Database\Seeders\HomePageSectionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -89,6 +90,38 @@ class PublicApiTest extends TestCase
             ->assertJsonPath('success', true)
             ->assertJsonPath('data.hero.title', 'About Us')
             ->assertJsonMissing(['title' => 'Draft']);
+    }
+
+    public function test_home_dual_focus_sections_are_seeded_for_admin_and_public_api(): void
+    {
+        $this->seed(HomePageSectionSeeder::class);
+
+        $this->assertDatabaseHas('page_sections', [
+            'page_slug' => 'home',
+            'section_key' => 'dual_focus',
+            'is_active' => true,
+        ]);
+
+        $this->assertDatabaseHas('page_sections', [
+            'page_slug' => 'home',
+            'section_key' => 'dual_focus_study',
+            'cta_url' => '/study-abroad',
+            'is_active' => true,
+        ]);
+
+        $this->assertDatabaseHas('page_sections', [
+            'page_slug' => 'home',
+            'section_key' => 'dual_focus_skills',
+            'cta_url' => '/skills',
+            'is_active' => true,
+        ]);
+
+        $this->getJson('/api/v1/pages/home/sections')
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('data.dual_focus.title', 'Pick the pathway that fits your next move.')
+            ->assertJsonPath('data.dual_focus_study.items.country_1_name', 'United Kingdom')
+            ->assertJsonPath('data.dual_focus_skills.items.course_1_title', 'Full Stack Web Development');
     }
 
     public function test_media_url_normalizes_external_storage_and_plain_paths(): void
