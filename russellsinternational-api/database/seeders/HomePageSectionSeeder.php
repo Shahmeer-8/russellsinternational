@@ -21,22 +21,11 @@ class HomePageSectionSeeder extends Seeder
         );
 
         PageSection::updateOrCreate(
-            ['page_slug' => 'home', 'section_key' => 'dual_focus'],
+            ['page_slug' => 'home', 'section_key' => 'study_abroad'],
             [
-                'name' => 'Homepage Study Abroad and Skills Heading',
-                'eyebrow' => 'Study abroad and skills',
-                'title' => 'Pick the pathway that fits your next move.',
-                'body' => "A quick homepage preview of Russell's two core directions: global admissions support for students planning overseas study, and practical IT training for students building career-ready skills.",
-                'sort_order' => 30,
-                'is_active' => true,
-            ],
-        );
-
-        PageSection::updateOrCreate(
-            ['page_slug' => 'home', 'section_key' => 'dual_focus_study'],
-            [
-                'name' => 'Homepage Study Abroad Card',
+                'name' => 'Homepage Study Abroad Section',
                 'eyebrow' => 'Study Abroad',
+                'subtitle' => 'Compare destinations, understand intakes and prepare a stronger application with counsellors who have placed students across the UK, Canada and Australia.',
                 'title' => 'From country shortlisting to visa file guidance.',
                 'body' => 'Help students compare destinations, understand intakes, prepare documents and move toward international applications with a clearer plan.',
                 'cta_label' => 'Explore Study Abroad',
@@ -56,16 +45,17 @@ class HomePageSectionSeeder extends Seeder
                     'badge' => 'Admissions support',
                     'footnote' => 'Counselling, admissions, visa support',
                 ],
-                'sort_order' => 31,
+                'sort_order' => 30,
                 'is_active' => true,
             ],
         );
 
         PageSection::updateOrCreate(
-            ['page_slug' => 'home', 'section_key' => 'dual_focus_skills'],
+            ['page_slug' => 'home', 'section_key' => 'skills_focus'],
             [
-                'name' => 'Homepage Skills Training Card',
-                'eyebrow' => 'Skills Training',
+                'name' => 'Homepage Skills Focus Section',
+                'eyebrow' => 'Skills Focus',
+                'subtitle' => 'Hands-on IT programs built around real projects, so students finish with a portfolio and skills employers actually ask for.',
                 'title' => 'Practical programs for job-ready IT skills.',
                 'body' => 'A focused training preview for students who want hands-on tech learning, portfolio work and marketable skills without searching through the whole site first.',
                 'cta_label' => 'View Skill Programs',
@@ -82,7 +72,7 @@ class HomePageSectionSeeder extends Seeder
                     'badge' => 'Skills focus',
                     'footnote' => 'Local training, global confidence',
                 ],
-                'sort_order' => 32,
+                'sort_order' => 31,
                 'is_active' => true,
             ],
         );

@@ -4,7 +4,8 @@ import StatsStrip from "@/components/StatsStrip";
 import HomeNewsCarousel from "@/components/HomeNewsCarousel";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import ServicesSection from "@/components/ServicesSection";
-import DualFocusSection from "@/components/DualFocusSection";
+import StudyAbroadSection from "@/components/StudyAbroadSection";
+import SkillsFocusSection from "@/components/SkillsFocusSection";
 import Testimonials from "@/components/Testimonials";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -20,7 +21,8 @@ const Index = () => (
     <StatsStrip />
     <WhyChooseUs />
     <ServicesSection />
-    <DualFocusSection />
+    <StudyAbroadSection />
+    <SkillsFocusSection />
     <HomeNewsCarousel />
     <Testimonials />
     <ContactSection />

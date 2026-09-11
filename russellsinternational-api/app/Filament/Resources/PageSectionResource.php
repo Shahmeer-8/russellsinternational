@@ -49,14 +49,13 @@ class PageSectionResource extends Resource
                     ->datalist([
                         'hero',
                         'cta',
-                        'dual_focus',
-                        'dual_focus_study',
-                        'dual_focus_skills',
+                        'study_abroad',
+                        'skills_focus',
                         'campus_life',
                         'founder_message',
                         'foundation',
                     ])
-                    ->helperText('Frontend key. Common live keys: hero, cta, dual_focus, dual_focus_study, dual_focus_skills, campus_life, founder_message, foundation.')
+                    ->helperText('Frontend key. Common live keys: hero, cta, study_abroad, skills_focus, campus_life, founder_message, foundation.')
                     ->required()
                     ->maxLength(100),
                 Forms\Components\TextInput::make('name')
