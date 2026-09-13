@@ -1,4 +1,3 @@
-import { Quote } from "lucide-react";
 import { useHowWeWorkItems, usePageSections } from "@/hooks/api";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { sectionText } from "@/lib/content";
@@ -29,65 +28,64 @@ const HowWeWorkSection = () => {
   }
 
   return (
-    <section className="bg-[hsl(var(--muted))] py-12 md:py-20">
+    <section className="bg-background py-16 md:py-24 lg:py-28">
       <div
         ref={ref}
-        className={`container mx-auto px-4 transition-all duration-700 md:px-8 ${
-          visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+        className={`container mx-auto px-4 transition-opacity duration-700 md:px-8 ${
+          visible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="mb-8 text-center">
-          <span className="section-label">
+        <div className="grid gap-x-10 gap-y-6 lg:grid-cols-12">
+          <p className="text-sm font-medium text-muted-foreground lg:col-span-2 lg:pt-2">
             {sectionText(heading, "eyebrow", "Our approach")}
-          </span>
-          <h2 className="section-title mt-3">
-            {sectionText(heading, "title", "How we work with you")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
-            {sectionText(
-              heading,
-              "subtitle",
-              "Six ways we partner with people and organisations — from developing leaders to building resilience and professional performance.",
-            )}
           </p>
-        </div>
+          {/* min-w-0: the card row's full-bleed `-mx-4` wrapper would otherwise
+              widen this grid column past the viewport instead of being clipped. */}
+          <div className="min-w-0 lg:col-span-10">
+            <h2 className="font-heading text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-foreground">
+              {sectionText(heading, "title", "How we work with you")}
+            </h2>
+            <p className="mt-4 max-w-[62ch] text-base leading-[1.75] text-muted-foreground">
+              {sectionText(
+                heading,
+                "subtitle",
+                "Six ways we partner with people and organisations — from developing leaders to building resilience and professional performance.",
+              )}
+            </p>
 
-        <ResponsiveCardRow
-          gridClassName="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-          items={items.map((item) => ({
-            key: item.id,
-            node: (
-              <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--card-shadow)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[var(--card-shadow-hover)]">
-                {item.image_url && (
-                  <div className="relative overflow-hidden bg-primary">
+            <div className="mt-10">
+              <ResponsiveCardRow
+            gridClassName="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 items-start"
+            items={items.map((item) => ({
+              key: item.id,
+              node: (
+                <article className="h-full border-t border-border pt-5">
+                  {item.image_url && (
                     <img
                       src={item.image_url}
                       alt={item.title}
-                      className="aspect-[4/3] w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                      className="mb-4 aspect-[4/3] w-full rounded-sm object-cover object-center"
                       loading="lazy"
                       width={640}
                       height={480}
                     />
-                  </div>
-                )}
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-heading text-lg font-extrabold leading-snug text-foreground">
+                  )}
+                  <h3 className="font-heading text-lg font-bold leading-snug tracking-[-0.01em] text-foreground">
                     {item.title}
                   </h3>
-                  <Quote className="mt-3 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-                  <blockquote className="mt-2 text-sm leading-7 text-muted-foreground">
+                  <blockquote className="mt-3 text-sm leading-7 text-muted-foreground">
                     {item.quote}
                   </blockquote>
                   {item.author && (
-                    <div className="mt-auto pt-4 text-xs font-bold uppercase tracking-[0.12em] text-primary">
-                      — {item.author}
-                    </div>
+                    <div className="mt-3 text-sm font-medium text-foreground">{item.author}</div>
                   )}
-                </div>
-              </article>
-            ),
-          }))}
-        />
+                </article>
+              ),
+            }))}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -135,3 +135,20 @@
   0% { transform: translateX(0) skewX(-20deg); }
   45%, 100% { transform: translateX(220%) skewX(-20deg); }
 }
+
+/*
+ * Several sections fade or slide as they scroll into view, and the nav has its
+ * own looping accents. Anyone who has asked their system to reduce motion should
+ * still get the content — just without it moving. Scroll reveals are opacity
+ * transitions, so they settle on their visible state rather than staying blank.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

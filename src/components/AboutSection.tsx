@@ -1,53 +1,52 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { Target, Eye, Award, Users } from "lucide-react";
-import aboutImg from "@/assets/about-team.jpg";
+import type { ReactNode } from "react";
 
-const milestones = [
-  { icon: Award, value: "2014", label: "Founded" },
-  { icon: Users, value: "5,000+", label: "Students" },
-  { icon: Target, value: "50+", label: "Universities" },
-  { icon: Eye, value: "10+", label: "Years" },
-];
-
-const AboutSection = () => {
-  const { ref, visible } = useScrollReveal();
+/**
+ * The shell every About-page section sits in.
+ *
+ * The old page put a tracked-out, all-caps orange label above each heading. That
+ * treatment appeared on every section regardless of content, which is what made
+ * the page read as a template. The section name carries the same information
+ * here, but it sits in a left rail as a margin note — positioned rather than
+ * shouted — and the rail running down the page gives it a spine that a stack of
+ * independently centred blocks never had.
+ *
+ * Below `lg` the rail folds above the content, where it reads as a quiet caption.
+ */
+const AboutSection = ({
+  label,
+  children,
+  tone = "paper",
+  className = "",
+}: {
+  /** Section name, sentence case. Omit when the heading alone is enough. */
+  label?: string;
+  children: ReactNode;
+  tone?: "paper" | "mist" | "ink";
+  className?: string;
+}) => {
+  const grounds = {
+    paper: "bg-background",
+    mist: "bg-[hsl(var(--muted))]",
+    ink: "bg-primary text-primary-foreground",
+  };
 
   return (
-    <section id="about" className="py-20 md:py-28">
-      <div
-        ref={ref}
-        className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
-      >
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="relative">
-            <div className="rounded-3xl overflow-hidden shadow-xl">
-              <img src={aboutImg} alt="Russell's International team" className="w-full h-auto object-cover" loading="lazy" width={960} height={640} />
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-accent text-accent-foreground rounded-2xl p-5 shadow-lg hidden md:block">
-              <div className="text-2xl font-extrabold font-heading">10+</div>
-              <div className="text-xs font-medium opacity-80">Years of Excellence</div>
-            </div>
-          </div>
-
-          <div>
-            <span className="section-label">About Us</span>
-            <h2 className="section-title mt-3 mb-5">Empowering Futures Since 2014</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Russell's International is a leading education consultancy and IT training institute based in Islamabad, Pakistan. We bridge the gap between ambition and achievement by providing world-class skill development programs and expert study abroad guidance.
+    <section className={`${grounds[tone]} py-16 md:py-24 lg:py-28 ${className}`}>
+      <div className="container mx-auto px-4 md:px-8">
+        <div className="grid gap-x-10 gap-y-6 lg:grid-cols-12">
+          {label && (
+            <p
+              className={`text-sm font-medium lg:col-span-2 lg:pt-2 ${
+                tone === "ink" ? "text-primary-foreground/55" : "text-muted-foreground"
+              }`}
+            >
+              {label}
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-8">
-              Our mission is to empower students with the skills, knowledge, and global exposure they need to build successful careers — whether through mastering in-demand technologies or pursuing education at top international universities.
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {milestones.map((m) => (
-                <div key={m.label} className="text-center p-4 rounded-xl bg-muted/50">
-                  <m.icon className="w-5 h-5 text-accent mx-auto mb-2" />
-                  <div className="font-extrabold text-foreground font-heading text-lg">{m.value}</div>
-                  <div className="text-xs text-muted-foreground">{m.label}</div>
-                </div>
-              ))}
-            </div>
+          )}
+          {/* min-w-0: a grid item defaults to min-width:auto, so any full-bleed
+              child would widen the column past the viewport rather than be clipped. */}
+          <div className={`min-w-0 ${label ? "lg:col-span-10" : "lg:col-span-12"}`}>
+            {children}
           </div>
         </div>
       </div>
