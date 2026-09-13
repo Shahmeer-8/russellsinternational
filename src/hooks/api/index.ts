@@ -21,6 +21,7 @@ import type {
   PageSections,
   TeamMember,
   HowWeWorkItem as HowWeWorkItemType,
+  InternshipRecord as InternshipRecordType,
   ContactPayload,
   CareerApplicationPayload,
 } from '@/types/api';
@@ -119,6 +120,14 @@ export function useInternships() {
     queryKey: ['internships'],
     queryFn: () => api.get<PaginatedResponse<Internship>>('/internships'),
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useInternshipRecords() {
+  return useQuery({
+    queryKey: ['internship-records'],
+    queryFn: () => api.get<ApiResponse<InternshipRecordType[]>>('/internship-records'),
+    staleTime: 10 * 60 * 1000,
   });
 }
 

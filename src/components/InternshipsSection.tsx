@@ -12,10 +12,86 @@ type InternshipCard = {
   location: string;
   duration: string;
   type: string;
+  category: string;
   desc: string;
   skills: string[];
   gains?: string[];
   image: string | null;
+};
+
+/**
+ * A group of internships under its own sub-heading. The Careers page shows two —
+ * year-round paid placements and summer programmes — driven by the listing's
+ * `category`. A group with nothing in it renders nothing at all, so an empty
+ * heading never sits on the page.
+ */
+const InternshipGroup = ({
+  sectionKey,
+  defaultEyebrow,
+  defaultTitle,
+  defaultSubtitle,
+  items,
+  onOpen,
+}: {
+  sectionKey: string;
+  defaultEyebrow: string;
+  defaultTitle: string;
+  defaultSubtitle: string;
+  items: InternshipCard[];
+  onOpen: (item: InternshipCard) => void;
+}) => {
+  const copy = useSectionCopy("careers", sectionKey);
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-12 first:mt-0">
+      <div className="mb-6 max-w-2xl">
+        <span className="section-label">{copy("eyebrow", defaultEyebrow)}</span>
+        <h3 className="font-heading text-2xl font-extrabold text-foreground mt-2 md:text-3xl">
+          {copy("title", defaultTitle)}
+        </h3>
+        <p className="text-sm text-muted-foreground leading-7 mt-2">
+          {copy("subtitle", defaultSubtitle)}
+        </p>
+      </div>
+
+      <ResponsiveCardRow
+        gridClassName="grid sm:grid-cols-2 gap-6"
+        items={items.map((item) => ({
+          key: item.title,
+          node: (
+            <div className="premium-card p-6 group cursor-pointer h-full" onClick={() => onOpen(item)}>
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <Rocket className="w-5 h-5 text-accent" />
+                </div>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${item.type === "Paid" ? "bg-green-50 text-green-700" : "bg-blue-50 text-blue-700"}`}>
+                  {item.type}
+                </span>
+              </div>
+              <h4 className="font-bold text-foreground font-heading text-base mb-1 group-hover:text-accent transition-colors">{item.title}</h4>
+              <p className="text-xs text-muted-foreground mb-3">{item.company}</p>
+              <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-4">
+                <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {item.location}</span>
+                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {item.duration}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {item.skills.map((s) => (
+                  <span key={s} className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground font-medium">{s}</span>
+                ))}
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
+                View Details <ArrowRight className="w-3.5 h-3.5" />
+              </span>
+            </div>
+          ),
+        }))}
+      />
+    </div>
+  );
 };
 
 const InternshipsSection = () => {
@@ -25,8 +101,21 @@ const InternshipsSection = () => {
   const [selected, setSelected] = useState<InternshipCard | null>(null);
 
   const { data: internshipsData, isLoading } = useInternships();
-  const apiInternships = (internshipsData?.data?.data ?? []).map((i) => ({ title: i.title, company: i.company, location: i.location, duration: i.duration, type: i.type, desc: i.description, skills: i.skills ?? [], gains: i.gains ?? [], image: i.image_url }));
-  const internshipsList = apiInternships;
+  const internshipsList: InternshipCard[] = (internshipsData?.data?.data ?? []).map((i) => ({
+    title: i.title,
+    company: i.company,
+    location: i.location,
+    duration: i.duration,
+    type: i.type,
+    // Listings created before the group split have no category.
+    category: i.category || "regular",
+    desc: i.description,
+    skills: i.skills ?? [],
+    gains: i.gains ?? [],
+    image: i.image_url,
+  }));
+  const summer = internshipsList.filter((item) => item.category === "summer");
+  const regular = internshipsList.filter((item) => item.category !== "summer");
   const introImage = internshipsList.find((item) => item.image)?.image;
 
   const openDrawer = (item: InternshipCard) => { setSelected(item); setDrawerOpen(true); };
@@ -57,39 +146,25 @@ const InternshipsSection = () => {
             <div className="grid sm:grid-cols-2 gap-6">
               {[...Array(2)].map((_, i) => <div key={i} className="premium-card h-64 animate-pulse" />)}
             </div>
-          ) : internshipsList.length === 0 ? null : (
-            <ResponsiveCardRow
-              gridClassName="grid sm:grid-cols-2 gap-6"
-              items={internshipsList.map((item) => ({
-                key: item.title,
-                node: (
-              <div className="premium-card p-6 group cursor-pointer h-full" onClick={() => openDrawer(item)}>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
-                    <Rocket className="w-5 h-5 text-accent" />
-                  </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${item.type === "Paid" ? "bg-green-50 text-green-700" : "bg-blue-50 text-blue-700"}`}>
-                    {item.type}
-                  </span>
-                </div>
-                <h3 className="font-bold text-foreground font-heading text-base mb-1 group-hover:text-accent transition-colors">{item.title}</h3>
-                <p className="text-xs text-muted-foreground mb-3">{item.company}</p>
-                <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-4">
-                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {item.location}</span>
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {item.duration}</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {item.skills.map((s) => (
-                    <span key={s} className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground font-medium">{s}</span>
-                  ))}
-                </div>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
-                  View Details <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </div>
-                ),
-              }))}
-            />
+          ) : (
+            <>
+              <InternshipGroup
+                sectionKey="internships_paid"
+                defaultEyebrow="Open now"
+                defaultTitle="Paid Internships"
+                defaultSubtitle="Year-round placements with a stipend or salary, working on live projects alongside our team."
+                items={regular}
+                onOpen={openDrawer}
+              />
+              <InternshipGroup
+                sectionKey="internships_summer"
+                defaultEyebrow="Summer programmes"
+                defaultTitle="Summer Internship Programs"
+                defaultSubtitle="Short, intensive cohorts that run over the summer break — built for students who want real project experience before their final year."
+                items={summer}
+                onOpen={openDrawer}
+              />
+            </>
           )}
         </div>
       </section>

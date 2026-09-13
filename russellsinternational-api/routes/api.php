@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\HeroSlideController;
 use App\Http\Controllers\Api\HowWeWorkController;
 use App\Http\Controllers\Api\InternshipController;
+use App\Http\Controllers\Api\InternshipRecordController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LanguageProgramController;
 use App\Http\Controllers\Api\LanguageSectionController;
@@ -61,6 +62,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/jobs/{id}', [JobController::class,              'show']);
     Route::get('/internships', [InternshipController::class,       'index']);
     Route::get('/internships/{id}', [InternshipController::class,       'show']);
+    Route::get('/internship-records', [InternshipRecordController::class, 'index']);
 
     // ── Events & News ───────────────────────────────────────────────────
     // ?type=event|news  ?category=Workshop|Seminar|...

@@ -31,7 +31,14 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('location')->required(),
                 Forms\Components\TextInput::make('duration')->required()->placeholder('3 Months'),
                 Forms\Components\Select::make('type')
+                    ->label('Pay')
                     ->options(['Paid' => 'Paid', 'Unpaid' => 'Unpaid', 'Stipend' => 'Unpaid (Stipend)'])
+                    ->required(),
+                Forms\Components\Select::make('category')
+                    ->label('Group')
+                    ->helperText('Which group on the Careers page this appears under.')
+                    ->options(['regular' => 'Paid Internships', 'summer' => 'Summer Internship Programs'])
+                    ->default('regular')
                     ->required(),
                 Forms\Components\Textarea::make('description')->required()->rows(3),
             ])->columns(2),
@@ -69,10 +76,18 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('title')->searchable(),
             Tables\Columns\TextColumn::make('company'),
             Tables\Columns\TextColumn::make('duration'),
-            Tables\Columns\TextColumn::make('type')->badge()
+            Tables\Columns\TextColumn::make('type')->label('Pay')->badge()
                 ->color(fn ($state) => $state === 'Paid' ? 'success' : 'warning'),
+            Tables\Columns\TextColumn::make('category')->label('Group')->badge()
+                ->formatStateUsing(fn ($state) => $state === 'summer' ? 'Summer' : 'Paid Internships')
+                ->color(fn ($state) => $state === 'summer' ? 'info' : 'gray'),
             Tables\Columns\ToggleColumn::make('is_active'),
         ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('category')
+                    ->label('Group')
+                    ->options(['regular' => 'Paid Internships', 'summer' => 'Summer Internship Programs']),
+            ])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }

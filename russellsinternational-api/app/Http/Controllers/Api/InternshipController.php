@@ -16,6 +16,10 @@ class InternshipController extends Controller
             $query->where('type', $request->type);
         }
 
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
         return response()->json([
             'success' => true,
             'data' => $query->paginate($request->get('per_page', 20)),

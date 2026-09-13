@@ -151,7 +151,10 @@ export interface Internship {
   company: string;
   location: string;
   duration: string;
+  /** Pay arrangement: Paid | Unpaid | Stipend. */
   type: string;
+  /** Which group on the Careers page: regular | summer. */
+  category: string;
   description: string;
   skills: string[] | null;
   gains: string[] | null;
@@ -264,6 +267,16 @@ export interface TeamMember {
   bio: string;
   image_url: string | null;
   linkedin_url: string | null;
+}
+
+export interface InternshipRecord {
+  id: number;
+  title: string;
+  period: string;
+  participants_count: number | null;
+  description: string | null;
+  achievements: string[];
+  image_url: string | null;
 }
 
 export interface HowWeWorkItem {

@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import JobsSection from "@/components/JobsSection";
 import InternshipsSection from "@/components/InternshipsSection";
+import InternshipRecordSection from "@/components/InternshipRecordSection";
 import CareerApplyForm from "@/components/CareerApplyForm";
 import CTASection from "@/components/CTASection";
 
@@ -21,6 +22,7 @@ const Careers = () => (
     />
     <JobsSection />
     <InternshipsSection />
+    <InternshipRecordSection />
     <CareerApplyForm />
     <CTASection />
     <Footer />
