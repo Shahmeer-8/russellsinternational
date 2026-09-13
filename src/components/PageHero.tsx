@@ -23,7 +23,10 @@ const PageHero = ({ eyebrow, title, description, image, crumbs }: Props) => (
           decoding="async"
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/40" />
+      {/* Softened from 95/80/40. Kept heavier than HeroCarousel's overlay because
+          this hero's intro copy is white/80 rather than solid white — measured
+          against every page hero image, /80/60/25 dropped it to 3.73:1. */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/68 to-primary/30" />
       <div className="absolute inset-0 flex items-center">
         <div className="container mx-auto px-4 md:px-8 text-primary-foreground">
           {crumbs && (

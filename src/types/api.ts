@@ -266,6 +266,14 @@ export interface TeamMember {
   linkedin_url: string | null;
 }
 
+export interface HowWeWorkItem {
+  id: number;
+  title: string;
+  quote: string;
+  author: string | null;
+  image_url: string | null;
+}
+
 // ─── Form payloads ─────────────────────────────────────────────────────────────
 
 export interface ContactPayload {

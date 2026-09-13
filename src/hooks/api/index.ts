@@ -20,6 +20,7 @@ import type {
   NavigationPayload,
   PageSections,
   TeamMember,
+  HowWeWorkItem as HowWeWorkItemType,
   ContactPayload,
   CareerApplicationPayload,
 } from '@/types/api';
@@ -181,6 +182,14 @@ export function useTeamMembers() {
   return useQuery({
     queryKey: ['team-members'],
     queryFn: () => api.get<ApiResponse<TeamMember[]>>('/team'),
+    staleTime: 10 * 60 * 1000,
+  });
+}
+
+export function useHowWeWorkItems() {
+  return useQuery({
+    queryKey: ['how-we-work'],
+    queryFn: () => api.get<ApiResponse<HowWeWorkItemType[]>>('/how-we-work'),
     staleTime: 10 * 60 * 1000,
   });
 }

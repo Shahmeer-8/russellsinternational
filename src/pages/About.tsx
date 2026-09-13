@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import CTASection from "@/components/CTASection";
+import HowWeWorkSection from "@/components/HowWeWorkSection";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { usePageSections, useTeamMembers } from "@/hooks/api";
 import { sectionImage, sectionText } from "@/lib/content";
@@ -54,6 +55,7 @@ const About = () => {
     name: member.name,
     role: member.role,
     note: member.bio,
+    image: member.image_url,
   }));
 
   return (
@@ -156,6 +158,8 @@ const About = () => {
         </section>
       )}
 
+      <HowWeWorkSection />
+
       {teamLoading ? (
         <section className="py-20 md:py-28 bg-section-alt" aria-hidden="true">
           <div className="container mx-auto px-4 md:px-8">
@@ -171,12 +175,27 @@ const About = () => {
               <span className="section-label">Our People</span>
               <h2 className="section-title mt-3">Core Team & Advisory Board</h2>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* items-start: bios vary from none to a full paragraph, and a stretched
+                row leaves the short cards as tall empty boxes. */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
               {displayedTeam.map((m) => (
                 <div key={m.name} className="premium-card p-6 flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
-                    <Users className="w-6 h-6 text-accent" />
-                  </div>
+                  {/* Photo where we have one; the icon stays as the fallback so a
+                      member added without a portrait still gets a complete card. */}
+                  {m.image ? (
+                    <img
+                      src={m.image}
+                      alt={m.name}
+                      className="w-14 h-14 rounded-2xl object-cover object-top shrink-0"
+                      loading="lazy"
+                      width={112}
+                      height={112}
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
+                      <Users className="w-6 h-6 text-accent" />
+                    </div>
+                  )}
                   <div>
                     <div className="font-heading font-bold text-foreground">{m.name}</div>
                     <div className="text-xs text-accent font-semibold uppercase tracking-wider mb-1.5">{m.role}</div>

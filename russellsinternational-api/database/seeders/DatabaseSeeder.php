@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             JobSeeder::class,
             EventSeeder::class,
             TestimonialSeeder::class,
+            HowWeWorkSeeder::class,
+            TeamMemberSeeder::class,
             ProductionContentBackfillSeeder::class,
         ]);
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\HowWeWorkItemResource;
 use App\Filament\Resources\TeamMemberResource;
 
 class AboutPageContent extends WebsiteContentPage
@@ -28,6 +29,8 @@ class AboutPageContent extends WebsiteContentPage
                     $this->pageSection('Campus life section', 'Main about section with image, heading, body and CTA.', 'about', 'campus_life'),
                     $this->pageSection('Founder message', 'Founder/message block with image and body copy.', 'about', 'founder_message'),
                     $this->pageSection('Foundation values', 'Mission, vision and values cards stored as structured items.', 'about', 'foundation'),
+                    $this->pageSection('How We Work heading', 'Eyebrow, heading and intro copy above the How We Work cards.', 'about', 'how_we_work'),
+                    $this->resourceList('How We Work cards', 'The ways of working shown on the About page, each with an image and a quote.', HowWeWorkItemResource::class, 'Manage Cards'),
                     $this->resourceList('Team members', 'People cards shown on the About page.', TeamMemberResource::class, 'Manage Team'),
                     $this->pageSection('Global CTA banner', 'Shared call-to-action banner shown near the bottom.', 'global', 'cta'),
                 ],

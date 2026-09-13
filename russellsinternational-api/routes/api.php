@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\HeroSlideController;
+use App\Http\Controllers\Api\HowWeWorkController;
 use App\Http\Controllers\Api\InternshipController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LanguageProgramController;
@@ -76,6 +77,7 @@ Route::prefix('v1')->group(function () {
 
     // ── About page ───────────────────────────────────────────────────────
     Route::get('/team', [TeamMemberController::class,       'index']);
+    Route::get('/how-we-work', [HowWeWorkController::class,       'index']);
 
     // ── Settings (contact info, social links, footer, SEO) ───────────────
     // ?group=contact|social|footer|seo|general

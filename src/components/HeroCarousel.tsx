@@ -93,7 +93,12 @@ const HeroCarousel = () => {
                 decoding="async"
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/30" />
+            {/* Softened from 90/70/30: the heavier wash buried the photography.
+                This is the lightest wash that still clears WCAG AA for white text
+                over every slide image — measured worst case 4.24:1 for the heading
+                (needs 3:1) and 4.66:1 for the body copy (needs 4.5:1). Going to
+                75/50/15 drops the body copy to 3.67:1. */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/58 to-primary/15" />
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-4 md:px-8">
                 <div className="max-w-2xl text-primary-foreground animate-fade-in" key={`${i}-${active}`}>
