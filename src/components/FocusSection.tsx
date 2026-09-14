@@ -4,7 +4,7 @@ import { ArrowRight, type LucideIcon } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 type Props = {
-  /** Small uppercase label above the title. */
+  /** Section name above the title, set quietly in sentence case. */
   eyebrow: string;
   title: string;
   /** Intro paragraph. Comes from the section's `subtitle` field. */
@@ -98,7 +98,11 @@ const FocusSection = ({
               full-bleed `-mx-4` wrapper would widen this column past the viewport
               instead of being clipped by the carousel's own overflow. */}
           <div className={`min-w-0 ${imageSide === "right" ? "lg:order-1" : ""}`}>
-            <span className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
+            <span
+              className={`text-sm font-medium ${
+                dark ? "text-primary-foreground/60" : "text-muted-foreground"
+              }`}
+            >
               {eyebrow}
             </span>
             <h2
@@ -119,14 +123,19 @@ const FocusSection = ({
             <div className="mt-6">{children}</div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              {/* Navy on light, white outline on dark. This was orange on the dark
+                  section, which put a second full-strength orange button on a page
+                  that already had one in the hero and one in the nav. */}
               <Link
                 to={ctaUrl}
                 className={`${
-                  dark ? "btn-accent" : "btn-primary"
-                } group inline-flex w-full items-center justify-center gap-2 px-5 py-3 text-sm sm:w-fit`}
+                  dark
+                    ? "border border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 rounded-lg font-semibold transition-colors"
+                    : "btn-primary"
+                } inline-flex w-full items-center justify-center gap-2 px-5 py-3 text-sm sm:w-fit`}
               >
                 {ctaLabel}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
               <div
                 className={`flex items-center justify-center gap-2 text-xs font-semibold sm:justify-start ${

@@ -43,10 +43,10 @@ const StudyDestinations = () => {
           ref={ref}
           className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
-          <div className="text-center mb-14">
+          <div className="max-w-2xl mb-14">
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground/60">{copy("eyebrow", "Global Opportunities")}</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight font-heading mt-3">{copy("title", "Top Study Destinations")}</h2>
-            <p className="text-primary-foreground/50 mt-4 max-w-lg mx-auto">{copy("subtitle", "Explore world-class education opportunities across the globe.")}</p>
+            <p className="text-primary-foreground/50 mt-4 max-w-lg">{copy("subtitle", "Explore world-class education opportunities across the globe.")}</p>
           </div>
 
           {isLoading ? (

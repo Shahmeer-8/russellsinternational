@@ -62,10 +62,10 @@ const LanguagesSection = () => {
           ref={ref}
           className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
-          <div className="text-center mb-10">
+          <div className="max-w-2xl mb-10">
             <span className="section-label">{copy("eyebrow", "Language Programs")}</span>
             <h2 className="section-title mt-3">{copy("title", "Speak the World")}</h2>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+            <p className="text-muted-foreground mt-4 max-w-2xl">
               {copy("subtitle", "Exam-focused language training for study abroad, visa pathways, work routes and global careers.")}
             </p>
           </div>

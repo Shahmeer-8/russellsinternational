@@ -69,37 +69,48 @@
 }
 
 @layer components {
+  /*
+   * Buttons no longer lift and grow a shadow on hover. Eighteen of them did that
+   * on the home page alone, so the whole page twitched under the cursor.
+   */
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-7 py-3.5 rounded-xl font-semibold
-           transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold
+           transition-colors duration-200 hover:bg-primary/90;
   }
   .btn-accent {
-    @apply bg-accent text-accent-foreground px-7 py-3.5 rounded-xl font-semibold
-           transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:brightness-110;
+    @apply bg-accent text-accent-foreground px-6 py-3 rounded-lg font-semibold
+           transition-colors duration-200 hover:bg-accent/90;
   }
   .btn-cta {
-    @apply px-7 py-3.5 rounded-xl font-semibold text-white
-           transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:brightness-110;
+    @apply px-6 py-3 rounded-lg font-semibold text-white
+           transition-opacity duration-200 hover:opacity-90;
     background: hsl(var(--cta));
   }
   .btn-outline {
-    @apply bg-transparent border-2 border-primary text-primary px-7 py-3.5 rounded-xl font-semibold
-           transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+    /* Hairline rather than a 2px rule, and it no longer inverts to a solid block
+       on hover — this is the secondary action and should stay quiet. */
+    @apply bg-transparent border border-border text-foreground px-6 py-3 rounded-lg font-semibold
+           transition-colors duration-200 hover:border-foreground/40 hover:bg-muted;
   }
+  /*
+   * These four carry most of the site's visual volume: the label and title are on
+   * sixteen components, the card on twelve. The page had 22 orange fills, 33 drop
+   * shadows and 15 extra-bold headings all competing at once, which is what read
+   * as shouting. Turning them down here turns every page down at once.
+   */
   .section-label {
-    @apply text-xs font-bold uppercase tracking-[0.2em] inline-block;
-    color: hsl(var(--accent));
+    /* Was tracked-out caps in accent orange on every section. Sentence case in
+       slate still names the section without demanding to be read first. */
+    @apply text-sm font-medium inline-block;
+    color: hsl(var(--muted-foreground));
   }
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight;
+    /* One step down in both size and weight. */
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-[-0.02em];
   }
   .premium-card {
-    @apply bg-card rounded-2xl border border-border transition-all duration-300;
-    box-shadow: var(--card-shadow);
-  }
-  .premium-card:hover {
-    box-shadow: var(--card-shadow-hover);
-    @apply -translate-y-1;
+    /* Hairline only. The shadow plus hover lift made every card ask to be clicked. */
+    @apply bg-card rounded-xl border border-border;
   }
 }
 

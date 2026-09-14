@@ -35,7 +35,9 @@ const ServicesSection = () => {
 
   const cards = services.map((service) => {
     const Icon = resolveIcon(service.icon_name, Sparkles);
-    const [bg, fg] = (service.color_class || "bg-blue-50 text-blue-600").split(" ");
+    // Only the icon keeps the colour the admin picked. Filling the chip with it too
+    // put six pastel blocks in four different hues on one screen.
+    const [, fg] = (service.color_class || "bg-blue-50 text-blue-600").split(" ");
 
     return {
       key: service.id,
@@ -47,14 +49,17 @@ const ServicesSection = () => {
             setDrawerOpen(true);
           }}
         >
-          <div className={`w-12 h-12 rounded-xl ${bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-5">
             <Icon className={`w-6 h-6 ${fg}`} />
           </div>
           <h3 className="font-bold text-foreground font-heading text-lg mb-2 group-hover:text-accent transition-colors">
             {service.title}
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-5">{service.description}</p>
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
+          {/* Six of these in accent orange, one per card, was six more things
+              shouting. The whole card is clickable; this only has to read as an
+              affordance. */}
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
             Learn More <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
@@ -69,10 +74,10 @@ const ServicesSection = () => {
           ref={ref}
           className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
-          <div className="text-center mb-10">
+          <div className="max-w-2xl mb-10">
             <span className="section-label">{copy("eyebrow", "What We Do")}</span>
             <h2 className="section-title mt-3">{copy("title", "Everything You Need in One Place")}</h2>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+            <p className="text-muted-foreground mt-4 max-w-2xl">
               {copy("subtitle", "From skills training to study abroad and career placement, all under one roof.")}
             </p>
           </div>

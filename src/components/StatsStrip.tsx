@@ -45,7 +45,7 @@ const StatsStrip = () => {
 
               return (
                 <div key={stat.id} className="flex flex-col items-center text-center gap-2">
-                  <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <div className="w-11 h-11 rounded-lg bg-muted flex items-center justify-center">
                     <Icon className="w-5 h-5 text-accent" />
                   </div>
                   <div className="font-heading text-2xl md:text-3xl font-extrabold text-foreground">{stat.value}</div>

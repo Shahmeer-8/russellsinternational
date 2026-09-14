@@ -22,7 +22,7 @@ const WhyChooseUs = () => {
         ref={ref}
         className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
       >
-        <div className="text-center mb-14">
+        <div className="max-w-2xl mb-14">
           <span className="section-label">{copy("eyebrow", "Why Russell's International")}</span>
           <h2 className="section-title mt-3">{copy("title", "Your Trusted Partner in Growth")}</h2>
         </div>
@@ -40,8 +40,10 @@ const WhyChooseUs = () => {
                   className="premium-card p-7 group h-full"
                   style={{ transitionDelay: `${i * 80}ms` }}
                 >
-                  <div className={`w-12 h-12 rounded-xl ${p.color.split(" ")[0] ?? "bg-primary/10"} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                    <p.icon className={`w-6 h-6 ${p.color.split(" ")[1] ?? "text-primary"}`} />
+                  {/* Neutral chip, admin colour on the icon only — same restraint as
+                      the services grid, so the two sections stop clashing. */}
+                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-5">
+                    <p.icon className={`w-6 h-6 ${p.color?.split(" ")[1] ?? "text-primary"}`} />
                   </div>
                   <h3 className="font-bold text-foreground font-heading text-lg mb-2">{p.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>

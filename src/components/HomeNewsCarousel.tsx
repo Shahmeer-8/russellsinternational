@@ -12,11 +12,12 @@ import { useSectionCopy } from "@/hooks/useSectionCopy";
 
 type Tag = "Event" | "News" | "Workshop";
 
-const tagColor: Record<Tag, string> = {
-  Event: "bg-accent text-accent-foreground",
-  News: "bg-primary text-primary-foreground",
-  Workshop: "bg-cta text-cta-foreground",
-};
+/**
+ * One chip treatment for all three. Orange, navy and teal badges sitting on
+ * adjacent cards made the row read as three unrelated things; the word already
+ * says which kind it is, so the colour was carrying no information.
+ */
+const tagChip = "bg-background/90 text-foreground backdrop-blur-sm";
 
 const HomeNewsCarousel = () => {
   const copy = useSectionCopy("home", "news");
@@ -32,10 +33,10 @@ const HomeNewsCarousel = () => {
   return (
   <section className="py-20 md:py-28 bg-background">
     <div className="container mx-auto px-4 md:px-8">
-      <div className="text-center mb-12">
+      <div className="max-w-2xl mb-12">
         <span className="section-label">{copy("eyebrow", "Stay Updated")}</span>
         <h2 className="section-title mt-3">{copy("title", "Latest News & Events")}</h2>
-        <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+        <p className="text-muted-foreground mt-4 max-w-xl">
           {copy("subtitle", "Stay updated with our latest activities, events, and announcements.")}
         </p>
       </div>
@@ -67,7 +68,7 @@ const HomeNewsCarousel = () => {
                     />
                   )}
                   <span
-                    className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${tagColor[it.tag]}`}
+                    className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-md ${tagChip}`}
                   >
                     {it.tag}
                   </span>
@@ -95,7 +96,7 @@ const HomeNewsCarousel = () => {
         <div className="text-center mt-12">
         <Link
           to="/events"
-          className="btn-accent inline-flex items-center gap-2"
+          className="btn-primary inline-flex items-center gap-2"
         >
           Explore More <ArrowRight className="w-4 h-4" />
         </Link>

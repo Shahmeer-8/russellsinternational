@@ -51,7 +51,7 @@ const CareerApplyForm = () => {
         ref={ref}
         className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
       >
-        <div className="max-w-3xl mx-auto text-center mb-10">
+        <div className="max-w-3xl mb-10">
           <span className="section-label">Apply Now</span>
           <h2 className="section-title mt-3">Join the Russell's Team</h2>
           <p className="text-muted-foreground mt-4">

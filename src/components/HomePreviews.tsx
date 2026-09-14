@@ -58,10 +58,10 @@ const HomePreviews = () => (
     </div>
 
     <div className="container mx-auto px-4 md:px-8 relative">
-      <div className="text-center mb-14">
+      <div className="max-w-2xl mb-14">
         <span className="section-label">Your Path</span>
         <h2 className="section-title mt-3">Choose Your Path to Success</h2>
-        <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+        <p className="text-muted-foreground mt-4 max-w-xl">
           Five focused directions — pick the one that moves your future forward.
         </p>
       </div>

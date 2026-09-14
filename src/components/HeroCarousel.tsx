@@ -4,6 +4,15 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useHeroSlides, useTickerItems } from "@/hooks/api";
 import fallbackHeroImage from "@/assets/hero-students-clean.jpg";
 
+/**
+ * Announcements are typed in the admin with a decorative emoji in front. They read
+ * as clutter in a quiet strip, so they are dropped at render — the wording the
+ * admin typed is untouched, and removing the emoji there instead would work too.
+ */
+function stripLeadingEmoji(text: string): string {
+  return text.replace(/^[\p{Extended_Pictographic}\p{Emoji_Presentation}️‍\s]+/u, "").trim();
+}
+
 const fallbackSlides = [
   {
     image: fallbackHeroImage,
@@ -68,10 +77,21 @@ const HeroCarousel = () => {
   return (
     <section className="relative pt-16">
       {tickerItems.length > 0 && (
-        <div className="bg-primary text-primary-foreground py-2.5 overflow-hidden">
-          <div className="flex animate-[scroll_20s_linear_infinite] whitespace-nowrap gap-12">
-            {[...tickerItems, ...tickerItems].map((t, i) => (
-              <span key={`${t}-${i}`} className="text-xs font-medium tracking-wide">{t}</span>
+        /*
+         * This was a navy bar of emoji-prefixed announcements scrolling on an
+         * endless loop — the loudest thing on the site, and the one piece of it
+         * that never stopped moving. The announcements stay; the motion and the
+         * emoji do not. On a phone the strip scrolls by hand instead.
+         */
+        <div className="border-b border-border bg-muted">
+          <div className="container mx-auto flex gap-x-8 overflow-x-auto px-4 py-2.5 md:flex-wrap md:justify-center md:overflow-visible md:px-8">
+            {tickerItems.map((t, i) => (
+              <span
+                key={`${t}-${i}`}
+                className="whitespace-nowrap text-xs font-medium text-muted-foreground"
+              >
+                {stripLeadingEmoji(t)}
+              </span>
             ))}
           </div>
         </div>
@@ -102,21 +122,28 @@ const HeroCarousel = () => {
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-4 md:px-8">
                 <div className="max-w-2xl text-primary-foreground animate-fade-in" key={`${i}-${active}`}>
-                  <span className="inline-flex items-center gap-1.5 bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-5">
+                  {/* Was a filled orange pill in tracked-out caps, competing with
+                      the orange button directly below it for the same attention. */}
+                  <span className="mb-5 inline-block text-sm font-medium text-primary-foreground/75">
                     {s.eyebrow}
                   </span>
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] font-heading mb-5">
+                  <h1 className="mb-5 font-heading text-4xl font-bold leading-[1.08] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
                     {s.title}
                   </h1>
                   <p className="text-lg text-primary-foreground/80 max-w-xl leading-relaxed mb-8">
                     {s.desc}
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Link to={s.cta.to} className="btn-accent inline-flex items-center gap-2 group">
-                      {s.cta.label} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {/* One filled button, one plain link. Two solid buttons side by
+                        side gave the page no primary action to point at. */}
+                    <Link to={s.cta.to} className="btn-accent inline-flex items-center">
+                      {s.cta.label}
                     </Link>
                     {s.secondaryCta.label && s.secondaryCta.to && (
-                      <Link to={s.secondaryCta.to} className="bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground px-7 py-3.5 rounded-xl font-semibold hover:bg-primary-foreground/20 transition-all">
+                      <Link
+                        to={s.secondaryCta.to}
+                        className="inline-flex items-center px-2 py-3 font-semibold text-primary-foreground underline decoration-primary-foreground/40 underline-offset-8 transition-colors hover:decoration-primary-foreground"
+                      >
                         {s.secondaryCta.label}
                       </Link>
                     )}

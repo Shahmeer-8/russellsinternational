@@ -51,7 +51,7 @@ const ContactSection = () => {
                 { icon: MapPin, label: address },
               ].map((c) => (
                 <div key={c.label} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
                     <c.icon className="w-4 h-4 text-accent" />
                   </div>
                   <span className="text-sm text-foreground font-medium">{c.label}</span>
