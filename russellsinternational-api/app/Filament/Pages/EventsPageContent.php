@@ -26,7 +26,9 @@ class EventsPageContent extends WebsiteContentPage
                 'sections' => [
                     $this->pageRecord('Page SEO and status', 'Page registry, active status and SEO metadata for Events.', 'events'),
                     $this->pageSection('Page hero', 'Top hero image, title, subtitle and eyebrow for Events.', 'events', 'hero'),
+                    $this->pageSection('Events and news heading', 'Eyebrow, heading and intro above the event cards.', 'events', 'news'),
                     $this->resourceList('Events and news', 'Event and news cards shown on Events page and homepage carousel.', EventResource::class, 'Manage Events'),
+                    $this->pageSection('Gallery heading', 'Eyebrow, heading and intro above the photo gallery.', 'events', 'gallery'),
                     $this->resourceList('Gallery photos', 'Gallery images shown on the Events page.', GalleryPhotoResource::class, 'Manage Gallery'),
                     $this->pageSection('Global CTA banner', 'Shared call-to-action banner shown near the bottom.', 'global', 'cta'),
                 ],

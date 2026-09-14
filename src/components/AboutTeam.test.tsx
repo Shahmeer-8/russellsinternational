@@ -6,6 +6,9 @@ const mockUseTeamMembers = vi.fn();
 
 vi.mock("@/hooks/api", () => ({
   useTeamMembers: () => mockUseTeamMembers(),
+  // The heading is admin-editable now; these tests are about the grouping, so an
+  // empty response leaves the component on its own fallback wording.
+  usePageSections: () => ({ data: undefined }),
 }));
 
 const member = (over = {}) => ({

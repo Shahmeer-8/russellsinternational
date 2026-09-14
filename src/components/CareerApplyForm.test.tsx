@@ -29,7 +29,11 @@ describe("CareerApplyForm", () => {
 
     await waitFor(() => expect(screen.getByText(/application received/i)).toBeInTheDocument());
 
-    const [, request] = fetchMock.mock.calls[0];
+    // The form also fetches the open jobs and internships to fill its dropdown,
+    // so the submission is no longer the first request out.
+    const submission = fetchMock.mock.calls.find(([, init]) => init?.method === "POST");
+    expect(submission, "no POST request was made").toBeTruthy();
+    const [, request] = submission!;
     expect(request.body).toContain('"application_type":"internship"');
     expect(request.body).toContain('"position_title":"Internship — General"');
     vi.unstubAllGlobals();

@@ -31,6 +31,7 @@ class AboutPageContent extends WebsiteContentPage
                     $this->pageSection('Foundation values', 'Mission, vision and values cards stored as structured items.', 'about', 'foundation'),
                     $this->pageSection('How We Work heading', 'Eyebrow, heading and intro copy above the How We Work cards.', 'about', 'how_we_work'),
                     $this->resourceList('How We Work cards', 'The ways of working shown on the About page, each with an image and a quote.', HowWeWorkItemResource::class, 'Manage Cards'),
+                    $this->pageSection('Team heading', 'Eyebrow and heading above the team roster.', 'about', 'team'),
                     $this->resourceList('Team members', 'People cards shown on the About page.', TeamMemberResource::class, 'Manage Team'),
                     $this->pageSection('Global CTA banner', 'Shared call-to-action banner shown near the bottom.', 'global', 'cta'),
                 ],

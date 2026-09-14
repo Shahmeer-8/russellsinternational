@@ -1,7 +1,8 @@
 import { Users } from "lucide-react";
-import { useTeamMembers } from "@/hooks/api";
+import { usePageSections, useTeamMembers } from "@/hooks/api";
 import type { TeamMember } from "@/types/api";
 import AboutSection from "@/components/AboutSection";
+import { sectionText } from "@/lib/content";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
 
 /**
@@ -59,6 +60,8 @@ const Person = ({ member }: { member: TeamMember }) => (
 
 const AboutTeam = () => {
   const { data, isLoading } = useTeamMembers();
+  const { data: sectionData } = usePageSections("about");
+  const heading = sectionData?.data?.team;
   const members = data?.data ?? [];
 
   // Bailing out while loading would leave the page jumping as data lands; only
@@ -68,9 +71,9 @@ const AboutTeam = () => {
   }
 
   return (
-    <AboutSection label="Our people">
+    <AboutSection label={sectionText(heading, "eyebrow", "Our people")}>
       <h2 className="font-display text-[clamp(1.8rem,3vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-foreground">
-        The people behind the work
+        {sectionText(heading, "title", "The people behind the work")}
       </h2>
 
       {group(members).map((section) => (

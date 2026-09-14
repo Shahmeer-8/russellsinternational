@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TeamMemberSeeder::class,
             InternshipRecordSeeder::class,
             CardImageSeeder::class,
+            AdminCoverageSeeder::class,
             ProductionContentBackfillSeeder::class,
         ]);
 
