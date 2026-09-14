@@ -95,6 +95,14 @@ class SectionHeadingSeeder extends Seeder
             ],
             [
                 'page_slug' => 'careers',
+                'section_key' => 'apply',
+                'name' => 'Careers — Application form heading',
+                'eyebrow' => 'Apply Now',
+                'title' => "Join the Russell's Team",
+                'subtitle' => 'Fill in your details and upload your CV. Our HR team will get back to shortlisted candidates within 5 working days.',
+            ],
+            [
+                'page_slug' => 'careers',
                 'section_key' => 'internships',
                 'name' => 'Careers — Internships heading',
                 'eyebrow' => 'Internships',

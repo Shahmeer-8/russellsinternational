@@ -25,6 +25,7 @@ class StudyAbroadPageContent extends WebsiteContentPage
                 'sections' => [
                     $this->pageRecord('Page SEO and status', 'Page registry, active status and SEO metadata for Study Abroad.', 'study-abroad'),
                     $this->pageSection('Page hero', 'Top hero image, title, subtitle and eyebrow for Study Abroad.', 'study-abroad', 'hero'),
+                    $this->pageSection('Destinations heading', 'Eyebrow, heading and intro above the country cards.', 'study-abroad', 'destinations'),
                     $this->resourceList('Study destinations', 'Country cards and destination details.', StudyDestinationResource::class, 'Manage Destinations'),
                     $this->pageSection('Global CTA banner', 'Shared call-to-action banner shown near the bottom.', 'global', 'cta'),
                 ],

@@ -6,7 +6,7 @@ import DetailDrawer from "@/components/DetailDrawer";
 import { useCourses } from "@/hooks/api";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
 import { resolveIcon } from "@/lib/icons";
-import { useSectionCopy } from "@/hooks/useSectionCopy";
+import { useSectionCopy, useSectionOptions } from "@/hooks/useSectionCopy";
 
 type CourseCard = {
   icon: ElementType;
@@ -23,6 +23,14 @@ type CourseCard = {
 
 const FeaturedCourses = () => {
   const copy = useSectionCopy("skills", "courses");
+  // "NAVTTC (Free)" is the name of a government scheme, not our wording — when the
+  // scheme is renamed or a course moves off it, the owner has to be able to say so
+  // without a deploy. Same for the badge that claims the training is free.
+  // Unlike a list of cards, a missing row here is not "show nothing" — it is a
+  // button with no words on it — so each label keeps its own default.
+  const TAB_LABELS = ["Premium Courses", "NAVTTC (Free)", "Government Funded – 100% Free Training Under NAVTTC"];
+  const tabLabels = useSectionOptions("skills", "courses", "tab", TAB_LABELS);
+  const [paidLabel, navttcLabel, navttcBadge] = TAB_LABELS.map((fallback, i) => tabLabels[i] || fallback);
   const { ref, visible } = useScrollReveal();
   const [tab, setTab] = useState<"paid" | "navttc">("paid");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -75,7 +83,7 @@ const FeaturedCourses = () => {
                   tab === "paid" ? "bg-background text-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Crown className="w-4 h-4" /> Premium Courses
+                <Crown className="w-4 h-4" /> {paidLabel}
               </button>
               <button
                 onClick={() => setTab("navttc")}
@@ -83,7 +91,7 @@ const FeaturedCourses = () => {
                   tab === "navttc" ? "bg-background text-foreground shadow-md" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <BadgeCheck className="w-4 h-4" /> NAVTTC (Free)
+                <BadgeCheck className="w-4 h-4" /> {navttcLabel}
               </button>
             </div>
           </div>
@@ -92,7 +100,7 @@ const FeaturedCourses = () => {
           {tab === "navttc" && (
             <div className="flex justify-center mb-8 animate-fade-in">
               <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium">
-                <BadgeCheck className="w-4 h-4" /> Government Funded – 100% Free Training Under NAVTTC
+                <BadgeCheck className="w-4 h-4" /> {navttcBadge}
               </div>
             </div>
           )}

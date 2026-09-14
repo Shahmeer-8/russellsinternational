@@ -15,6 +15,10 @@ const Navbar = () => {
   const navLinks = navigationData?.data.header ?? [];
   const settings = settingsData?.data ?? {};
   const siteName = settings.site_name ?? "Russell's International";
+  // The header button is on every page and was the one piece of nav the owner
+  // could not touch — the links beside it are already admin-managed.
+  const ctaLabel = settings.nav_cta_label || "Start Your Journey";
+  const ctaUrl = settings.nav_cta_url || "/#contact";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -84,8 +88,8 @@ const Navbar = () => {
           )}
         </div>
 
-        <Link to="/#contact" className="hidden lg:inline-flex btn-accent text-sm px-5 py-2.5">
-          Start Your Journey
+        <Link to={ctaUrl} className="hidden lg:inline-flex btn-accent text-sm px-5 py-2.5">
+          {ctaLabel}
         </Link>
 
         <button
@@ -100,8 +104,8 @@ const Navbar = () => {
       {open && (
         <div className="lg:hidden bg-background border-t border-border px-4 pb-4 animate-fade-in max-h-[70vh] overflow-y-auto">
           {navLinks.map((item) => renderLink(item, true))}
-          <Link to="/#contact" className="block mt-2 btn-accent text-sm text-center" onClick={() => setOpen(false)}>
-            Start Your Journey
+          <Link to={ctaUrl} className="block mt-2 btn-accent text-sm text-center" onClick={() => setOpen(false)}>
+            {ctaLabel}
           </Link>
         </div>
       )}

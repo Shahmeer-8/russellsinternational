@@ -1,19 +1,38 @@
 import { useState } from "react";
 import { Send, Upload, CheckCircle2 } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { useSubmitCareerApplication } from "@/hooks/api";
+import { useInternships, useJobs, useSubmitCareerApplication } from "@/hooks/api";
+import { useSectionCopy } from "@/hooks/useSectionCopy";
 
-const positions = [
+// Used only until the openings load, and on the rare install with none posted —
+// an empty dropdown would make the form unusable.
+const FALLBACK_POSITIONS = [
   "Web Developer",
   "AI/ML Engineer",
   "Digital Marketing Specialist",
   "IELTS Trainer",
   "Admissions Officer",
   "Internship — General",
-  "Other",
 ];
 
 const CareerApplyForm = () => {
+  const copy = useSectionCopy("careers", "apply");
+  const { data: jobsData } = useJobs();
+  const { data: internshipsData } = useInternships();
+
+  /**
+   * This list was a hardcoded array, so every opening the owner posted through
+   * the panel arrived with a dropdown that did not mention it — applicants had to
+   * pick "Other" for a job that was advertised by name higher up the same page.
+   * Reading the live openings keeps the two halves of the page in step, and the
+   * titles are what the application is filed under, so they have to match exactly.
+   */
+  const openings = [
+    ...(jobsData?.data ?? []).map((job) => job.title),
+    ...(internshipsData?.data ?? []).map((internship) => internship.title),
+  ].filter((title, index, all) => title && all.indexOf(title) === index);
+
+  const positions = [...(openings.length ? openings : FALLBACK_POSITIONS), "Other"];
   const [submitted, setSubmitted] = useState(false);
   const [fileName, setFileName] = useState<string>("");
   const [error, setError] = useState("");
@@ -52,10 +71,10 @@ const CareerApplyForm = () => {
         className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
       >
         <div className="max-w-3xl mb-10">
-          <span className="section-label">Apply Now</span>
-          <h2 className="section-title mt-3">Join the Russell's Team</h2>
+          <span className="section-label">{copy("eyebrow", "Apply Now")}</span>
+          <h2 className="section-title mt-3">{copy("title", "Join the Russell's Team")}</h2>
           <p className="text-muted-foreground mt-4">
-            Fill in your details and upload your CV. Our HR team will get back to shortlisted candidates within 5 working days.
+            {copy("subtitle", "Fill in your details and upload your CV. Our HR team will get back to shortlisted candidates within 5 working days.")}
           </p>
         </div>
 

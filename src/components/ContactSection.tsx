@@ -2,10 +2,18 @@ import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useSettings, useSubmitContact } from "@/hooks/api";
-import { useSectionCopy } from "@/hooks/useSectionCopy";
+import { useSectionCopy, useSectionOptions } from "@/hooks/useSectionCopy";
 
 const ContactSection = () => {
   const copy = useSectionCopy("home", "contact");
+  // The choices here decide how an enquiry gets routed, so they have to follow
+  // what the institute actually offers — the hardcoded three predated the
+  // language programmes and the internships entirely.
+  const interests = useSectionOptions("home", "contact", "interest", [
+    "IT Training Courses",
+    "Study Abroad",
+    "Both",
+  ]);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const { ref, visible } = useScrollReveal();
@@ -78,9 +86,9 @@ const ContactSection = () => {
                 <input name="email" aria-label="Email Address" type="email" placeholder="Email Address" required className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30" />
                 <select name="interest" aria-label="Interest" className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30">
                   <option value="">I'm interested in...</option>
-                  <option value="IT Training Courses">IT Training Courses</option>
-                  <option value="Study Abroad">Study Abroad</option>
-                  <option value="Both">Both</option>
+                  {interests.map((interest) => (
+                    <option key={interest} value={interest}>{interest}</option>
+                  ))}
                 </select>
                 <textarea name="message" aria-label="Your Message" placeholder="Your Message" rows={4} className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30 resize-none" />
                 {error && <p className="text-sm text-destructive" role="alert">{error}</p>}

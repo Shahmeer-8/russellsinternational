@@ -17,6 +17,35 @@ export function setting(settings: Record<string, string>, key: string, fallback:
   return settings[key] || fallback;
 }
 
+/**
+ * Reads a numbered list out of a section's `items` map — `interest_1`,
+ * `interest_2`, … — for the places where the admin needs to control a set of
+ * choices rather than a heading: the contact form's dropdown, a tab's label.
+ *
+ * Like sectionItems, once a section has an `items` map it is taken as the
+ * authority: an admin who deletes every row means "show nothing", not "go back
+ * to the defaults". Only a section with no map at all uses the fallback, which
+ * keeps an unseeded install rendering exactly what it did when the list was
+ * hardcoded.
+ */
+export function sectionOptions(
+  section: PageSection | undefined,
+  prefix: string,
+  fallback: string[],
+): string[] {
+  const items = section?.items;
+  if (!items) return fallback;
+
+  return Object.keys(items)
+    .map((key) => {
+      const match = key.match(new RegExp(`^${prefix}_(\\d+)$`));
+      return match ? { index: Number(match[1]), value: items[key] } : null;
+    })
+    .filter((entry): entry is { index: number; value: string } => Boolean(entry?.value?.trim()))
+    .sort((a, b) => a.index - b.index)
+    .map((entry) => entry.value.trim());
+}
+
 export type SectionItem = {
   code?: string;
   title?: string;
