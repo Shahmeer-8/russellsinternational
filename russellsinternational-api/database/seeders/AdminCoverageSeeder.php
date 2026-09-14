@@ -36,6 +36,29 @@ class AdminCoverageSeeder extends Seeder
             ],
         );
 
+        /*
+         * Seven page screens offer a "Global CTA banner" to edit, and the row it
+         * points at has never existed — so the button led nowhere and the banner
+         * at the foot of every page rendered as nothing at all.
+         *
+         * Seeded switched off on purpose. Turning it on puts a large gradient
+         * banner on every page of the site, and that is the owner's call to make
+         * from the panel once the wording suits them, not something a seeder
+         * should decide.
+         */
+        PageSection::query()->firstOrCreate(
+            ['page_slug' => 'global', 'section_key' => 'cta'],
+            [
+                'name' => 'Global — CTA banner',
+                'title' => 'Ready to take the next step?',
+                'subtitle' => 'Talk to a counsellor about studying abroad or starting a course.',
+                'cta_label' => 'Contact us',
+                'cta_url' => '/#contact',
+                'sort_order' => 100,
+                'is_active' => false,
+            ],
+        );
+
         foreach ($this->itemLists() as $list) {
             $this->seedItems($list['page_slug'], $list['section_key'], $list['items']);
         }
