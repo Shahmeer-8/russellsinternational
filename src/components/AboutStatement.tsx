@@ -26,7 +26,7 @@ const AboutStatement = () => {
 
   return (
     <AboutSection tone="ink" label="What we do">
-      <h2 className="max-w-[18ch] font-heading text-[clamp(2.25rem,4.6vw,4rem)] font-extrabold leading-[1.04] tracking-[-0.03em]">
+      <h2 className="max-w-[18ch] font-display text-[clamp(2.25rem,4.6vw,4rem)] font-semibold leading-[1.04] tracking-[-0.03em]">
         {sectionText(section, "title", "A living, learning ecosystem")}
       </h2>
 

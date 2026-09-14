@@ -42,7 +42,7 @@ const HowWeWorkSection = () => {
           {/* min-w-0: the card row's full-bleed `-mx-4` wrapper would otherwise
               widen this grid column past the viewport instead of being clipped. */}
           <div className="min-w-0 lg:col-span-10">
-            <h2 className="font-heading text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-foreground">
+            <h2 className="font-display text-[clamp(1.8rem,3vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-foreground">
               {sectionText(heading, "title", "How we work with you")}
             </h2>
             <p className="mt-4 max-w-[62ch] text-base leading-[1.75] text-muted-foreground">

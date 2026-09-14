@@ -17,12 +17,21 @@ export default {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
         heading: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+        display: ["Newsreader", "Georgia", "serif"],
+      },
+      boxShadow: {
+        // One elevation for the whole site. Cards are white surfaces resting on the
+        // tinted page, so they need to lift — but softly and from a distance, not
+        // with the tight dark shadow that used to sit under all thirty-three of them.
+        surface: "0 1px 2px hsl(224 71% 16% / 0.04), 0 12px 32px -12px hsl(224 71% 16% / 0.14)",
+        "surface-lg": "0 2px 4px hsl(224 71% 16% / 0.04), 0 24px 56px -20px hsl(224 71% 16% / 0.18)",
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        page: "hsl(var(--page))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",

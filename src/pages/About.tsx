@@ -16,7 +16,7 @@ import aboutHeroImg from "@/assets/about-hero.jpg";
  * the method, and only then the roster. Proof first, people last.
  */
 const About = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="about"

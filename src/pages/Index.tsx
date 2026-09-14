@@ -15,7 +15,7 @@ import Footer from "@/components/Footer";
 // is empty or switched off, so the owner can remove either from the page without a
 // developer.
 const Index = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <HeroCarousel />
     <StatsStrip />

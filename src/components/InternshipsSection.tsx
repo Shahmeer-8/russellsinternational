@@ -50,7 +50,7 @@ const InternshipGroup = ({
     <div className="mt-12 first:mt-0">
       <div className="mb-6 max-w-2xl">
         <span className="section-label">{copy("eyebrow", defaultEyebrow)}</span>
-        <h3 className="font-heading text-2xl font-extrabold text-foreground mt-2 md:text-3xl">
+        <h3 className="font-display text-3xl font-semibold text-foreground mt-2 md:text-4xl">
           {copy("title", defaultTitle)}
         </h3>
         <p className="text-sm text-muted-foreground leading-7 mt-2">

@@ -111,7 +111,7 @@ const LanguagesSection = () => {
                 <SectionIcon className="w-4 h-4" />
                 {active.tab_label}
               </div>
-              <h3 className="font-heading text-2xl md:text-3xl font-extrabold text-foreground">{active.heading}</h3>
+              <h3 className="font-display text-3xl md:text-4xl font-semibold text-foreground">{active.heading}</h3>
               {active.subtitle && <p className="text-muted-foreground mt-2 max-w-2xl">{active.subtitle}</p>}
             </div>
             <div className="text-sm font-semibold text-muted-foreground">

@@ -5,7 +5,7 @@ import FeaturedCourses from "@/components/FeaturedCourses";
 import CTASection from "@/components/CTASection";
 
 const Skills = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="skills"

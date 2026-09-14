@@ -8,7 +8,7 @@ import CareerApplyForm from "@/components/CareerApplyForm";
 import CTASection from "@/components/CTASection";
 
 const Careers = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="careers"

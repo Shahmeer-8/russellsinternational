@@ -5,7 +5,7 @@ import LanguagesSection from "@/components/LanguagesSection";
 import CTASection from "@/components/CTASection";
 
 const Languages = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="languages"

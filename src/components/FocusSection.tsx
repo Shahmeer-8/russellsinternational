@@ -106,7 +106,7 @@ const FocusSection = ({
               {eyebrow}
             </span>
             <h2
-              className={`mt-2 font-heading text-2xl font-extrabold leading-tight md:text-4xl ${
+              className={`mt-2 font-display text-3xl font-semibold leading-[1.15] md:text-[2.75rem] ${
                 dark ? "" : "text-foreground"
               }`}
             >

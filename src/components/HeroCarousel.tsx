@@ -127,7 +127,7 @@ const HeroCarousel = () => {
                   <span className="mb-5 inline-block text-sm font-medium text-primary-foreground/75">
                     {s.eyebrow}
                   </span>
-                  <h1 className="mb-5 font-heading text-4xl font-bold leading-[1.08] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
+                  <h1 className="mb-5 font-display text-5xl font-semibold leading-[1.08] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
                     {s.title}
                   </h1>
                   <p className="text-lg text-primary-foreground/80 max-w-xl leading-relaxed mb-8">

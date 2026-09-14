@@ -44,10 +44,10 @@ const PageHero = ({ eyebrow, title, description, image, crumbs }: Props) => (
               ))}
             </div>
           )}
-          <span className="inline-block bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4 animate-fade-in">
+          <span className="mb-4 inline-block text-sm font-medium text-primary-foreground/75 animate-fade-in">
             {eyebrow}
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading leading-[1.1] mb-4 max-w-3xl animate-fade-in">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-display leading-[1.1] mb-4 max-w-3xl animate-fade-in">
             {title}
           </h1>
           <p className="text-lg text-primary-foreground/80 max-w-2xl leading-relaxed animate-fade-in">

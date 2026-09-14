@@ -6,7 +6,7 @@ import GallerySection from "@/components/GallerySection";
 import CTASection from "@/components/CTASection";
 
 const Events = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="events"

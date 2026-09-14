@@ -32,7 +32,7 @@ const CTASection = () => {
           <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-white/5 rounded-full animate-glow-pulse" />
 
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white font-heading mb-5 leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white font-display mb-5 leading-tight">
               {title}
             </h2>
             {subtitle && (

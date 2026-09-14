@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+/* Newsreader carries the headings. Inter stays on body copy and Plus Jakarta on
+   UI labels, so the serif reads as a deliberate voice rather than a theme swap. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +8,10 @@
 
 @layer base {
   :root {
+    /* The page sits on a cool tint and cards are white surfaces on top of it.
+       Everything being pure white was why the site read as unstyled: with no
+       ground to lift off, a card can only be a rectangle with a line round it. */
+    --page: 220 30% 95.5%;
     --background: 0 0% 100%;
     --foreground: 222 47% 11%;
 
@@ -37,7 +43,8 @@
     --input: 220 13% 91%;
     --ring: 217 91% 60%;
 
-    --radius: 0.75rem;
+    /* Larger corners read as current; 12px now looks like a 2019 card. */
+    --radius: 1rem;
 
     --card-shadow: 0 1px 3px hsl(222 47% 11% / 0.04), 0 4px 16px hsl(222 47% 11% / 0.06);
     --card-shadow-hover: 0 8px 32px hsl(222 47% 11% / 0.1);
@@ -61,10 +68,14 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-page text-foreground font-sans antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    /* Newsreader across the headings. Its optical-size axis keeps the large
+       display sizes tight and the small ones open, so one family covers both. */
+    font-family: 'Newsreader', Georgia, serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
   }
 }
 
@@ -105,12 +116,14 @@
     color: hsl(var(--muted-foreground));
   }
   .section-title {
-    /* One step down in both size and weight. */
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-[-0.02em];
+    /* Serif, and given its size back — a display face at 600 carries authority
+       without the shouting that extra-bold sans at the same size was doing. */
+    @apply font-display text-3xl md:text-4xl lg:text-[2.75rem] font-semibold text-foreground leading-[1.15];
   }
   .premium-card {
-    /* Hairline only. The shadow plus hover lift made every card ask to be clicked. */
-    @apply bg-card rounded-xl border border-border;
+    /* A white surface lifting off the tinted page. The hairline stays for edge
+       definition, but the elevation is what makes it read as an object. */
+    @apply bg-card rounded-2xl border border-border/70 shadow-surface;
   }
 }
 
@@ -120,8 +133,19 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  /* The page ground is now tinted, so the alternating section is the white one.
+     That inverts what this class used to do and gives the page a rhythm of
+     tint / white / tint instead of white / near-white. */
   .bg-section-alt {
-    background: hsl(var(--muted));
+    background: hsl(var(--background));
+  }
+  /* A barely-there wash for the one or two sections that should feel lit rather
+     than flat. Low enough that it reads as depth, not as a gradient. */
+  .bg-wash {
+    background:
+      radial-gradient(60rem 30rem at 15% 0%, hsl(var(--accent) / 0.05), transparent 60%),
+      radial-gradient(50rem 28rem at 90% 10%, hsl(var(--primary) / 0.06), transparent 60%),
+      hsl(var(--page));
   }
 }
 

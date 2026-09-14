@@ -5,7 +5,7 @@ import StudyDestinations from "@/components/StudyDestinations";
 import CTASection from "@/components/CTASection";
 
 const StudyAbroad = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-page">
     <Navbar />
     <DynamicPageHero
       page="study-abroad"

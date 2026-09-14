@@ -33,7 +33,7 @@ const AboutFoundation = () => {
 
   return (
     <AboutSection label="What drives us">
-      <h2 className="font-heading text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-tight tracking-[-0.02em] text-foreground">
+      <h2 className="font-display text-[clamp(1.8rem,3vw,2.5rem)] font-semibold leading-tight tracking-[-0.02em] text-foreground">
         {sectionText(section, "title", "Our foundation")}
       </h2>
 
