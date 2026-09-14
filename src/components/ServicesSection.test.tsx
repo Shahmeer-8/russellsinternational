@@ -47,7 +47,9 @@ describe("ServicesSection scroll reveal", () => {
       const wrapper = container.querySelector("section > div");
       expect(wrapper?.className).not.toContain("opacity-0");
     });
-    expect(screen.getByText("IT & Skill Training")).toBeTruthy();
+    // The card has two faces, so the title is in the DOM twice. Only the front is
+    // exposed to assistive tech; the stylesheet hides the back where it cannot flip.
+    expect(screen.getAllByText("IT & Skill Training").length).toBeGreaterThan(0);
   });
 
   it("renders nothing once loading finishes with no services configured", () => {

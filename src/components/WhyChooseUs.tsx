@@ -2,6 +2,7 @@ import { Award } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useWhyChooseUs } from "@/hooks/api";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
+import FlipCard from "@/components/FlipCard";
 import { useSectionCopy } from "@/hooks/useSectionCopy";
 import { resolveIcon } from "@/lib/icons";
 
@@ -14,6 +15,7 @@ const WhyChooseUs = () => {
     title: item.title,
     desc: item.description,
     color: item.color_class,
+    image: item.image_url,
   }));
 
   return (
@@ -36,18 +38,42 @@ const WhyChooseUs = () => {
             items={points.map((p, i) => ({
               key: p.title,
               node: (
-                <div
-                  className="premium-card p-7 group h-full"
-                  style={{ transitionDelay: `${i * 80}ms` }}
-                >
-                  {/* Neutral chip, admin colour on the icon only — same restraint as
-                      the services grid, so the two sections stop clashing. */}
-                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-5">
-                    <p.icon className={`w-6 h-6 ${p.color?.split(" ")[1] ?? "text-primary"}`} />
-                  </div>
-                  <h3 className="font-bold text-foreground font-heading text-lg mb-2">{p.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-                </div>
+                <FlipCard
+                  minHeight="min-h-[19rem]"
+                  front={
+                    <div className="premium-card h-full overflow-hidden flex flex-col">
+                      {p.image && (
+                        <img
+                          src={p.image}
+                          alt=""
+                          className="h-40 w-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width={640}
+                          height={360}
+                        />
+                      )}
+                      <div className="flex flex-1 flex-col p-6">
+                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
+                          <p.icon className={`h-5 w-5 ${p.color?.split(" ")[1] ?? "text-primary"}`} />
+                        </div>
+                        <h3 className="font-heading text-lg font-bold text-foreground">{p.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                          {p.desc}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                  back={
+                    <div className="premium-card h-full overflow-hidden bg-primary text-primary-foreground flex flex-col justify-center p-7">
+                      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-foreground/10">
+                        <p.icon className="h-5 w-5 text-accent" />
+                      </div>
+                      <h3 className="font-heading text-lg font-bold">{p.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">{p.desc}</p>
+                    </div>
+                  }
+                />
               ),
             }))}
           />

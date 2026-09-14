@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\NormalizesJsonLists;
+use App\Support\Media;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
@@ -10,7 +11,7 @@ class Service extends Model
     use NormalizesJsonLists;
 
     protected $fillable = [
-        'icon_name', 'title', 'description', 'details',
+        'icon_name', 'image', 'title', 'description', 'details',
         'color_class', 'key_benefits', 'sort_order', 'is_active',
     ];
 
@@ -20,9 +21,16 @@ class Service extends Model
         'key_benefits' => 'array',
     ];
 
+    protected $appends = ['image_url'];
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true)->orderBy('sort_order');
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return Media::url($this->image);
     }
 
     public function getKeyBenefitsAttribute($value): array

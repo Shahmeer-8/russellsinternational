@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             HowWeWorkSeeder::class,
             TeamMemberSeeder::class,
             InternshipRecordSeeder::class,
+            CardImageSeeder::class,
             ProductionContentBackfillSeeder::class,
         ]);
 

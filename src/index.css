@@ -187,3 +187,71 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * Hover-reveal cards.
+ *
+ * The reveal is an enhancement. By default the back is not rendered and the front
+ * stands alone, so phones, keyboards and anyone who asked for reduced motion get a
+ * complete card. Callers must keep the essential content on the front; the back
+ * may extend it, never replace it.
+ *
+ * This started as a 3D flip and is not one. Any rotateY on the faces — with
+ * `perspective` on the container or inside the transform, with or without
+ * preserve-3d — stopped the card's contents painting entirely in Chromium here,
+ * while layout, hit-testing and computed styles all reported correct. Since that
+ * could not be verified as safe for real visitors, the turn is done in two
+ * dimensions instead: the faces cross-fade and pass each other vertically. Same
+ * reveal, nothing exotic asked of the compositor.
+ */
+.flip-card {
+  position: relative;
+  border-radius: theme('borderRadius.2xl');
+  outline: none;
+}
+.flip-card:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+.flip-card-inner,
+.flip-card-face {
+  height: 100%;
+}
+.flip-card-back {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .flip-card-inner {
+    /* Pinned rather than `height: 100%`: the card is sized by min-height, which a
+       percentage height cannot resolve against, so the faces collapsed to nothing. */
+    position: absolute;
+    inset: 0;
+  }
+  .flip-card-face {
+    position: absolute;
+    inset: 0;
+    transition:
+      transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      opacity 320ms ease;
+  }
+  .flip-card-back {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12%);
+  }
+  .flip-card:hover [data-flip-face='front'],
+  .flip-card:focus-visible [data-flip-face='front'],
+  .flip-card:focus-within [data-flip-face='front'] {
+    opacity: 0;
+    transform: translateY(-12%);
+  }
+  .flip-card:hover .flip-card-back,
+  .flip-card:focus-visible .flip-card-back,
+  .flip-card:focus-within .flip-card-back {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}

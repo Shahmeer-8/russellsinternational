@@ -52,6 +52,7 @@ export interface Stat {
 export interface Service {
   id: number;
   icon_name: string;
+  image_url: string | null;
   title: string;
   description: string;
   details: string;
@@ -62,6 +63,7 @@ export interface Service {
 export interface WhyChooseUsItem {
   id: number;
   icon_name: string;
+  image_url: string | null;
   title: string;
   description: string;
   color_class: string;

@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import DetailDrawer from "@/components/DetailDrawer";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
+import FlipCard from "@/components/FlipCard";
 import { useServices } from "@/hooks/api";
 import { useSectionCopy } from "@/hooks/useSectionCopy";
 import { resolveIcon } from "@/lib/icons";
@@ -42,27 +43,66 @@ const ServicesSection = () => {
     return {
       key: service.id,
       node: (
-        <div
-          className="premium-card p-6 group cursor-pointer h-full"
-          onClick={() => {
+        <FlipCard
+          minHeight="min-h-[21rem]"
+          onActivate={() => {
             setSelected(service);
             setDrawerOpen(true);
           }}
-        >
-          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-5">
-            <Icon className={`w-6 h-6 ${fg}`} />
-          </div>
-          <h3 className="font-bold text-foreground font-heading text-lg mb-2 group-hover:text-accent transition-colors">
-            {service.title}
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-5">{service.description}</p>
-          {/* Six of these in accent orange, one per card, was six more things
-              shouting. The whole card is clickable; this only has to read as an
-              affordance. */}
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
-            Learn More <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
+          className="cursor-pointer"
+          front={
+            <div className="premium-card h-full overflow-hidden flex flex-col">
+              {service.image_url && (
+                <img
+                  src={service.image_url}
+                  alt=""
+                  className="h-40 w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  width={640}
+                  height={360}
+                />
+              )}
+              <div className="flex flex-1 flex-col p-6">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
+                  <Icon className={`h-5 w-5 ${fg}`} />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-foreground">{service.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {service.description}
+                </p>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-foreground">
+                  Learn More <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </div>
+          }
+          back={
+            /* The back earns its keep: key_benefits were already in the admin but
+               only ever appeared inside the drawer, so nobody saw them while
+               scanning the grid. */
+            <div className="premium-card h-full overflow-hidden bg-primary text-primary-foreground flex flex-col p-6">
+              <h3 className="font-heading text-lg font-bold">{service.title}</h3>
+              {service.key_benefits && service.key_benefits.length > 0 ? (
+                <ul className="mt-4 space-y-2.5">
+                  {service.key_benefits.slice(0, 5).map((benefit) => (
+                    <li key={benefit} className="flex items-start gap-2 text-sm text-primary-foreground/80">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-4 text-sm leading-relaxed text-primary-foreground/80">
+                  {service.details || service.description}
+                </p>
+              )}
+              <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-accent">
+                Learn More <ArrowRight className="w-3.5 h-3.5" />
+              </span>
+            </div>
+          }
+        />
       ),
     };
   });

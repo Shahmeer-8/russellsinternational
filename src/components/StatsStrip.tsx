@@ -1,7 +1,34 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useCountUp } from "@/hooks/useCountUp";
 import { useStats } from "@/hooks/api";
 import { resolveIcon } from "@/lib/icons";
+import type { Stat } from "@/types/api";
 import { Award } from "lucide-react";
+
+/**
+ * One figure, counting up from zero the first time it comes into view. Split out
+ * so each stat gets its own observer and its own animation frame rather than the
+ * strip driving four at once.
+ */
+const StatFigure = ({ stat }: { stat: Stat }) => {
+  const Icon = resolveIcon(stat.icon_name, Award);
+  const { ref, display } = useCountUp(stat.value);
+
+  return (
+    <div className="flex flex-col items-center text-center gap-2">
+      <div className="w-11 h-11 rounded-lg bg-muted flex items-center justify-center">
+        <Icon className="w-5 h-5 text-accent" />
+      </div>
+      <div
+        ref={ref}
+        className="font-heading text-3xl md:text-4xl font-extrabold text-foreground tabular-nums"
+      >
+        {display}
+      </div>
+      <div className="text-xs md:text-sm text-muted-foreground leading-snug">{stat.label}</div>
+    </div>
+  );
+};
 
 /**
  * The stats were editable in the admin but rendered nowhere, so the owner could
@@ -40,19 +67,9 @@ const StatsStrip = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {stats.map((stat) => {
-              const Icon = resolveIcon(stat.icon_name, Award);
-
-              return (
-                <div key={stat.id} className="flex flex-col items-center text-center gap-2">
-                  <div className="w-11 h-11 rounded-lg bg-muted flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-accent" />
-                  </div>
-                  <div className="font-heading text-2xl md:text-3xl font-extrabold text-foreground">{stat.value}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground leading-snug">{stat.label}</div>
-                </div>
-              );
-            })}
+            {stats.map((stat) => (
+              <StatFigure key={stat.id} stat={stat} />
+            ))}
           </div>
         )}
       </div>

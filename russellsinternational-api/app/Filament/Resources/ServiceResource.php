@@ -33,6 +33,18 @@ class ServiceResource extends Resource
                 ->searchable()
                 ->required(),
             Forms\Components\TextInput::make('title')->required()->maxLength(200),
+            Forms\Components\FileUpload::make('image')
+                ->label('Card image')
+                ->helperText('Shown at the top of the card. Landscape works best.')
+                ->image()
+                ->disk('public')
+                ->visibility('public')
+                ->directory('services')
+                ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'])
+                ->maxSize(2048)
+                ->imagePreviewHeight('160')
+                ->imageEditor()
+                ->columnSpanFull(),
             Forms\Components\Select::make('color_class')
                 ->label('Colour')
                 ->helperText('Background colour of the icon badge.')
