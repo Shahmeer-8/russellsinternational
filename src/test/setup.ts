@@ -1,3 +1,5 @@
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
 import "@testing-library/jest-dom";
 
 Object.defineProperty(window, "matchMedia", {
@@ -64,3 +66,13 @@ Object.defineProperty(window, "ResizeObserver", {
   writable: true,
   value: MockResizeObserver,
 });
+
+/**
+ * Unmount whatever a test rendered before the next one starts.
+ *
+ * Testing Library registers this itself in most setups; it was not happening
+ * here, so renders piled up in the same document and a second test asking for
+ * "the select" found several. Registering it explicitly costs nothing and makes
+ * each test independent of the ones before it.
+ */
+afterEach(cleanup);

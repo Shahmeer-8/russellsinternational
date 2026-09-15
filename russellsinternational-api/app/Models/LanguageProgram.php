@@ -14,7 +14,7 @@ class LanguageProgram extends Model
     protected $fillable = [
         'language_section_id', 'flag_emoji', 'title', 'duration',
         'badge', 'description', 'benefits', 'color_class',
-        'icon_name', 'image', 'sort_order', 'is_active',
+        'icon_name', 'image', 'sort_order', 'is_active', 'pdf_brochure',
     ];
 
     protected $casts = [
@@ -23,7 +23,7 @@ class LanguageProgram extends Model
         'benefits' => 'array',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'pdf_url'];
 
     public function scopeActive($query)
     {
@@ -46,5 +46,11 @@ class LanguageProgram extends Model
     public function getBenefitsAttribute($value): array
     {
         return $this->normalizeList(json_decode($value ?? '[]', true));
+    }
+
+    /** Optional brochure with the full details of this programme. */
+    public function getPdfUrlAttribute(): ?string
+    {
+        return Media::url($this->pdf_brochure);
     }
 }

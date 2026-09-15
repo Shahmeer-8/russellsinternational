@@ -160,7 +160,13 @@ const LanguagesSection = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected?.title || "Language Program"}>
+      <DetailDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selected?.title || "Language Program"}
+        pdfUrl={selected?.pdf_url}
+        inquireAbout={selected?.title}
+      >
         {selected && (() => {
           const DrawerIcon = resolveIcon(selected.icon_name, SectionIcon);
           const [drawerBg, drawerFg] = splitColor(selected.color_class, active.color_class);

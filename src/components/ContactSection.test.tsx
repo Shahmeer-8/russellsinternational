@@ -1,15 +1,22 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type React from "react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import ContactSection from "./ContactSection";
 
-const renderWithClient = (ui: React.ReactElement) => {
+const renderWithClient = (ui: React.ReactElement, route = "/") => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   });
 
-  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+  // The form reads ?about= to know which programme the visitor arrived from, so
+  // it needs a router even in the tests that do not exercise that.
+  return render(
+    <MemoryRouter initialEntries={[route]}>
+      <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    </MemoryRouter>,
+  );
 };
 
 describe("ContactSection", () => {
@@ -53,5 +60,59 @@ describe("ContactSection", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Validation failed.");
     vi.unstubAllGlobals();
+  });
+});
+
+/**
+ * Arriving from a programme's details panel carries the programme with you.
+ *
+ * Without this the "Inquire Now" button dropped the visitor on a blank form and
+ * made them describe what they had just been reading — and on four of the five
+ * pages that button went nowhere at all, because the form only exists on the
+ * home page.
+ */
+describe("ContactSection enquiry context", () => {
+  const stubSettings = () =>
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        Promise.resolve({ ok: true, json: async () => ({ success: true, data: {} }) }),
+      ),
+    );
+
+  it("names the programme, preselects it and starts the message off", async () => {
+    stubSettings();
+
+    renderWithClient(<ContactSection />, "/?about=IELTS%20Preparation#contact");
+
+    // The chip above the form, not the <option> of the same name.
+    expect(await screen.findByText(/enquiring about/i)).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toHaveValue("IELTS Preparation");
+    expect(screen.getByLabelText(/your message/i)).toHaveValue(
+      "I'd like to know more about IELTS Preparation.",
+    );
+    vi.unstubAllGlobals();
+  });
+
+  it("leaves the form untouched when arriving without a programme", async () => {
+    stubSettings();
+
+    renderWithClient(<ContactSection />);
+
+    const select = await screen.findByRole("combobox");
+    expect(select).toHaveValue("");
+    expect(screen.getByLabelText(/your message/i)).toHaveValue("");
+    vi.unstubAllGlobals();
+  });
+
+  it("lets the visitor drop the programme again", async () => {
+    stubSettings();
+
+    renderWithClient(<ContactSection />, "/?about=Study%20in%20Canada#contact");
+
+    fireEvent.click(await screen.findByLabelText(/clear the programme/i));
+
+    await waitFor(() => expect(screen.queryByText(/enquiring about/i)).not.toBeInTheDocument());
+    expect(screen.getByLabelText(/your message/i)).toHaveValue("");
   });
 });

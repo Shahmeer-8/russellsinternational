@@ -15,6 +15,7 @@ type DestinationCard = {
   intake: string;
   visa: string;
   services: string[];
+  pdfUrl: string | null;
 };
 
 const StudyDestinations = () => {
@@ -32,6 +33,7 @@ const StudyDestinations = () => {
     intake: destination.intake_periods,
     visa: destination.visa_success_rate,
     services: destination.services ?? [],
+    pdfUrl: destination.pdf_url,
   }));
 
   const openDrawer = (d: DestinationCard) => { setSelected(d); setDrawerOpen(true); };
@@ -84,7 +86,13 @@ const StudyDestinations = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected ? `Study in ${selected.country}` : "Destination"}>
+      <DetailDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selected ? `Study in ${selected.country}` : "Destination"}
+        pdfUrl={selected?.pdfUrl}
+        inquireAbout={selected ? `Study in ${selected.country}` : undefined}
+      >
         {selected && (
           <div className="space-y-6">
             <div className="text-6xl">{selected.flag}</div>

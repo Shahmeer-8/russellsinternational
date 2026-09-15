@@ -12,7 +12,7 @@ class Internship extends Model
 
     protected $fillable = [
         'title', 'company', 'location', 'duration', 'type', 'category',
-        'description', 'skills', 'gains', 'image', 'is_active',
+        'description', 'skills', 'gains', 'image', 'is_active', 'pdf_brochure',
     ];
 
     protected $casts = [
@@ -21,7 +21,7 @@ class Internship extends Model
         'gains' => 'array',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'pdf_url'];
 
     public function scopeActive($query)
     {
@@ -41,5 +41,11 @@ class Internship extends Model
     public function getGainsAttribute($value): array
     {
         return $this->normalizeList(json_decode($value ?? '[]', true));
+    }
+
+    /** Optional brochure with the full details of this programme. */
+    public function getPdfUrlAttribute(): ?string
+    {
+        return Media::url($this->pdf_brochure);
     }
 }

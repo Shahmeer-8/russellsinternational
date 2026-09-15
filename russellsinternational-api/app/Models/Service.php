@@ -12,7 +12,7 @@ class Service extends Model
 
     protected $fillable = [
         'icon_name', 'image', 'title', 'description', 'details',
-        'color_class', 'key_benefits', 'sort_order', 'is_active',
+        'color_class', 'key_benefits', 'sort_order', 'is_active', 'pdf_brochure',
     ];
 
     protected $casts = [
@@ -21,7 +21,7 @@ class Service extends Model
         'key_benefits' => 'array',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'pdf_url'];
 
     public function scopeActive($query)
     {
@@ -36,5 +36,11 @@ class Service extends Model
     public function getKeyBenefitsAttribute($value): array
     {
         return $this->normalizeList(json_decode($value ?? '[]', true));
+    }
+
+    /** Optional brochure with the full details of this programme. */
+    public function getPdfUrlAttribute(): ?string
+    {
+        return Media::url($this->pdf_brochure);
     }
 }

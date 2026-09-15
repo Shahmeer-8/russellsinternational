@@ -1,4 +1,5 @@
 import { X, Download, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 interface DetailDrawerProps {
@@ -15,9 +16,18 @@ interface DetailDrawerProps {
    * events listing offering a PDF is the wrong thing entirely.
    */
   pdfUrl?: string | null;
+  /**
+   * What this panel is about, carried into the enquiry form.
+   *
+   * Without it "Inquire Now" was a bare `#contact` anchor, and the contact form
+   * only exists on the home page — so on Skills, Careers, Languages and Study
+   * Abroad the button went nowhere at all. Now it takes the reader to the form
+   * and tells the form which programme they were reading about.
+   */
+  inquireAbout?: string;
 }
 
-const DetailDrawer = ({ open, onClose, title, children, pdfUrl }: DetailDrawerProps) => {
+const DetailDrawer = ({ open, onClose, title, children, pdfUrl, inquireAbout }: DetailDrawerProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,9 +83,13 @@ const DetailDrawer = ({ open, onClose, title, children, pdfUrl }: DetailDrawerPr
               <Download className="w-4 h-4" /> Download Brochure
             </a>
           )}
-          <a href="#contact" onClick={onClose} className="btn-primary flex-1 inline-flex items-center justify-center gap-2 text-sm">
+          <Link
+            to={inquireAbout ? `/?about=${encodeURIComponent(inquireAbout)}#contact` : "/#contact"}
+            onClick={onClose}
+            className="btn-primary flex-1 inline-flex items-center justify-center gap-2 text-sm"
+          >
             Inquire Now <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </div>

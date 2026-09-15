@@ -13,7 +13,7 @@ class StudyDestination extends Model
     protected $fillable = [
         'flag_emoji', 'country', 'partner_unis_count', 'description',
         'highlight_unis', 'intake_periods', 'visa_success_rate',
-        'services', 'scholarships', 'image', 'sort_order', 'is_active',
+        'services', 'scholarships', 'image', 'sort_order', 'is_active', 'pdf_brochure',
     ];
 
     protected $casts = [
@@ -23,7 +23,7 @@ class StudyDestination extends Model
         'scholarships' => 'array',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'pdf_url'];
 
     public function scopeActive($query)
     {
@@ -43,5 +43,11 @@ class StudyDestination extends Model
     public function getScholarshipsAttribute($value): array
     {
         return $this->normalizeList(json_decode($value ?? '[]', true));
+    }
+
+    /** Optional brochure with the full details of this programme. */
+    public function getPdfUrlAttribute(): ?string
+    {
+        return Media::url($this->pdf_brochure);
     }
 }

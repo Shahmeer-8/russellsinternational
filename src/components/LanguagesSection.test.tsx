@@ -40,6 +40,7 @@ function section(overrides: Partial<LanguageSection> = {}): LanguageSection {
         color_class: "bg-blue-50 text-blue-600",
         icon_name: null,
         image_url: null,
+        pdf_url: null,
       },
     ],
     ...overrides,

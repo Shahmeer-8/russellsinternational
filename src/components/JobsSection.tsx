@@ -14,6 +14,7 @@ type JobCard = {
   salary: string;
   desc: string;
   requirements: string[];
+  pdf_url: string | null;
 };
 
 const JobsSection = () => {
@@ -23,7 +24,7 @@ const JobsSection = () => {
   const [selected, setSelected] = useState<JobCard | null>(null);
 
   const { data: jobsData, isLoading } = useJobs();
-  const apiJobs = (jobsData?.data?.data ?? []).map((j) => ({ title: j.title, company: j.company, location: j.location, type: j.type, salary: j.salary ?? '', desc: j.description, requirements: j.requirements ?? [] }));
+  const apiJobs = (jobsData?.data?.data ?? []).map((j) => ({ title: j.title, company: j.company, location: j.location, type: j.type, salary: j.salary ?? '', desc: j.description, requirements: j.requirements ?? [], pdf_url: j.pdf_url }));
   const jobsList = apiJobs;
 
   const openDrawer = (job: JobCard) => { setSelected(job); setDrawerOpen(true); };
@@ -78,7 +79,13 @@ const JobsSection = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected?.title || "Job Details"}>
+      <DetailDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selected?.title || "Job Details"}
+        pdfUrl={selected?.pdf_url}
+        inquireAbout={selected?.title}
+      >
         {selected && (
           <div className="space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">

@@ -58,6 +58,8 @@ export interface Service {
   details: string;
   color_class: string;
   key_benefits: string[] | null;
+  /** Brochure with the full details, when the admin has uploaded one. */
+  pdf_url: string | null;
 }
 
 export interface WhyChooseUsItem {
@@ -102,6 +104,8 @@ export interface StudyDestination {
   services: string[] | null;
   scholarships: string[] | null;
   image_url: string | null;
+  /** Brochure with the full details, when the admin has uploaded one. */
+  pdf_url: string | null;
 }
 
 // ─── Languages ─────────────────────────────────────────────────────────────────
@@ -116,6 +120,8 @@ export interface LanguageProgram {
   color_class: string;
   icon_name: string | null;
   image_url: string | null;
+  /** Brochure with the full details, when the admin has uploaded one. */
+  pdf_url: string | null;
 }
 
 /** A tab on the Languages page, with the programs filed under it. */
@@ -145,6 +151,8 @@ export interface Job {
   description: string;
   requirements: string[] | null;
   deadline: string | null;
+  /** Brochure with the full details, when the admin has uploaded one. */
+  pdf_url: string | null;
 }
 
 export interface Internship {
@@ -161,6 +169,8 @@ export interface Internship {
   skills: string[] | null;
   gains: string[] | null;
   image_url: string | null;
+  /** Brochure with the full details, when the admin has uploaded one. */
+  pdf_url: string | null;
 }
 
 // ─── Events / Gallery ──────────────────────────────────────────────────────────

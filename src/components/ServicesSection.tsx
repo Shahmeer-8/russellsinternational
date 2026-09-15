@@ -155,7 +155,13 @@ const ServicesSection = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected?.title || "Service"}>
+      <DetailDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selected?.title || "Service"}
+        pdfUrl={selected?.pdf_url}
+        inquireAbout={selected?.title}
+      >
         {selected && (() => {
           const Icon = resolveIcon(selected.icon_name, Sparkles);
           const [bg, fg] = (selected.color_class || "bg-blue-50 text-blue-600").split(" ");

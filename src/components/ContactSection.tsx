@@ -1,11 +1,24 @@
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, X } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useSettings, useSubmitContact } from "@/hooks/api";
 import { useSectionCopy, useSectionOptions } from "@/hooks/useSectionCopy";
 
 const ContactSection = () => {
   const copy = useSectionCopy("home", "contact");
+  /**
+   * The programme the visitor was reading about, if they arrived from a details
+   * panel's "Inquire Now".
+   *
+   * Sending someone from a page about IELTS coaching to a blank form and making
+   * them describe what they had just been reading is the kind of small friction
+   * that loses an enquiry. The form says what it is about, and the message starts
+   * written — still editable, because an assumption in a text box is a suggestion
+   * rather than a decision.
+   */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const about = searchParams.get("about")?.trim() || "";
   // The choices here decide how an enquiry gets routed, so they have to follow
   // what the institute actually offers — the hardcoded three predated the
   // language programmes and the internships entirely.
@@ -79,18 +92,59 @@ const ContactSection = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {about && (
+                  <div className="flex items-start justify-between gap-3 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3">
+                    <p className="text-sm text-foreground">
+                      <span className="text-muted-foreground">Enquiring about</span>{" "}
+                      <span className="font-semibold">{about}</span>
+                    </p>
+                    <button
+                      type="button"
+                      // Clears the query string too, so a reload or a shared link
+                      // does not resurrect a programme the visitor dismissed.
+                      onClick={() => setSearchParams({}, { replace: true })}
+                      aria-label="Clear the programme this enquiry is about"
+                      className="-m-1 shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <input name="name" aria-label="Full Name" type="text" placeholder="Full Name" required className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30" />
                   <input name="phone" aria-label="Phone Number" type="tel" placeholder="Phone Number" className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30" />
                 </div>
                 <input name="email" aria-label="Email Address" type="email" placeholder="Email Address" required className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30" />
-                <select name="interest" aria-label="Interest" className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30">
+                {/* The programme joins the list and is selected, so the enquiry is
+                    filed under its name in the admin rather than under a generic
+                    category — it is the single most useful thing the office can
+                    know when they pick the enquiry up. Still a dropdown, so the
+                    visitor can change it. */}
+                <select
+                  key={`interest-${about}`}
+                  name="interest"
+                  aria-label="Interest"
+                  defaultValue={about || ""}
+                  className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30"
+                >
                   <option value="">I'm interested in...</option>
+                  {about && !interests.includes(about) && <option value={about}>{about}</option>}
                   {interests.map((interest) => (
                     <option key={interest} value={interest}>{interest}</option>
                   ))}
                 </select>
-                <textarea name="message" aria-label="Your Message" placeholder="Your Message" rows={4} className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30 resize-none" />
+                {/* `key` matters: React keeps an uncontrolled textarea's value
+                    across re-renders, so without it the prefilled message would
+                    not change when the visitor opens a different programme. */}
+                <textarea
+                  key={`message-${about}`}
+                  name="message"
+                  aria-label="Your Message"
+                  placeholder="Your Message"
+                  rows={4}
+                  defaultValue={about ? `I'd like to know more about ${about}.` : ""}
+                  className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/30 resize-none"
+                />
                 {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
                 <button type="submit" disabled={isPending} className="btn-accent w-full text-base py-3.5 flex items-center justify-center gap-2 disabled:opacity-60">
                   {isPending ? 'Sending…' : 'Send Message'} <Send className="w-4 h-4" />

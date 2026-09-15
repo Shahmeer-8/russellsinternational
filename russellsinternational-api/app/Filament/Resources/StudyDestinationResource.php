@@ -57,6 +57,16 @@ class StudyDestinationResource extends Resource
                     ->downloadable()
                     ->openable(),
                 Forms\Components\TextInput::make('sort_order')->numeric()->minValue(0)->maxValue(255)->default(0),
+                Forms\Components\FileUpload::make('pdf_brochure')
+                    ->label('Destination Guide (PDF)')
+                    ->helperText('Optional. Offered as a download in the details panel on the website.')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(8192)
+                    ->directory('brochures')
+                    ->downloadable()
+                    ->openable(),
                 Forms\Components\Toggle::make('is_active')->default(true),
             ])->columns(3),
         ]);

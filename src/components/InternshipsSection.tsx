@@ -17,6 +17,7 @@ type InternshipCard = {
   skills: string[];
   gains?: string[];
   image: string | null;
+  pdf_url: string | null;
 };
 
 /**
@@ -113,6 +114,7 @@ const InternshipsSection = () => {
     skills: i.skills ?? [],
     gains: i.gains ?? [],
     image: i.image_url,
+    pdf_url: i.pdf_url,
   }));
   const summer = internshipsList.filter((item) => item.category === "summer");
   const regular = internshipsList.filter((item) => item.category !== "summer");
@@ -169,7 +171,13 @@ const InternshipsSection = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected?.title || "Internship Details"}>
+      <DetailDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selected?.title || "Internship Details"}
+        pdfUrl={selected?.pdf_url}
+        inquireAbout={selected?.title}
+      >
         {selected && (
           <div className="space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center">

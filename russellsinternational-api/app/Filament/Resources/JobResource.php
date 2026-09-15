@@ -45,6 +45,16 @@ class JobResource extends Resource
 
             Forms\Components\Section::make('Settings')->schema([
                 Forms\Components\TextInput::make('application_email')->email(),
+                Forms\Components\FileUpload::make('pdf_brochure')
+                    ->label('Job Description (PDF)')
+                    ->helperText('Optional. Offered as a download in the details panel on the website.')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(8192)
+                    ->directory('brochures')
+                    ->downloadable()
+                    ->openable(),
                 Forms\Components\Toggle::make('is_active')->default(true),
             ])->columns(2),
         ]);
