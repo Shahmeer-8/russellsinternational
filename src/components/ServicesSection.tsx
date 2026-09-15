@@ -81,10 +81,31 @@ const ServicesSection = () => {
             /* The back earns its keep: key_benefits were already in the admin but
                only ever appeared inside the drawer, so nobody saw them while
                scanning the grid. */
-            <div className="premium-card h-full overflow-hidden bg-primary text-primary-foreground flex flex-col p-6">
-              <h3 className="font-heading text-lg font-bold">{service.title}</h3>
+            <div className="premium-card relative h-full overflow-hidden bg-primary text-primary-foreground flex flex-col p-6">
+              {/* Same treatment as the Why Choose Us cards: the hover face is the
+                  card's own photograph under the brand gradient, so the two grids
+                  behave alike instead of one revealing a picture and one a flat
+                  panel. Gradient is heavy enough to keep white text readable. */}
+              {service.image_url && (
+                <>
+                  <img
+                    src={service.image_url}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    width={640}
+                    height={480}
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-tr from-primary/95 via-primary/85 to-accent/75"
+                    aria-hidden="true"
+                  />
+                </>
+              )}
+              <h3 className="relative font-heading text-lg font-bold">{service.title}</h3>
               {service.key_benefits && service.key_benefits.length > 0 ? (
-                <ul className="mt-4 space-y-2.5">
+                <ul className="relative mt-4 space-y-2.5">
                   {service.key_benefits.slice(0, 5).map((benefit) => (
                     <li key={benefit} className="flex items-start gap-2 text-sm text-primary-foreground/80">
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -93,11 +114,11 @@ const ServicesSection = () => {
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 text-sm leading-relaxed text-primary-foreground/80">
+                <p className="relative mt-4 text-sm leading-relaxed text-primary-foreground/80">
                   {service.details || service.description}
                 </p>
               )}
-              <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-accent">
+              <span className="relative mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary-foreground">
                 Learn More <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </div>

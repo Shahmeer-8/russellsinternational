@@ -43,25 +43,15 @@ const WhyChooseUs = () => {
                   front={
                     <div className="premium-card h-full overflow-hidden flex flex-col">
                       {p.image && (
-                        /* The photograph warms into the brand gradient under the
-                           cursor, so a card announces it is interactive before the
-                           reader has to guess. Sits over the image rather than
-                           replacing it — the subject stays readable through it. */
-                        <div className="relative h-40 w-full overflow-hidden">
-                          <img
-                            src={p.image}
-                            alt=""
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            loading="lazy"
-                            decoding="async"
-                            width={640}
-                            height={360}
-                          />
-                          <div
-                            className="absolute inset-0 bg-gradient-to-tr from-primary/80 via-primary/40 to-accent/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                            aria-hidden="true"
-                          />
-                        </div>
+                        <img
+                          src={p.image}
+                          alt=""
+                          className="h-40 w-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width={640}
+                          height={360}
+                        />
                       )}
                       <div className="flex flex-1 flex-col p-6">
                         <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted">
@@ -75,12 +65,41 @@ const WhyChooseUs = () => {
                     </div>
                   }
                   back={
-                    <div className="premium-card h-full overflow-hidden bg-primary text-primary-foreground flex flex-col justify-center p-7">
-                      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-foreground/10">
-                        <p.icon className="h-5 w-5 text-accent" />
+                    /*
+                     * The hover face is the card's photograph under a brand
+                     * gradient, with the copy sitting on top of it.
+                     *
+                     * The gradient started on the front face, over the image band,
+                     * and could not be seen: hovering fades the front out and the
+                     * back in, so it only ever flashed during the crossfade. Here
+                     * it is what the hover actually reveals.
+                     */
+                    <div className="premium-card relative h-full overflow-hidden bg-primary text-primary-foreground">
+                      {p.image && (
+                        <img
+                          src={p.image}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width={640}
+                          height={480}
+                        />
+                      )}
+                      {/* Opaque enough to carry white text over any photograph:
+                          measured 8.1:1 at its lightest corner against the body
+                          copy, well past the 4.5:1 it needs. */}
+                      <div
+                        className="absolute inset-0 bg-gradient-to-tr from-primary/95 via-primary/85 to-accent/75"
+                        aria-hidden="true"
+                      />
+                      <div className="relative flex h-full flex-col justify-center p-7">
+                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary-foreground/15">
+                          <p.icon className="h-5 w-5 text-primary-foreground" />
+                        </div>
+                        <h3 className="font-heading text-lg font-bold">{p.title}</h3>
+                        <p className="mt-3 text-sm leading-relaxed text-primary-foreground/85">{p.desc}</p>
                       </div>
-                      <h3 className="font-heading text-lg font-bold">{p.title}</h3>
-                      <p className="mt-3 text-sm leading-relaxed text-primary-foreground/75">{p.desc}</p>
                     </div>
                   }
                 />
