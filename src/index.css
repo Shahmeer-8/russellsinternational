@@ -255,3 +255,45 @@
     transform: translateY(0);
   }
 }
+
+/* ── Announcement ticker ──────────────────────────────────────────────────────
+   The track holds the announcements twice over, so the moment the first copy has
+   slid fully out of frame the second one is sitting exactly where it started and
+   the loop restarts invisibly. That is why the travel is -50% and not -100%.
+
+   Kept slow and paused on hover: it is a strip of standing announcements, not an
+   attention grab, and a reader who stops to take one in should not have to chase
+   it. Anyone who has asked for reduced motion gets a still strip they can scroll
+   by hand instead. */
+.ticker-viewport {
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 45s linear infinite;
+}
+
+.ticker-viewport:hover .ticker-track,
+.ticker-viewport:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-viewport {
+    overflow-x: auto;
+  }
+  .ticker-track {
+    animation: none;
+  }
+}

@@ -78,20 +78,34 @@ const HeroCarousel = () => {
     <section className="relative pt-16">
       {tickerItems.length > 0 && (
         /*
-         * This was a navy bar of emoji-prefixed announcements scrolling on an
-         * endless loop — the loudest thing on the site, and the one piece of it
-         * that never stopped moving. The announcements stay; the motion and the
-         * emoji do not. On a phone the strip scrolls by hand instead.
+         * A continuously scrolling announcement strip. It was stopped during the
+         * pass that quietened the site, which left the announcements wrapping onto
+         * two static lines; the motion is back, but slow, muted and pausing under
+         * the cursor rather than the navy bar it used to be.
+         *
+         * The list is rendered twice so the loop can restart without a visible
+         * jump — see .ticker-track. The second copy is hidden from assistive tech,
+         * which would otherwise read every announcement out twice.
          */
-        <div className="border-b border-border bg-muted">
-          <div className="container mx-auto flex gap-x-8 overflow-x-auto px-4 py-2.5 md:flex-wrap md:justify-center md:overflow-visible md:px-8">
-            {tickerItems.map((t, i) => (
-              <span
-                key={`${t}-${i}`}
-                className="whitespace-nowrap text-xs font-medium text-muted-foreground"
+        <div className="ticker-viewport border-b border-border bg-muted">
+          <div className="ticker-track py-2.5">
+            {[0, 1].map((copy) => (
+              <div
+                key={copy}
+                /* pr-8 matches gap-x-8, so the join between the two copies is
+                   spaced exactly like every other gap and the seam is invisible. */
+                className="flex shrink-0 gap-x-8 pr-8"
+                aria-hidden={copy === 1 ? true : undefined}
               >
-                {stripLeadingEmoji(t)}
-              </span>
+                {tickerItems.map((t, i) => (
+                  <span
+                    key={`${t}-${i}`}
+                    className="whitespace-nowrap text-xs font-medium text-muted-foreground"
+                  >
+                    {stripLeadingEmoji(t)}
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
         </div>
