@@ -61,7 +61,7 @@ const NavDropdown = ({
         onClick={() => setOpen((wasOpen) => !wasOpen)}
         aria-expanded={open}
         aria-haspopup="true"
-        className={`inline-flex items-center gap-1 text-[13px] font-medium transition-colors ${
+        className={`inline-flex items-center gap-1 whitespace-nowrap text-[13px] font-medium transition-colors ${
           isActive(item.url) || anyChildActive
             ? "text-accent"
             : "text-muted-foreground hover:text-foreground"

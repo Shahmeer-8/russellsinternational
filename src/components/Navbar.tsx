@@ -44,7 +44,7 @@ const Navbar = () => {
     );
     const className = mobile
       ? `flex items-center gap-2 py-3 text-sm font-medium ${isActive(item.url) ? "text-accent" : "text-muted-foreground hover:text-foreground"}`
-      : `inline-flex items-center gap-1.5 text-[13px] font-medium transition-colors ${isActive(item.url) ? "text-accent" : "text-muted-foreground hover:text-foreground"}`;
+      : `inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-medium transition-colors ${isActive(item.url) ? "text-accent" : "text-muted-foreground hover:text-foreground"}`;
 
     if (isExternalUrl(item.url)) {
       return (
@@ -77,7 +77,7 @@ const Navbar = () => {
           <img
             src={russellsLogo}
             alt={siteName}
-            className="h-16 w-48 object-contain object-left md:w-56"
+            className="h-14 w-44 object-contain object-left lg:h-16 lg:w-48 xl:w-56"
             width={483}
             height={163}
             fetchPriority="high"
@@ -90,7 +90,7 @@ const Navbar = () => {
         {/* Centred in the space between the logo and the button, rather than
             pushed against the button by justify-between — with the wider logo the
             links had drifted right and sat unevenly under it. */}
-        <div className="hidden flex-1 items-center justify-center gap-7 lg:flex">
+        <div className="hidden flex-1 items-center justify-center gap-5 lg:flex xl:gap-7">
           {navigationLoading ? (
             <div className="h-4 w-96 rounded bg-muted animate-pulse" />
           ) : (
