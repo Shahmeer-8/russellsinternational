@@ -10,7 +10,11 @@ import StudyAbroad from "./pages/StudyAbroad.tsx";
 import Languages from "./pages/Languages.tsx";
 import Careers from "./pages/Careers.tsx";
 import Events from "./pages/Events.tsx";
+import Ausbildung from "./pages/Ausbildung.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import ScrollManager from "@/components/ScrollManager";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +32,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollManager />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
@@ -36,6 +41,9 @@ const App = () => (
           <Route path="/languages" element={<Languages />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/ausbildung" element={<Ausbildung />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

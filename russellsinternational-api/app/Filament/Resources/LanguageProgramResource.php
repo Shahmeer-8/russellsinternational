@@ -59,7 +59,7 @@ class LanguageProgramResource extends Resource
             Forms\Components\Repeater::make('benefits')
                 ->label('What is included')
                 ->helperText('Bullet points shown when a visitor opens this program. Add as many as you need.')
-                ->schema([Forms\Components\TextInput::make('item')->required()])
+                ->simple(Forms\Components\TextInput::make('item')->required())
                 // One row, not four. Every row's text is required, so shipping four
                 // meant the owner could not save until all four were filled in or
                 // three were deleted by hand.

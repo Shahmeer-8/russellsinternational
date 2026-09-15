@@ -78,7 +78,9 @@ class PageSectionResource extends Resource
                 Forms\Components\TextInput::make('eyebrow')->maxLength(150),
                 Forms\Components\TextInput::make('title')->maxLength(250),
                 Forms\Components\Textarea::make('subtitle')->rows(2),
-                Forms\Components\Textarea::make('body')->rows(6)->columnSpanFull(),
+                // Roomy because the privacy policy and terms of service live in this
+                // one field; six rows turned editing them into scrolling a letterbox.
+                Forms\Components\Textarea::make('body')->rows(14)->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->disk('public')

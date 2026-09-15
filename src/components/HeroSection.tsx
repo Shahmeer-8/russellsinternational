@@ -11,7 +11,7 @@ const stats = [
 ];
 
 const HeroSection = () => (
-  <section className="relative pt-16">
+  <section className="relative pt-header">
     {/* Ticker bar */}
     <div className="bg-primary text-primary-foreground py-2.5 overflow-hidden">
       <div className="flex animate-[scroll_20s_linear_infinite] whitespace-nowrap gap-12">

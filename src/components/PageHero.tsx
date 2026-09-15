@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PageHero = ({ eyebrow, title, description, image, crumbs }: Props) => (
-  <section className="relative pt-16">
+  <section className="relative pt-header">
     <div className="relative h-[360px] md:h-[440px] overflow-hidden">
       {image && (
         <img
@@ -44,9 +44,15 @@ const PageHero = ({ eyebrow, title, description, image, crumbs }: Props) => (
               ))}
             </div>
           )}
-          <span className="mb-4 inline-block text-sm font-medium text-primary-foreground/75 animate-fade-in">
-            {eyebrow}
-          </span>
+          {/* The section name was set as plain 75%-opacity text over a photograph,
+              which on the busier hero images read as part of the picture rather
+              than as a label. A bordered pill separates it from whatever is behind
+              it without going back to the loud filled-orange treatment. */}
+          {eyebrow && (
+            <span className="mb-4 inline-flex items-center rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-3 py-1 text-xs font-semibold tracking-wide text-primary-foreground backdrop-blur-sm animate-fade-in">
+              {eyebrow}
+            </span>
+          )}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-display leading-[1.1] mb-4 max-w-3xl animate-fade-in">
             {title}
           </h1>

@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             InternshipRecordSeeder::class,
             CardImageSeeder::class,
             AdminCoverageSeeder::class,
+            // Last: it corrects rows the seeders above create.
+            ClientFeedbackSeeder::class,
             ProductionContentBackfillSeeder::class,
         ]);
 

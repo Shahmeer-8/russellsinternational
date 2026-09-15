@@ -48,9 +48,8 @@ class InternshipRecordResource extends Resource
             Forms\Components\Section::make('Achievements & photo')->schema([
                 Forms\Components\Repeater::make('achievements')
                     ->helperText('One achievement per row, e.g. "18 interns placed in full-time roles".')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(2)
-                    ->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(2),
                 Forms\Components\FileUpload::make('image')
                     ->label('Group photo')
                     ->image()

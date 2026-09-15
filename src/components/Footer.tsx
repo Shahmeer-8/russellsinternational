@@ -2,14 +2,22 @@ import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Youtube } from "luc
 import { Link } from "react-router-dom";
 import { useNavigation, useSettings } from "@/hooks/api";
 import { badgeClass, isExternalUrl } from "@/lib/navigation";
+import { mapEmbedUrl } from "@/lib/mapEmbed";
 import type { NavigationItem } from "@/types/api";
 import russellsLogo from "@/assets/russells-logo.png";
 
+/**
+ * One settings key per network. There used to be two of each — "facebook" and
+ * "facebook_url" — and the footer read the "_url" one first, which happened to be
+ * the placeholder. The owner kept correcting the real link in the panel and the
+ * site kept showing https://facebook.com/, which is what was reported as
+ * "social links from the admin are not updating". The duplicates are gone.
+ */
 const socials = [
-  { icon: Facebook, keys: ["facebook_url", "facebook"], label: "Facebook" },
-  { icon: Instagram, keys: ["instagram_url", "instagram"], label: "Instagram" },
-  { icon: Linkedin, keys: ["linkedin_url", "linkedin"], label: "LinkedIn" },
-  { icon: Youtube, keys: ["youtube_url", "youtube"], label: "YouTube" },
+  { icon: Facebook, key: "facebook", label: "Facebook" },
+  { icon: Instagram, key: "instagram", label: "Instagram" },
+  { icon: Linkedin, key: "linkedin", label: "LinkedIn" },
+  { icon: Youtube, key: "youtube", label: "YouTube" },
 ];
 
 const Footer = () => {
@@ -18,11 +26,11 @@ const Footer = () => {
   const settings = data?.data ?? {};
   const columns = navigationData?.data.footer ?? [];
   const availableSocials = socials
-    .map((s) => ({ ...s, href: s.keys.map((key) => settings[key]).find(Boolean) }))
+    .map((s) => ({ ...s, href: settings[s.key]?.trim() }))
     .filter((s) => s.href);
   const siteName = settings.site_name;
   const footerText = settings.footer_text ?? settings.footer_about;
-  const mapUrl = settings.map_iframe_url ?? settings.google_map;
+  const mapUrl = mapEmbedUrl(settings.google_map);
   const renderFooterLink = (item: NavigationItem) => {
     const content = (
       <>
@@ -92,6 +100,8 @@ const Footer = () => {
                   <a
                     key={s.label}
                     href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
                     aria-label={s.label}
                     // 44px is the minimum comfortable touch size; these were 36px.
                     className="w-11 h-11 rounded-full bg-primary-foreground/10 hover:bg-accent flex items-center justify-center transition-colors"
@@ -138,9 +148,16 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/10 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/40">
           {settings.copyright_text && <span>{settings.copyright_text}</span>}
+          {/* Both of these were settings holding "#", so the links rendered and went
+              nowhere. The pages exist now; the settings still decide where the links
+              point, in case the client ever hosts them elsewhere. */}
           <div className="flex gap-6">
-            {settings.privacy_url && <a href={settings.privacy_url} className="hover:text-primary-foreground transition-colors">Privacy Policy</a>}
-            {settings.terms_url && <a href={settings.terms_url} className="hover:text-primary-foreground transition-colors">Terms of Service</a>}
+            <Link to={settings.privacy_url?.startsWith("/") ? settings.privacy_url : "/privacy-policy"} className="hover:text-primary-foreground transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to={settings.terms_url?.startsWith("/") ? settings.terms_url : "/terms-of-service"} className="hover:text-primary-foreground transition-colors">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import HeroCarousel from "@/components/HeroCarousel";
 import StatsStrip from "@/components/StatsStrip";
 import HomeNewsCarousel from "@/components/HomeNewsCarousel";
@@ -16,7 +16,7 @@ import Footer from "@/components/Footer";
 // developer.
 const Index = () => (
   <div className="min-h-screen bg-page">
-    <Navbar />
+    <SiteHeader />
     <HeroCarousel />
     <StatsStrip />
     <WhyChooseUs />

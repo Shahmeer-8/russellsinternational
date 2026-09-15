@@ -39,9 +39,8 @@ class JobResource extends Resource
             Forms\Components\Section::make('Description & Requirements')->schema([
                 Forms\Components\Textarea::make('description')->required()->rows(4)->maxLength(1000),
                 Forms\Components\Repeater::make('requirements')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(3)
-                    ->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(3),
             ]),
 
             Forms\Components\Section::make('Settings')->schema([

@@ -1,4 +1,4 @@
-import { Code, Clock, Users, ArrowRight, BadgeCheck, Crown } from "lucide-react";
+import { AlertTriangle, ArrowRight, BadgeCheck, Clock, Code, Crown, Users } from "lucide-react";
 import type { ElementType } from "react";
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -31,6 +31,9 @@ const FeaturedCourses = () => {
   const TAB_LABELS = ["Premium Courses", "NAVTTC (Free)", "Government Funded – 100% Free Training Under NAVTTC"];
   const tabLabels = useSectionOptions("skills", "courses", "tab", TAB_LABELS);
   const [paidLabel, navttcLabel, navttcBadge] = TAB_LABELS.map((fallback, i) => tabLabels[i] || fallback);
+  const NAVTTC_WARNING =
+    "NAVTTC seats are limited and allocated under a government scheme. Admission is subject to eligibility verification and seat availability, and no fee is charged by Russell's International for these courses.";
+  const [navttcWarning] = useSectionOptions("skills", "courses", "warning", [NAVTTC_WARNING]);
   const { ref, visible } = useScrollReveal();
   const [tab, setTab] = useState<"paid" | "navttc">("paid");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -105,6 +108,17 @@ const FeaturedCourses = () => {
             </div>
           )}
 
+          {/* These courses are free, which is exactly why applicants need telling
+              what the catch is — limited seats, eligibility checks, and nothing to
+              pay to anyone. Editable, because the terms of a government scheme are
+              not ours to hardcode. */}
+          {tab === "navttc" && navttcWarning && (
+            <div className="mx-auto mb-10 flex max-w-2xl items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden="true" />
+              <p>{navttcWarning}</p>
+            </div>
+          )}
+
           {loading ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(3)].map((_, i) => (
@@ -135,7 +149,7 @@ const FeaturedCourses = () => {
                 <h3 className="font-bold text-foreground font-heading text-lg mb-2 group-hover:text-accent transition-colors">{c.title}</h3>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
                   <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{c.duration}</span>
-                  <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{c.students} enrolled</span>
+                  <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{c.students} trained</span>
                 </div>
                 {"price" in c && (
                   <div className="font-bold text-foreground text-base mb-4">{c.price}</div>
@@ -174,7 +188,7 @@ const FeaturedCourses = () => {
             </div>
             <div className="flex gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {selectedCourse.duration}</span>
-              <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {selectedCourse.students} enrolled</span>
+              <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {selectedCourse.students} trained</span>
             </div>
             {selectedCourse.description && (
               <p className="text-muted-foreground leading-relaxed">{selectedCourse.description}</p>

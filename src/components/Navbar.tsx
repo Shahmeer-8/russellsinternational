@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigation, useSettings } from "@/hooks/api";
 import type { NavigationItem } from "@/types/api";
 import { badgeClass, isExternalUrl } from "@/lib/navigation";
+import NavDropdown from "@/components/NavDropdown";
 import russellsLogo from "@/assets/russells-logo.png";
 
 const Navbar = () => {
@@ -26,8 +27,9 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Where the window lands after a navigation is ScrollManager's job — forcing
+  // the top from here overrode every `#anchor` link on the site.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     setOpen(false);
   }, [location.pathname]);
 
@@ -60,7 +62,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`transition-all duration-300 ${
       scrolled
         ? "bg-background/95 backdrop-blur-lg border-b border-border shadow-sm"
         : "bg-background/80 backdrop-blur-sm"
@@ -84,7 +86,18 @@ const Navbar = () => {
           {navigationLoading ? (
             <div className="h-4 w-96 rounded bg-muted animate-pulse" />
           ) : (
-            navLinks.map((item) => renderLink(item))
+            navLinks.map((item) =>
+              item.children?.length ? (
+                <NavDropdown
+                  key={item.id}
+                  item={item}
+                  renderLink={renderLink}
+                  isActive={isActive}
+                />
+              ) : (
+                renderLink(item)
+              ),
+            )
           )}
         </div>
 
@@ -103,7 +116,19 @@ const Navbar = () => {
 
       {open && (
         <div className="lg:hidden bg-background border-t border-border px-4 pb-4 animate-fade-in max-h-[70vh] overflow-y-auto">
-          {navLinks.map((item) => renderLink(item, true))}
+          {/* No dropdowns on a phone — a submenu inside an already-scrolling panel
+              is one tap too many. The parent and its children are listed together,
+              the children indented under it. */}
+          {navLinks.map((item) => (
+            <div key={item.id}>
+              {renderLink(item, true)}
+              {item.children?.length ? (
+                <div className="ml-4 border-l border-border pl-3">
+                  {item.children.map((child) => renderLink(child, true))}
+                </div>
+              ) : null}
+            </div>
+          ))}
           <Link to={ctaUrl} className="block mt-2 btn-accent text-sm text-center" onClick={() => setOpen(false)}>
             {ctaLabel}
           </Link>

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import NewsEvents from "@/components/NewsEvents";
@@ -7,7 +7,7 @@ import CTASection from "@/components/CTASection";
 
 const Events = () => (
   <div className="min-h-screen bg-page">
-    <Navbar />
+    <SiteHeader />
     <DynamicPageHero
       page="events"
       fallback={{

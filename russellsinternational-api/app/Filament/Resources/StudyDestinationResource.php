@@ -37,11 +37,11 @@ class StudyDestinationResource extends Resource
 
             Forms\Components\Section::make('Services & Scholarships')->schema([
                 Forms\Components\Repeater::make('services')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(5)->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(5),
                 Forms\Components\Repeater::make('scholarships')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(2)->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(2),
             ])->columns(2),
 
             Forms\Components\Section::make('Media & Status')->schema([

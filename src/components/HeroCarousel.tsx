@@ -1,17 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { useHeroSlides, useTickerItems } from "@/hooks/api";
+import { useHeroSlides } from "@/hooks/api";
 import fallbackHeroImage from "@/assets/hero-students-clean.jpg";
-
-/**
- * Announcements are typed in the admin with a decorative emoji in front. They read
- * as clutter in a quiet strip, so they are dropped at render — the wording the
- * admin typed is untouched, and removing the emoji there instead would work too.
- */
-function stripLeadingEmoji(text: string): string {
-  return text.replace(/^[\p{Extended_Pictographic}\p{Emoji_Presentation}️‍\s]+/u, "").trim();
-}
 
 const fallbackSlides = [
   {
@@ -24,18 +14,10 @@ const fallbackSlides = [
   },
 ];
 
-const fallbackTickerItems = [
-  "Admissions Open for September 2026 Intake",
-  "95% Visa Success Rate for UK, Canada & AU",
-  "New IT Courses Starting Monthly",
-  "NAVTTC Free Training Now Available",
-];
-
 const HeroCarousel = () => {
   const [active, setActive] = useState(0);
 
   const { data: slidesData } = useHeroSlides();
-  const { data: tickerData } = useTickerItems();
 
   const apiSlides = (slidesData?.data ?? [])
     .filter((s) => s.is_active)
@@ -49,8 +31,6 @@ const HeroCarousel = () => {
     }));
 
   const slides = apiSlides.length > 0 ? apiSlides : fallbackSlides;
-  const apiTickerItems = (tickerData?.data ?? []).map((t) => `${t.emoji ?? ""} ${t.text}`.trim());
-  const tickerItems = apiTickerItems.length > 0 ? apiTickerItems : fallbackTickerItems;
 
   const goTo = useCallback(
     (nextIndex: number) => {
@@ -75,42 +55,7 @@ const HeroCarousel = () => {
   }, [active, go, slides.length]);
 
   return (
-    <section className="relative pt-16">
-      {tickerItems.length > 0 && (
-        /*
-         * A continuously scrolling announcement strip. It was stopped during the
-         * pass that quietened the site, which left the announcements wrapping onto
-         * two static lines; the motion is back, but slow, muted and pausing under
-         * the cursor rather than the navy bar it used to be.
-         *
-         * The list is rendered twice so the loop can restart without a visible
-         * jump — see .ticker-track. The second copy is hidden from assistive tech,
-         * which would otherwise read every announcement out twice.
-         */
-        <div className="ticker-viewport border-b border-border bg-muted">
-          <div className="ticker-track py-2.5">
-            {[0, 1].map((copy) => (
-              <div
-                key={copy}
-                /* pr-8 matches gap-x-8, so the join between the two copies is
-                   spaced exactly like every other gap and the seam is invisible. */
-                className="flex shrink-0 gap-x-8 pr-8"
-                aria-hidden={copy === 1 ? true : undefined}
-              >
-                {tickerItems.map((t, i) => (
-                  <span
-                    key={`${t}-${i}`}
-                    className="whitespace-nowrap text-xs font-medium text-muted-foreground"
-                  >
-                    {stripLeadingEmoji(t)}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
+    <section className="relative pt-header">
       <div className="relative h-[560px] md:h-[640px] overflow-hidden bg-primary">
         {slides.map((s, i) => (
           <div
@@ -168,34 +113,22 @@ const HeroCarousel = () => {
           </div>
         ))}
 
+        {/* The prev/next arrows are gone: the carousel advances on its own, and two
+            floating buttons over the headline were competing with the one thing the
+            slide is asking the reader to do. The dots stay — they are quiet, they
+            show how many slides there are, and they are the only way to go back to
+            one that has passed. */}
         {slides.length > 1 && (
-          <>
-            <button
-              onClick={() => go(-1)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/20 hover:bg-background/40 backdrop-blur-md flex items-center justify-center text-primary-foreground transition-colors"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => go(1)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/20 hover:bg-background/40 backdrop-blur-md flex items-center justify-center text-primary-foreground transition-colors"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  className={`h-2 rounded-full transition-all ${i === active ? "w-8 bg-accent" : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/60"}`}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
-            </div>
-          </>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={`h-2 rounded-full transition-all ${i === active ? "w-8 bg-accent" : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/60"}`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
         )}
       </div>
     </section>

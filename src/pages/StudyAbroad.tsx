@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import StudyDestinations from "@/components/StudyDestinations";
@@ -6,7 +6,7 @@ import CTASection from "@/components/CTASection";
 
 const StudyAbroad = () => (
   <div className="min-h-screen bg-page">
-    <Navbar />
+    <SiteHeader />
     <DynamicPageHero
       page="study-abroad"
       fallback={{

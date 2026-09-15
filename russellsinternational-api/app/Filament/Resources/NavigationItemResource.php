@@ -36,6 +36,20 @@ class NavigationItemResource extends Resource
                     ->helperText('Examples: Quick Links, Programs, More')
                     ->maxLength(100)
                     ->visible(fn (Forms\Get $get) => $get('location') === 'footer'),
+                // Only top-level header links are offered, and never the record
+                // being edited: a menu that is its own parent, or nested two deep,
+                // would save happily and then render as nothing.
+                Forms\Components\Select::make('parent_id')
+                    ->label('Show under')
+                    ->helperText('Leave empty for a normal link. Pick a menu to turn this into a dropdown item under it.')
+                    ->options(fn (?NavigationItem $record) => NavigationItem::query()
+                        ->where('location', 'header')
+                        ->whereNull('parent_id')
+                        ->when($record, fn ($query) => $query->whereKeyNot($record->getKey()))
+                        ->orderBy('sort_order')
+                        ->pluck('label', 'id'))
+                    ->searchable()
+                    ->visible(fn (Forms\Get $get) => $get('location') === 'header'),
                 Forms\Components\TextInput::make('sort_order')
                     ->numeric()
                     ->minValue(0)
@@ -100,6 +114,12 @@ class NavigationItemResource extends Resource
                 Tables\Columns\TextColumn::make('location')->badge(),
                 Tables\Columns\TextColumn::make('footer_column')->placeholder('Header')->toggleable(),
                 Tables\Columns\TextColumn::make('label')->searchable(),
+                // Without this the list gives no hint that a link is inside a
+                // dropdown, so a missing menu entry looks like a missing record.
+                Tables\Columns\TextColumn::make('parent.label')
+                    ->label('Shown under')
+                    ->placeholder('Top level')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('url')->limit(35)->searchable(),
                 Tables\Columns\TextColumn::make('badge_label')->badge(),
                 Tables\Columns\TextColumn::make('badge_variant')->toggleable(),

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import CTASection from "@/components/CTASection";
@@ -17,7 +17,7 @@ import aboutHeroImg from "@/assets/about-hero.jpg";
  */
 const About = () => (
   <div className="min-h-screen bg-page">
-    <Navbar />
+    <SiteHeader />
     <DynamicPageHero
       page="about"
       fallback={{

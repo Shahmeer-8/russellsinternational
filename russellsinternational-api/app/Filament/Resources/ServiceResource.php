@@ -53,9 +53,9 @@ class ServiceResource extends Resource
             Forms\Components\Textarea::make('description')->required()->rows(3)->columnSpanFull(),
             Forms\Components\Textarea::make('details')->required()->rows(5)->columnSpanFull(),
             Forms\Components\Repeater::make('key_benefits')
-                ->schema([Forms\Components\TextInput::make('item')->required()])
+                ->simple(Forms\Components\TextInput::make('item')->required())
                 ->defaultItems(3)
-                ->collapsible()
+                
                 ->columnSpanFull(),
             Forms\Components\TextInput::make('sort_order')->numeric()->minValue(0)->maxValue(255)->default(0),
             Forms\Components\Toggle::make('is_active')->default(true),

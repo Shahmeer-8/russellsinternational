@@ -43,15 +43,25 @@ const WhyChooseUs = () => {
                   front={
                     <div className="premium-card h-full overflow-hidden flex flex-col">
                       {p.image && (
-                        <img
-                          src={p.image}
-                          alt=""
-                          className="h-40 w-full object-cover"
-                          loading="lazy"
-                          decoding="async"
-                          width={640}
-                          height={360}
-                        />
+                        /* The photograph warms into the brand gradient under the
+                           cursor, so a card announces it is interactive before the
+                           reader has to guess. Sits over the image rather than
+                           replacing it — the subject stays readable through it. */
+                        <div className="relative h-40 w-full overflow-hidden">
+                          <img
+                            src={p.image}
+                            alt=""
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                            decoding="async"
+                            width={640}
+                            height={360}
+                          />
+                          <div
+                            className="absolute inset-0 bg-gradient-to-tr from-primary/80 via-primary/40 to-accent/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                            aria-hidden="true"
+                          />
+                        </div>
                       )}
                       <div className="flex flex-1 flex-col p-6">
                         <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted">

@@ -219,6 +219,8 @@ export interface NavigationItem {
   badge_animation: string | null;
   sort_order: number;
   is_active: boolean;
+  /** Submenu links, nested one level deep by the API. Header items only. */
+  children?: NavigationItem[];
 }
 
 export interface FooterNavigationColumn {

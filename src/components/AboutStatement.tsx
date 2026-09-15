@@ -25,12 +25,12 @@ const AboutStatement = () => {
   const image = sectionImage(section, campusLifeImg);
 
   return (
-    <AboutSection tone="ink" label="What we do">
+    <AboutSection label="What we do">
       <h2 className="max-w-[18ch] font-display text-[clamp(2.25rem,4.6vw,4rem)] font-semibold leading-[1.04] tracking-[-0.03em]">
         {sectionText(section, "title", "A living, learning ecosystem")}
       </h2>
 
-      <p className="mt-6 max-w-[62ch] text-base leading-[1.75] text-primary-foreground/75 md:text-[17px]">
+      <p className="mt-6 max-w-[62ch] text-base leading-[1.75] text-muted-foreground md:text-[17px]">
         {sectionText(
           section,
           "body",
@@ -41,20 +41,20 @@ const AboutStatement = () => {
       {ctaLabel && ctaUrl && (
         <Link
           to={ctaUrl}
-          className="mt-7 inline-block border-b-2 border-accent pb-1 text-base font-semibold text-primary-foreground transition-colors hover:text-accent"
+          className="mt-7 inline-block border-b-2 border-accent pb-1 text-base font-semibold text-foreground transition-colors hover:text-accent"
         >
           {ctaLabel}
         </Link>
       )}
 
       {stats.length > 0 && (
-        <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-primary-foreground/15 pt-10 md:grid-cols-4">
+        <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-border pt-10 md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.id}>
               <dt className="font-heading text-[clamp(1.75rem,3vw,2.75rem)] font-extrabold leading-none tracking-[-0.02em] tabular-nums">
                 {stat.value}
               </dt>
-              <dd className="mt-2 text-sm leading-6 text-primary-foreground/60">{stat.label}</dd>
+              <dd className="mt-2 text-sm leading-6 text-muted-foreground">{stat.label}</dd>
             </div>
           ))}
         </dl>

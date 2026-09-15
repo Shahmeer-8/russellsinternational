@@ -55,17 +55,27 @@ class CourseResource extends Resource
                     ->default('bg-blue-50 text-blue-600'),
             ])->columns(3),
 
+            /*
+             * These two, and the equivalent list fields on jobs, services,
+             * internships, destinations and language programs, are stored as a flat
+             * array of strings. They were built as ordinary repeaters wrapping a
+             * field named `item`, which expects rows shaped [['item' => '…']] — so
+             * opening an existing course handed the repeater a list of plain strings
+             * it could not read, and every row rendered blank. That is the
+             * "admin form clears when updating courses" report: the data was intact
+             * the whole time, but saving from that screen wrote the empty rows back.
+             *
+             * `simple()` is the repeater that reads and writes flat scalars.
+             */
             Forms\Components\Section::make('Curriculum')->schema([
                 Forms\Components\Repeater::make('what_you_learn')
                     ->label('What You\'ll Learn')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(4)
-                    ->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(4),
                 Forms\Components\Repeater::make('highlights')
                     ->label('Program Highlights')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(4)
-                    ->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(4),
             ])->columns(2),
 
             Forms\Components\Section::make('Files & Status')->schema([

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import DynamicPageHero from "@/components/DynamicPageHero";
 import JobsSection from "@/components/JobsSection";
@@ -9,7 +9,7 @@ import CTASection from "@/components/CTASection";
 
 const Careers = () => (
   <div className="min-h-screen bg-page">
-    <Navbar />
+    <SiteHeader />
     <DynamicPageHero
       page="careers"
       fallback={{

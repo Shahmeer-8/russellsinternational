@@ -45,12 +45,12 @@ class InternshipResource extends Resource
 
             Forms\Components\Section::make('Skills & Benefits')->schema([
                 Forms\Components\Repeater::make('skills')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(3)->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(3),
                 Forms\Components\Repeater::make('gains')
                     ->label('What They\'ll Gain')
-                    ->schema([Forms\Components\TextInput::make('item')->required()])
-                    ->defaultItems(5)->collapsible(),
+                    ->simple(Forms\Components\TextInput::make('item')->required())
+                    ->defaultItems(5),
             ])->columns(2),
 
             Forms\Components\Section::make('Media & Status')->schema([
