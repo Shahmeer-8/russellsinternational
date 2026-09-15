@@ -268,6 +268,14 @@
   padding-top: var(--header-height);
 }
 
+/* The header is fixed, so scrolling an anchor to the top of the viewport puts it
+   underneath. Every element that can be an anchor target keeps the header's
+   height clear above it — without this, /#contact lands on the form with its
+   heading hidden behind the navigation. */
+[id] {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
 /* ── Announcement ticker ──────────────────────────────────────────────────────
    The track holds the announcements twice over, so the moment the first copy has
    slid fully out of frame the second one is sitting exactly where it started and
