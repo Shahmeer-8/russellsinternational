@@ -257,11 +257,11 @@
 }
 
 /* Height of the fixed SiteHeader: the announcement strip (py-2 around a 16px
-   line) plus the 64px navbar. Pages clear it with .pt-header rather than each
+   line) plus the 80px navbar. Pages clear it with .pt-header rather than each
    hero carrying its own magic number, which is how the old pt-16 came to be
    wrong in three places at once. */
 :root {
-  --header-height: 6rem;
+  --header-height: 7rem;
 }
 
 .pt-header {

@@ -1,8 +1,9 @@
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, MessageCircle, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useNavigation, useSettings } from "@/hooks/api";
 import { badgeClass, isExternalUrl } from "@/lib/navigation";
 import { mapEmbedUrl } from "@/lib/mapEmbed";
+import { socialHref } from "@/lib/socialLinks";
 import type { NavigationItem } from "@/types/api";
 import russellsLogo from "@/assets/russells-logo.png";
 
@@ -18,7 +19,9 @@ const socials = [
   { icon: Instagram, key: "instagram", label: "Instagram" },
   { icon: Linkedin, key: "linkedin", label: "LinkedIn" },
   { icon: Youtube, key: "youtube", label: "YouTube" },
+  { icon: MessageCircle, key: "whatsapp", label: "WhatsApp" },
 ];
+
 
 const Footer = () => {
   const { data, isLoading } = useSettings();
@@ -26,7 +29,7 @@ const Footer = () => {
   const settings = data?.data ?? {};
   const columns = navigationData?.data.footer ?? [];
   const availableSocials = socials
-    .map((s) => ({ ...s, href: settings[s.key]?.trim() }))
+    .map((s) => ({ ...s, href: settings[s.key]?.trim() ? socialHref(s.key, settings[s.key].trim()) : undefined }))
     .filter((s) => s.href);
   const siteName = settings.site_name;
   const footerText = settings.footer_text ?? settings.footer_about;

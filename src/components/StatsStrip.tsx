@@ -53,8 +53,11 @@ const StatsStrip = () => {
     return null;
   }
 
+  // No ground of its own: it now sits directly above the contact section, which is
+  // already the page's one white block, and two adjacent panels in the same tone
+  // would read as a single oversized slab.
   return (
-    <section className="py-10 md:py-14 bg-section-alt">
+    <section className="py-10 md:py-14">
       <div
         ref={ref}
         className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}

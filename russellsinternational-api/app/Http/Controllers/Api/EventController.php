@@ -30,6 +30,7 @@ class EventController extends Controller
             $event->toArray(),
             [
                 'image_url' => $event->image_url,
+                'image_urls' => $event->image_urls,
                 'formatted_date' => $event->formatted_date,
             ]
         ));
@@ -45,6 +46,7 @@ class EventController extends Controller
             'success' => true,
             'data' => array_merge($event->toArray(), [
                 'image_url' => $event->image_url,
+                'image_urls' => $event->image_urls,
                 'formatted_date' => $event->formatted_date,
             ]),
         ]);

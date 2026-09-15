@@ -18,13 +18,16 @@ const Index = () => (
   <div className="min-h-screen bg-page">
     <SiteHeader />
     <HeroCarousel />
-    <StatsStrip />
     <WhyChooseUs />
     <ServicesSection />
     <StudyAbroadSection />
     <SkillsFocusSection />
     <HomeNewsCarousel />
     <Testimonials />
+    {/* The figures read better as the closing argument than as an opening claim:
+        by this point the reader has seen what is on offer, and the numbers land
+        right before the form rather than before they know what they are for. */}
+    <StatsStrip />
     <ContactSection />
     <Footer />
   </div>

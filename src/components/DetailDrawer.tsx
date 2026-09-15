@@ -6,9 +6,18 @@ interface DetailDrawerProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  /**
+   * Link to a brochure, when the record actually has one.
+   *
+   * Every drawer on the site used to end with a "Download PDF" button that had no
+   * href and no handler — it did nothing, on courses, jobs, internships, services,
+   * destinations and events alike. Events are where it was noticed, because an
+   * events listing offering a PDF is the wrong thing entirely.
+   */
+  pdfUrl?: string | null;
 }
 
-const DetailDrawer = ({ open, onClose, title, children }: DetailDrawerProps) => {
+const DetailDrawer = ({ open, onClose, title, children, pdfUrl }: DetailDrawerProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,9 +63,16 @@ const DetailDrawer = ({ open, onClose, title, children }: DetailDrawerProps) => 
           {children}
         </div>
         <div className="sticky bottom-0 bg-background/95 backdrop-blur-lg border-t border-border px-6 py-4 flex gap-3">
-          <button className="btn-accent flex-1 inline-flex items-center justify-center gap-2 text-sm">
-            <Download className="w-4 h-4" /> Download PDF
-          </button>
+          {pdfUrl && (
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-accent flex-1 inline-flex items-center justify-center gap-2 text-sm"
+            >
+              <Download className="w-4 h-4" /> Download Brochure
+            </a>
+          )}
           <a href="#contact" onClick={onClose} className="btn-primary flex-1 inline-flex items-center justify-center gap-2 text-sm">
             Inquire Now <ArrowRight className="w-4 h-4" />
           </a>

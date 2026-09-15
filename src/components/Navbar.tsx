@@ -67,12 +67,17 @@ const Navbar = () => {
         ? "bg-background/95 backdrop-blur-lg border-b border-border shadow-sm"
         : "bg-background/80 backdrop-blur-sm"
     }`}>
-      <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-8">
-        <Link to="/" className="flex items-center">
+      <div className="container mx-auto flex items-center justify-between gap-6 h-20 px-4 md:px-8">
+        {/* The logo was 48px tall in a 64px bar, which squeezed the "Knowledge,
+            Skills, Employment" line under the wordmark down to a grey smudge. The
+            bar is 80px now and the mark fills it, so the tagline is legible —
+            which is the whole point of having one. `shrink-0` keeps it at that
+            size instead of letting the nav row squeeze it on a narrow laptop. */}
+        <Link to="/" className="flex shrink-0 items-center">
           <img
             src={russellsLogo}
             alt={siteName}
-            className="h-12 w-36 object-contain object-left md:w-44"
+            className="h-16 w-48 object-contain object-left md:w-56"
             width={483}
             height={163}
             fetchPriority="high"
@@ -82,7 +87,10 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-6">
+        {/* Centred in the space between the logo and the button, rather than
+            pushed against the button by justify-between — with the wider logo the
+            links had drifted right and sat unevenly under it. */}
+        <div className="hidden flex-1 items-center justify-center gap-7 lg:flex">
           {navigationLoading ? (
             <div className="h-4 w-96 rounded bg-muted animate-pulse" />
           ) : (
@@ -101,7 +109,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <Link to={ctaUrl} className="hidden lg:inline-flex btn-accent text-sm px-5 py-2.5">
+        <Link to={ctaUrl} className="hidden shrink-0 lg:inline-flex btn-accent text-sm px-5 py-2.5">
           {ctaLabel}
         </Link>
 

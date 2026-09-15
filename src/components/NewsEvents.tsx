@@ -1,42 +1,32 @@
-import { useState } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import DetailDrawer from "@/components/DetailDrawer";
 import { useEvents } from "@/hooks/api";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
 import { useSectionCopy } from "@/hooks/useSectionCopy";
 
-type EventCard = {
-  image: string | null;
-  tag: string;
-  tagColor: string;
-  title: string;
-  date: string;
-  desc: string;
-  details: string;
-};
-
+/**
+ * The events listing. Each card goes to that event's own page.
+ *
+ * It used to open a side drawer, which could not be linked to or shared and which
+ * ended in a "Download PDF" button that downloaded nothing. An event has
+ * photographs, a place and a date — that wants a page.
+ */
 const NewsEvents = () => {
   const copy = useSectionCopy("events", "news");
   const { ref, visible } = useScrollReveal();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selected, setSelected] = useState<EventCard | null>(null);
 
   const { data: eventsData, isLoading } = useEvents("event");
   const eventsList = (eventsData?.data?.data ?? []).map((e) => ({
+    id: e.id,
     image: e.image_url,
     tag: e.tag,
     tagColor: e.tag_color,
     title: e.title,
     date: e.formatted_date ?? e.event_date ?? "",
     desc: e.short_description,
-    details: e.full_details ?? "",
+    photoCount: e.image_urls?.length ?? 0,
   }));
-
-  const openDrawer = (e: EventCard) => {
-    setSelected(e);
-    setDrawerOpen(true);
-  };
 
   return (
     <>
@@ -51,9 +41,6 @@ const NewsEvents = () => {
               <h2 className="section-title mt-3">{copy("title", "What's Happening")}</h2>
               <p className="text-muted-foreground mt-3 max-w-md">{copy("subtitle", "Stay updated with our latest events, workshops, and admissions announcements.")}</p>
             </div>
-            <a href="#" className="inline-flex items-center gap-2 py-3 text-sm font-semibold text-accent hover:gap-3 transition-all shrink-0">
-              View All News <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
 
           {isLoading ? (
@@ -64,12 +51,19 @@ const NewsEvents = () => {
             <ResponsiveCardRow
               gridClassName="grid md:grid-cols-3 gap-6"
               items={eventsList.map((e) => ({
-                key: e.title,
+                key: e.id,
                 node: (
-                <div className="premium-card overflow-hidden group cursor-pointer h-full" onClick={() => openDrawer(e)}>
-                  <div className="h-48 overflow-hidden bg-muted">
+                <Link to={`/events/${e.id}`} className="premium-card overflow-hidden group h-full flex flex-col">
+                  <div className="h-48 overflow-hidden bg-muted relative">
                     {e.image && (
                       <img src={e.image} alt={e.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" width={800} height={512} />
+                    )}
+                    {/* Tells the visitor there is more to see before they click,
+                        which is the point of giving events a page of their own. */}
+                    {e.photoCount > 1 && (
+                      <span className="absolute bottom-3 right-3 rounded-full bg-foreground/70 px-2.5 py-1 text-[11px] font-semibold text-background backdrop-blur-sm">
+                        {e.photoCount} photos
+                      </span>
                     )}
                   </div>
                   <div className="p-6">
@@ -79,8 +73,11 @@ const NewsEvents = () => {
                     </div>
                     <h3 className="font-bold text-foreground font-heading text-base mb-2 group-hover:text-accent transition-colors leading-snug">{e.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{e.desc}</p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
+                      View event <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
-                </div>
+                </Link>
                 ),
               }))}
             />
@@ -88,27 +85,6 @@ const NewsEvents = () => {
         </div>
       </section>
 
-      <DetailDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selected?.title || "Event Details"}>
-        {selected && (
-          <div className="space-y-6">
-            {selected.image && <img src={selected.image} alt={selected.title} className="w-full h-48 object-cover rounded-xl" decoding="async" />}
-            <div className="flex items-center gap-3">
-              <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${selected.tagColor}`}>{selected.tag}</span>
-              <span className="flex items-center gap-1.5 text-sm text-muted-foreground"><Calendar className="w-4 h-4" /> {selected.date}</span>
-            </div>
-            <div>
-              <h4 className="font-heading font-bold text-xl text-foreground mb-2">{selected.title}</h4>
-              <p className="text-muted-foreground leading-relaxed">{selected.desc}</p>
-            </div>
-            {selected.details && (
-              <div>
-                <h5 className="font-semibold text-foreground mb-2">More Details</h5>
-                <p className="text-sm text-muted-foreground leading-relaxed">{selected.details}</p>
-              </div>
-            )}
-          </div>
-        )}
-      </DetailDrawer>
     </>
   );
 };

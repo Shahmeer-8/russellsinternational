@@ -17,6 +17,7 @@ type CourseCard = {
   tag: string;
   color: string;
   price?: string;
+  pdfUrl?: string | null;
   whatYouLearn: string[];
   highlights: string[];
 };
@@ -34,6 +35,18 @@ const FeaturedCourses = () => {
   const NAVTTC_WARNING =
     "NAVTTC seats are limited and allocated under a government scheme. Admission is subject to eligibility verification and seat availability, and no fee is charged by Russell's International for these courses.";
   const [navttcWarning] = useSectionOptions("skills", "courses", "warning", [NAVTTC_WARNING]);
+  // What each tab says when it has nothing in it. Editable for the same reason the
+  // warning is: when the next NAVTTC intake opens is the institute's news, not ours.
+  const EMPTY_STATE = [
+    "No NAVTTC courses are open right now",
+    "NAVTTC intakes are announced by the government scheme and open in batches. Leave us your details and we will tell you as soon as the next one is confirmed.",
+    "No courses listed right now",
+    "New dates are being scheduled. Get in touch and we will let you know what is starting next.",
+  ];
+  const emptyState = useSectionOptions("skills", "courses", "empty", EMPTY_STATE);
+  const [emptyNavttcTitle, emptyNavttcBody, emptyPaidTitle, emptyPaidBody] = EMPTY_STATE.map(
+    (fallback, i) => emptyState[i] || fallback,
+  );
   const { ref, visible } = useScrollReveal();
   const [tab, setTab] = useState<"paid" | "navttc">("paid");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,6 +62,7 @@ const FeaturedCourses = () => {
     description: c.description ?? '',
     students: c.students_count ?? '',
     price: c.price ?? undefined,
+    pdfUrl: c.pdf_url,
     tag: c.tag ?? '',
     whatYouLearn: c.what_you_learn ?? [],
     highlights: c.highlights ?? [],
@@ -125,7 +139,23 @@ const FeaturedCourses = () => {
                 <div key={i} className="premium-card p-6 h-64 animate-pulse" />
               ))}
             </div>
-          ) : courses.length === 0 ? null : (
+          ) : courses.length === 0 ? (
+            /* An empty tab used to render nothing at all, so switching to NAVTTC
+               between intakes looked like the page had broken rather than like
+               there was nothing open. Says which tab is empty and what to do. */
+            <div className="mx-auto max-w-xl rounded-2xl border border-dashed border-border bg-muted/40 px-6 py-10 text-center">
+              <AlertTriangle className="mx-auto mb-3 h-6 w-6 text-muted-foreground" aria-hidden="true" />
+              <p className="font-heading text-base font-bold text-foreground">
+                {tab === "navttc" ? emptyNavttcTitle : emptyPaidTitle}
+              </p>
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+                {tab === "navttc" ? emptyNavttcBody : emptyPaidBody}
+              </p>
+              <a href="#contact" className="btn-primary mt-6 inline-flex text-sm">
+                Ask about upcoming intakes
+              </a>
+            </div>
+          ) : (
             <ResponsiveCardRow
               items={courses.map((c) => ({
                 key: c.title,
@@ -169,6 +199,7 @@ const FeaturedCourses = () => {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         title={selectedCourse?.title || "Course Details"}
+        pdfUrl={selectedCourse?.pdfUrl}
       >
         {selectedCourse && (
           <div className="space-y-6">

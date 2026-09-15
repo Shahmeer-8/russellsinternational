@@ -176,7 +176,10 @@ export interface Event {
   short_description: string;
   full_details: string | null;
   image_url: string | null;
+  /** Cover first, then the extra photos, in admin order. */
+  image_urls: string[];
   venue: string | null;
+  capacity: number | null;
   is_featured: boolean;
 }
 

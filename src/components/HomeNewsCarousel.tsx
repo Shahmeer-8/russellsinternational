@@ -23,6 +23,7 @@ const HomeNewsCarousel = () => {
   const copy = useSectionCopy("home", "news");
   const { data, isLoading } = useEvents();
   const displayItems = (data?.data?.data ?? []).slice(0, 8).map((event) => ({
+    id: event.id,
     image: event.image_url,
     title: event.title,
     desc: event.short_description,
@@ -50,11 +51,14 @@ const HomeNewsCarousel = () => {
           <CarouselContent className="-ml-4">
             {displayItems.map((it) => (
             <CarouselItem
-              key={it.title}
+              key={it.id}
               className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
             >
+              {/* Straight to the event rather than the listing: landing on a page of
+                  every event and having to find the one you just clicked is the kind
+                  of small betrayal that makes a site feel broken. */}
               <Link
-                to="/events"
+                to={`/events/${it.id}`}
                 className="group block h-full bg-card rounded-2xl overflow-hidden ring-1 ring-border shadow-[var(--card-shadow)] hover:shadow-[var(--card-shadow-hover)] hover:-translate-y-1.5 transition-all duration-500"
               >
                 <div className="relative h-48 overflow-hidden">

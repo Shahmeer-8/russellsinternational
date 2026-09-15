@@ -45,6 +45,8 @@ class EventResource extends Resource
 
             Forms\Components\Section::make('Media & Status')->schema([
                 Forms\Components\FileUpload::make('image')
+                    ->label('Cover image')
+                    ->helperText('The single picture shown on the card in the listing.')
                     ->image()
                     ->disk('public')
                     ->visibility('public')
@@ -55,6 +57,26 @@ class EventResource extends Resource
                     ->imageEditor()
                     ->downloadable()
                     ->openable(),
+                // Events open as their own page now, and a page about an event that
+                // ran wants photographs of it. Reorderable because the order here is
+                // the order of the gallery on that page.
+                Forms\Components\FileUpload::make('images')
+                    ->label('Event photos')
+                    ->helperText('Extra pictures shown on the event page. Drag to reorder. The cover above is added first automatically.')
+                    ->multiple()
+                    ->reorderable()
+                    ->appendFiles()
+                    ->image()
+                    ->disk('public')
+                    ->visibility('public')
+                    ->directory('events')
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/avif'])
+                    ->maxSize(2048)
+                    ->maxFiles(12)
+                    ->imagePreviewHeight('120')
+                    ->downloadable()
+                    ->openable()
+                    ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_featured'),
                 Forms\Components\Toggle::make('is_active')->default(true),
             ])->columns(3),

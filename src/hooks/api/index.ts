@@ -141,6 +141,16 @@ export function useEvents(type?: 'event' | 'news') {
   });
 }
 
+/** One event, for its own page. */
+export function useEvent(id: string | undefined) {
+  return useQuery({
+    queryKey: ['event', id],
+    queryFn: () => api.get<ApiResponse<Event>>(`/events/${id}`),
+    enabled: Boolean(id),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
 // ─── Gallery ───────────────────────────────────────────────────────────────────
 
 export function useGallery(category?: string) {
