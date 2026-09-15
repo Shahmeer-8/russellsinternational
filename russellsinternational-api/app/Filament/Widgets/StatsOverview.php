@@ -14,6 +14,15 @@ class StatsOverview extends BaseWidget
 {
     protected static ?int $sort = 1;
 
+    /**
+     * Every figure below is a live count, but a dashboard left open all morning
+     * showed whatever was true when it was opened — so a new enquiry arriving did
+     * not appear until someone reloaded, which is what made the numbers look
+     * hardcoded. Thirty seconds is frequent enough to notice and far too little
+     * traffic to matter: six counts on one small table each.
+     */
+    protected static ?string $pollingInterval = '30s';
+
     protected function getStats(): array
     {
         return [

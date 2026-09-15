@@ -35,7 +35,9 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Slate,
             ])
             ->brandName("Russell's International")
-            ->favicon(asset('favicon.svg'))
+            // Was favicon.svg, which has never existed in this app's public
+            // directory — the admin tab has been showing a 404 and a blank icon.
+            ->favicon(asset('favicon-64.png'))
             ->discoverResources(app_path('Filament/Resources'), 'App\\Filament\\Resources')
             ->discoverPages(app_path('Filament/Pages'), 'App\\Filament\\Pages')
             ->pages([Pages\Dashboard::class])
@@ -44,6 +46,10 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::BODY_END,
                 fn (): string => view('filament.scripts.admin-idle-lock')->render(),
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): string => view('filament.scripts.dashboard-stat-countup')->render(),
             )
             ->middleware([
                 EncryptCookies::class,

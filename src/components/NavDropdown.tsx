@@ -52,7 +52,15 @@ const NavDropdown = ({
   return (
     <div
       ref={containerRef}
-      className="relative"
+      /*
+       * `flex` matters: as a plain block this wrapper took the inherited 24px
+       * line-height and stood 24px tall while every sibling link was 19.5px.
+       * The row centres each child on its own height, so the button inside ended
+       * up sitting just under a pixel lower than the links beside it — small
+       * enough to look like sloppy alignment rather than a bug, which is exactly
+       * how it was reported. Sized by the button, it lines up exactly.
+       */
+      className="relative flex items-center"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
