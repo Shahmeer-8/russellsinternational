@@ -27,10 +27,17 @@ const CareerApplyForm = () => {
    * Reading the live openings keeps the two halves of the page in step, and the
    * titles are what the application is filed under, so they have to match exactly.
    */
-  const openings = [
-    ...(jobsData?.data ?? []).map((job) => job.title),
-    ...(internshipsData?.data ?? []).map((internship) => internship.title),
-  ].filter((title, index, all) => title && all.indexOf(title) === index);
+  // Both endpoints are paginated, so the rows sit at data.data — and the guard is
+  // deliberate: reading this one level too shallow put `.map` on the paginator
+  // object itself, which threw during render and took the whole site white.
+  const rows = (paginated: unknown): { title?: string }[] => {
+    const list = (paginated as { data?: { data?: unknown } })?.data?.data;
+    return Array.isArray(list) ? list : [];
+  };
+
+  const openings = [...rows(jobsData), ...rows(internshipsData)]
+    .map((row) => row.title)
+    .filter((title, index, all): title is string => Boolean(title) && all.indexOf(title) === index);
 
   const positions = [...(openings.length ? openings : FALLBACK_POSITIONS), "Other"];
   const [submitted, setSubmitted] = useState(false);
