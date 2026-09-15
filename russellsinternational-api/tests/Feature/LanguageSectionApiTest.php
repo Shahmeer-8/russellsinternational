@@ -149,4 +149,34 @@ class LanguageSectionApiTest extends TestCase
             ->assertJsonPath('success', true)
             ->assertJsonCount(0, 'data');
     }
+
+    /**
+     * The nested payload is hand-listed field by field, so anything added to the
+     * model reaches this endpoint only if it is added here too. A brochure
+     * uploaded against a programme came back from /language-programs and was
+     * missing from the page that actually renders it, and nothing failed.
+     */
+    public function test_it_includes_the_brochure_url_with_each_program(): void
+    {
+        $english = $this->section();
+        $this->program($english, ['pdf_brochure' => 'brochures/ielts.pdf']);
+
+        $response = $this->getJson('/api/v1/language-sections')->assertOk();
+
+        $this->assertStringContainsString(
+            'brochures/ielts.pdf',
+            (string) $response->json('data.0.programs.0.pdf_url'),
+            'The nested program payload dropped pdf_url.',
+        );
+    }
+
+    public function test_a_program_without_a_brochure_reports_none(): void
+    {
+        $english = $this->section();
+        $this->program($english);
+
+        $this->getJson('/api/v1/language-sections')
+            ->assertOk()
+            ->assertJsonPath('data.0.programs.0.pdf_url', null);
+    }
 }

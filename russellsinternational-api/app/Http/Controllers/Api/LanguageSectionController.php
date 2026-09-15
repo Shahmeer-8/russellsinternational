@@ -51,6 +51,11 @@ class LanguageSectionController extends Controller
     }
 
     /**
+     * Hand-listed rather than `toArray()`, so anything added to the model has to
+     * be added here too or it silently never reaches the Languages page. That is
+     * what happened to `pdf_url`: a brochure uploaded against a programme showed
+     * up on /language-programs and nowhere on the page that actually renders it.
+     *
      * @return array<string, mixed>
      */
     private function programPayload(LanguageProgram $program): array
@@ -65,6 +70,7 @@ class LanguageSectionController extends Controller
             'color_class' => $program->color_class,
             'icon_name' => $program->icon_name,
             'image_url' => $program->image_url,
+            'pdf_url' => $program->pdf_url,
         ];
     }
 }
