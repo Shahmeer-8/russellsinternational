@@ -6,8 +6,7 @@ import { badgeClass, isExternalUrl } from "@/lib/navigation";
 import { mapEmbedUrl } from "@/lib/mapEmbed";
 import { socialHref } from "@/lib/socialLinks";
 import type { NavigationItem } from "@/types/api";
-import russellsEmblem from "@/assets/russells-logo-emblem.png";
-import russellsWordmark from "@/assets/russells-logo-wordmark.png";
+import russellsLogo from "@/assets/russells-logo.png";
 
 /**
  * One settings key per network. There used to be two of each — "facebook" and
@@ -36,7 +35,6 @@ const Footer = () => {
   const siteName = settings.site_name;
   const footerText = settings.footer_text ?? settings.footer_about;
   const mapUrl = mapEmbedUrl(settings.google_map);
-  const tagline = settings.site_tagline || "Knowledge, Skills, Employment";
   const renderFooterLink = (item: NavigationItem) => {
     const content = (
       <>
@@ -68,36 +66,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-8 py-12 md:py-16">
         <div className="grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-4">
-            {/* Same assembled lockup as the header, and for the same reason: in the
-                artwork the tagline is too small a fraction of the file to survive
-                being scaled down to a footer logo. See the note in Navbar. */}
-            <div className="mb-4 inline-flex items-center gap-3 rounded-md bg-primary-foreground px-3 py-2.5">
+            <div className="inline-flex rounded-md bg-primary-foreground p-2 mb-4">
               <img
-                src={russellsEmblem}
-                alt=""
-                className="h-12 w-12 shrink-0"
-                width={302}
-                height={302}
+                src={russellsLogo}
+                alt={siteName ?? "Russell's International"}
+                className="h-16 w-52 object-contain object-left"
+                width={483}
+                height={163}
                 loading="lazy"
               />
-              <span className="flex flex-col">
-                <img
-                  src={russellsWordmark}
-                  alt=""
-                  className="h-8 w-auto"
-                  width={624}
-                  height={204}
-                  loading="lazy"
-                />
-                <span className="mt-1 flex items-center gap-1.5" aria-hidden="true">
-                  <span className="h-px w-3 bg-accent" />
-                  <span className="whitespace-nowrap text-[11px] font-semibold text-primary/70">
-                    {tagline}
-                  </span>
-                  <span className="h-px w-3 bg-accent" />
-                </span>
-              </span>
-              <span className="sr-only">{siteName ?? "Russell's International"}</span>
             </div>
             {footerText && (
               <p className="text-sm text-primary-foreground/50 leading-relaxed mb-5">

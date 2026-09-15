@@ -5,8 +5,7 @@ import { useNavigation, useSettings } from "@/hooks/api";
 import type { NavigationItem } from "@/types/api";
 import { badgeClass, isExternalUrl } from "@/lib/navigation";
 import NavDropdown from "@/components/NavDropdown";
-import russellsEmblem from "@/assets/russells-logo-emblem.png";
-import russellsWordmark from "@/assets/russells-logo-wordmark.png";
+import russellsLogo from "@/assets/russells-logo.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -21,8 +20,6 @@ const Navbar = () => {
   // could not touch — the links beside it are already admin-managed.
   const ctaLabel = settings.nav_cta_label || "Start Your Journey";
   const ctaUrl = settings.nav_cta_url || "/#contact";
-  // Part of the mark, so it has a default; editable in case the company line changes.
-  const tagline = settings.site_tagline || "Knowledge, Skills, Employment";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -70,50 +67,41 @@ const Navbar = () => {
         ? "bg-background/95 backdrop-blur-lg border-b border-border shadow-sm"
         : "bg-background/80 backdrop-blur-sm"
     }`}>
-      <div className="container mx-auto flex items-center justify-between gap-6 h-20 px-4 md:px-8">
+      <div
+        className={`container mx-auto flex items-center justify-between gap-6 px-4 transition-[height] duration-300 md:px-8 ${
+          scrolled ? "h-20" : "h-20 lg:h-28"
+        }`}
+      >
         {/*
-         * The lockup is assembled rather than one flat image, because the tagline
-         * cannot be read otherwise.
+         * The bar is tall until you scroll, and the logo fills it.
          *
-         * In the artwork the tagline is 14px of a 163px-tall file — a ratio of
-         * 0.086 — so at the 64px the header can spare it renders about 5.5px and
-         * reads as a grey smudge. Measured against the source, it only becomes
-         * legible once the whole logo is around 96px tall, which would cost a
-         * 136px header on every page.
+         * The tagline is 14px of a 163px-tall logo file — a ratio of 0.086 — so at
+         * the 64px a compact header can spare it renders about 5.5px and reads as
+         * a grey smudge. Rendering the logo at several sizes against the source,
+         * "Knowledge, Skills, Employment" only becomes legible somewhere around
+         * 96px, and a 96px logo does not fit a compact bar.
          *
-         * So the emblem and wordmark are the original artwork, cropped, and the
-         * tagline is live text at 11px: crisp at any size and on any screen, and
-         * the header stays the height it was.
+         * So the header opens tall, where the logo is 96px and the tagline can be
+         * read, and shrinks to a normal 80px bar once the reader starts scrolling
+         * — by which point they have seen the mark and want the screen back.
+         * Splitting the logo into separate emblem, wordmark and live-text pieces
+         * was tried first and looked exactly like three pieces; this keeps the
+         * artwork whole.
          */}
-        <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={siteName}>
+        <Link to="/" className="flex shrink-0 items-center">
           <img
-            src={russellsEmblem}
-            alt=""
-            className="h-11 w-11 shrink-0 lg:h-[3.25rem] lg:w-[3.25rem]"
-            width={302}
-            height={302}
+            src={russellsLogo}
+            alt={siteName}
+            className={`w-auto object-contain object-left transition-[height] duration-300 ${
+              scrolled ? "h-12 lg:h-14" : "h-12 lg:h-24"
+            }`}
+            width={483}
+            height={163}
             fetchPriority="high"
           />
-          <span className="flex flex-col">
-            <img
-              src={russellsWordmark}
-              alt=""
-              className="h-[1.9rem] w-auto lg:h-[2.15rem]"
-              width={624}
-              height={204}
-              fetchPriority="high"
-            />
-            {/* Rules either side, as in the artwork. aria-hidden because the link
-                already carries the company name. */}
-            <span className="mt-1 hidden items-center gap-1.5 sm:flex" aria-hidden="true">
-              <span className="h-px w-3 bg-accent" />
-              <span className="whitespace-nowrap text-[10px] font-semibold tracking-[0.02em] text-muted-foreground lg:text-[11px]">
-                {tagline}
-              </span>
-              <span className="h-px w-3 bg-accent" />
-            </span>
+          <span className="sr-only">
+            {siteName}
           </span>
-          <span className="sr-only">{siteName}</span>
         </Link>
 
         {/* Centred in the space between the logo and the button, rather than

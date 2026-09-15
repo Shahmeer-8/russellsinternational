@@ -257,11 +257,21 @@
 }
 
 /* Height of the fixed SiteHeader: the announcement strip (py-2 around a 16px
-   line) plus the 80px navbar. Pages clear it with .pt-header rather than each
-   hero carrying its own magic number, which is how the old pt-16 came to be
-   wrong in three places at once. */
+   line) plus the navbar at its tall, unscrolled height of 112px — a page has to
+   clear the header as it is on load, not as it is after it shrinks.
+
+   Pages use .pt-header rather than each hero carrying its own magic number,
+   which is how the old pt-16 came to be wrong in three places at once. */
 :root {
   --header-height: 7rem;
+}
+
+/* The bar only opens tall where the tagline is big enough to be worth reading;
+   on a phone it stays compact, so the header does not eat a sixth of the screen. */
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 9rem;
+  }
 }
 
 .pt-header {
