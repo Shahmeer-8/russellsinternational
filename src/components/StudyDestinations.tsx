@@ -38,20 +38,24 @@ const StudyDestinations = () => {
 
   return (
     <>
-      <section id="destinations" className="py-20 md:py-28 bg-primary text-primary-foreground">
+      {/* This was the one full-navy body section left on the site, so the Study
+          Abroad page read as if it belonged to a different build from every other
+          page. Same ground, same heading treatment and the same premium-card as
+          the courses, services and destination grids elsewhere. */}
+      <section id="destinations" className="py-20 md:py-28">
         <div
           ref={ref}
           className={`container mx-auto px-4 md:px-8 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
         >
           <div className="max-w-2xl mb-14">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground/60">{copy("eyebrow", "Global Opportunities")}</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight font-heading mt-3">{copy("title", "Top Study Destinations")}</h2>
-            <p className="text-primary-foreground/50 mt-4 max-w-lg">{copy("subtitle", "Explore world-class education opportunities across the globe.")}</p>
+            <span className="section-label">{copy("eyebrow", "Global Opportunities")}</span>
+            <h2 className="section-title mt-3">{copy("title", "Top Study Destinations")}</h2>
+            <p className="text-muted-foreground mt-4 max-w-lg">{copy("subtitle", "Explore world-class education opportunities across the globe.")}</p>
           </div>
 
           {isLoading ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => <div key={i} className="h-72 rounded-2xl bg-primary-foreground/5 animate-pulse" />)}
+              {[...Array(4)].map((_, i) => <div key={i} className="premium-card h-72 animate-pulse" />)}
             </div>
           ) : displayDestinations.length === 0 ? null : (
             <ResponsiveCardRow
@@ -61,15 +65,15 @@ const StudyDestinations = () => {
                 node: (
                 <div
                   onClick={() => openDrawer(d)}
-                  className="bg-primary-foreground/5 border border-primary-foreground/10 rounded-2xl p-7 text-center group cursor-pointer hover:bg-primary-foreground/10 transition-all duration-300 hover:-translate-y-1 h-full"
+                  className="premium-card p-7 text-center group cursor-pointer h-full"
                 >
                   <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">{d.flag}</div>
-                  <h3 className="font-bold font-heading text-lg mb-1">{d.country}</h3>
-                  <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-foreground/70 mb-3">
-                    <MapPin className="w-3.5 h-3.5" /> {d.unis} Partner Universities
+                  <h3 className="font-bold font-heading text-lg mb-1 text-foreground group-hover:text-accent transition-colors">{d.country}</h3>
+                  <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground mb-3">
+                    <MapPin className="w-3.5 h-3.5 text-accent" /> {d.unis} Partner Universities
                   </div>
-                  <p className="text-xs text-primary-foreground/40 mb-4 leading-relaxed">{d.desc}</p>
-                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-foreground/80 hover:text-primary-foreground group-hover:gap-2.5 transition-all">
+                  <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{d.desc}</p>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
                     Explore <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
