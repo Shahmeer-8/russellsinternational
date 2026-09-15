@@ -36,8 +36,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName("Russell's International")
             // Was favicon.svg, which has never existed in this app's public
-            // directory — the admin tab has been showing a 404 and a blank icon.
-            ->favicon(asset('favicon-64.png'))
+            // directory — the admin tab showed a 404 and a blank icon.
+            //
+            // Root-relative rather than asset(): behind Railway's proxy the app
+            // sees plain HTTP, so asset() built an http:// URL that the browser
+            // then blocked on the https page as mixed content. A path with no
+            // scheme always matches whatever the page was served over.
+            ->favicon('/favicon-64.png')
             ->discoverResources(app_path('Filament/Resources'), 'App\\Filament\\Resources')
             ->discoverPages(app_path('Filament/Pages'), 'App\\Filament\\Pages')
             ->pages([Pages\Dashboard::class])
