@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -5,20 +6,28 @@ import { useEvents } from "@/hooks/api";
 import ResponsiveCardRow from "@/components/ResponsiveCardRow";
 import { useSectionCopy } from "@/hooks/useSectionCopy";
 
+type Filter = "all" | "event" | "news";
+
 /**
- * The events listing. Each card goes to that event's own page.
+ * The news and events listing. Each card goes to that item's own page.
  *
  * It used to open a side drawer, which could not be linked to or shared and which
  * ended in a "Download PDF" button that downloaded nothing. An event has
  * photographs, a place and a date — that wants a page.
+ *
+ * It also used to ask the API for `type=event` only, under a heading that reads
+ * "News & Events", so anything the admin filed as news was published and then
+ * appeared nowhere on this page.
  */
 const NewsEvents = () => {
   const copy = useSectionCopy("events", "news");
   const { ref, visible } = useScrollReveal();
+  const [filter, setFilter] = useState<Filter>("all");
 
-  const { data: eventsData, isLoading } = useEvents("event");
-  const eventsList = (eventsData?.data?.data ?? []).map((e) => ({
+  const { data: eventsData, isLoading } = useEvents();
+  const allItems = (eventsData?.data?.data ?? []).map((e) => ({
     id: e.id,
+    type: e.content_type,
     image: e.image_url,
     tag: e.tag,
     tagColor: e.tag_color,
@@ -27,6 +36,17 @@ const NewsEvents = () => {
     desc: e.short_description,
     photoCount: e.image_urls?.length ?? 0,
   }));
+
+  // Only worth offering the filter once there is actually a mix to filter.
+  const hasBothTypes =
+    allItems.some((i) => i.type === "event") && allItems.some((i) => i.type === "news");
+  const eventsList = filter === "all" ? allItems : allItems.filter((i) => i.type === filter);
+
+  const filters: { value: Filter; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "event", label: "Events" },
+    { value: "news", label: "News" },
+  ];
 
   return (
     <>
@@ -41,13 +61,42 @@ const NewsEvents = () => {
               <h2 className="section-title mt-3">{copy("title", "What's Happening")}</h2>
               <p className="text-muted-foreground mt-3 max-w-md">{copy("subtitle", "Stay updated with our latest events, workshops, and admissions announcements.")}</p>
             </div>
+
+            {hasBothTypes && (
+              <div className="inline-flex shrink-0 gap-1 rounded-xl bg-muted p-1">
+                {filters.map((f) => (
+                  <button
+                    key={f.value}
+                    type="button"
+                    onClick={() => setFilter(f.value)}
+                    aria-pressed={filter === f.value}
+                    className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+                      filter === f.value
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {isLoading ? (
             <div className="grid md:grid-cols-3 gap-6">
               {[...Array(3)].map((_, i) => <div key={i} className="premium-card h-80 animate-pulse" />)}
             </div>
-          ) : eventsList.length === 0 ? null : (
+          ) : eventsList.length === 0 ? (
+            // Only reachable by filtering, since the section hides itself when
+            // there is nothing at all — so say which filter came up empty rather
+            // than leaving the reader looking at a blank panel.
+            allItems.length > 0 ? (
+              <p className="rounded-2xl border border-dashed border-border bg-muted/40 px-6 py-10 text-center text-sm text-muted-foreground">
+                Nothing filed under {filter === "news" ? "news" : "events"} just yet.
+              </p>
+            ) : null
+          ) : (
             <ResponsiveCardRow
               gridClassName="grid md:grid-cols-3 gap-6"
               items={eventsList.map((e) => ({
@@ -58,6 +107,12 @@ const NewsEvents = () => {
                     {e.image && (
                       <img src={e.image} alt={e.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" width={800} height={512} />
                     )}
+                    {/* News and events sit in one grid, so each card says which it
+                        is — the category tag below ("Workshop", "Admissions") does
+                        not tell you that on its own. */}
+                    <span className="absolute top-3 left-3 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-foreground backdrop-blur-sm">
+                      {e.type === "news" ? "News" : "Event"}
+                    </span>
                     {/* Tells the visitor there is more to see before they click,
                         which is the point of giving events a page of their own. */}
                     {e.photoCount > 1 && (
@@ -74,7 +129,7 @@ const NewsEvents = () => {
                     <h3 className="font-bold text-foreground font-heading text-base mb-2 group-hover:text-accent transition-colors leading-snug">{e.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{e.desc}</p>
                     <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all">
-                      View event <ArrowRight className="w-3.5 h-3.5" />
+                      {e.type === "news" ? "Read more" : "View event"} <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </Link>

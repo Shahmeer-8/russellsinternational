@@ -7,7 +7,7 @@ import CTASection from "@/components/CTASection";
 import { useEvent } from "@/hooks/api";
 
 /**
- * One event, on its own page.
+ * One news item or event, on its own page.
  *
  * Events used to open in a side drawer that ended with a "Download PDF" button
  * which downloaded nothing. An event is a thing that happened in a place on a
@@ -35,7 +35,7 @@ const EventDetail = () => {
             to="/events"
             className="inline-flex items-center gap-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            <ArrowLeft className="h-4 w-4" /> All events
+            <ArrowLeft className="h-4 w-4" /> News &amp; events
           </Link>
 
           {isLoading && (
@@ -48,13 +48,13 @@ const EventDetail = () => {
           {isError && (
             <div className="mt-16 max-w-xl">
               <h1 className="font-display text-2xl font-semibold text-foreground">
-                We could not find that event
+                We could not find that page
               </h1>
               <p className="mt-3 text-muted-foreground">
-                It may have been taken down. Everything currently listed is on the events page.
+                It may have been taken down. Everything currently published is on the news and events page.
               </p>
               <Link to="/events" className="btn-primary mt-6 inline-flex text-sm">
-                Back to events
+                Back to news &amp; events
               </Link>
             </div>
           )}
