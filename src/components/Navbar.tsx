@@ -5,7 +5,8 @@ import { useNavigation, useSettings } from "@/hooks/api";
 import type { NavigationItem } from "@/types/api";
 import { badgeClass, isExternalUrl } from "@/lib/navigation";
 import NavDropdown from "@/components/NavDropdown";
-import russellsLogo from "@/assets/russells-logo.png";
+import russellsEmblem from "@/assets/russells-logo-emblem.png";
+import russellsWordmark from "@/assets/russells-logo-wordmark.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,8 @@ const Navbar = () => {
   // could not touch — the links beside it are already admin-managed.
   const ctaLabel = settings.nav_cta_label || "Start Your Journey";
   const ctaUrl = settings.nav_cta_url || "/#contact";
+  // Part of the mark, so it has a default; editable in case the company line changes.
+  const tagline = settings.site_tagline || "Knowledge, Skills, Employment";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -68,23 +71,49 @@ const Navbar = () => {
         : "bg-background/80 backdrop-blur-sm"
     }`}>
       <div className="container mx-auto flex items-center justify-between gap-6 h-20 px-4 md:px-8">
-        {/* The logo was 48px tall in a 64px bar, which squeezed the "Knowledge,
-            Skills, Employment" line under the wordmark down to a grey smudge. The
-            bar is 80px now and the mark fills it, so the tagline is legible —
-            which is the whole point of having one. `shrink-0` keeps it at that
-            size instead of letting the nav row squeeze it on a narrow laptop. */}
-        <Link to="/" className="flex shrink-0 items-center">
+        {/*
+         * The lockup is assembled rather than one flat image, because the tagline
+         * cannot be read otherwise.
+         *
+         * In the artwork the tagline is 14px of a 163px-tall file — a ratio of
+         * 0.086 — so at the 64px the header can spare it renders about 5.5px and
+         * reads as a grey smudge. Measured against the source, it only becomes
+         * legible once the whole logo is around 96px tall, which would cost a
+         * 136px header on every page.
+         *
+         * So the emblem and wordmark are the original artwork, cropped, and the
+         * tagline is live text at 11px: crisp at any size and on any screen, and
+         * the header stays the height it was.
+         */}
+        <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={siteName}>
           <img
-            src={russellsLogo}
-            alt={siteName}
-            className="h-14 w-44 object-contain object-left lg:h-16 lg:w-48 xl:w-56"
-            width={483}
-            height={163}
+            src={russellsEmblem}
+            alt=""
+            className="h-11 w-11 shrink-0 lg:h-[3.25rem] lg:w-[3.25rem]"
+            width={302}
+            height={302}
             fetchPriority="high"
           />
-          <span className="sr-only">
-            {siteName}
+          <span className="flex flex-col">
+            <img
+              src={russellsWordmark}
+              alt=""
+              className="h-[1.9rem] w-auto lg:h-[2.15rem]"
+              width={624}
+              height={204}
+              fetchPriority="high"
+            />
+            {/* Rules either side, as in the artwork. aria-hidden because the link
+                already carries the company name. */}
+            <span className="mt-1 hidden items-center gap-1.5 sm:flex" aria-hidden="true">
+              <span className="h-px w-3 bg-accent" />
+              <span className="whitespace-nowrap text-[10px] font-semibold tracking-[0.02em] text-muted-foreground lg:text-[11px]">
+                {tagline}
+              </span>
+              <span className="h-px w-3 bg-accent" />
+            </span>
           </span>
+          <span className="sr-only">{siteName}</span>
         </Link>
 
         {/* Centred in the space between the logo and the button, rather than
