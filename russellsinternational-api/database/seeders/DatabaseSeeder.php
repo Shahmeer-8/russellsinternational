@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AdminCoverageSeeder::class,
             // Last: it corrects rows the seeders above create.
             ClientFeedbackSeeder::class,
+            ServiceLinkSeeder::class,
             ProductionContentBackfillSeeder::class,
         ]);
 

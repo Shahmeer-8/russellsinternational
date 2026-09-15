@@ -11,7 +11,7 @@ class Service extends Model
     use NormalizesJsonLists;
 
     protected $fillable = [
-        'icon_name', 'image', 'title', 'description', 'details',
+        'icon_name', 'image', 'title', 'description', 'details', 'link_url',
         'color_class', 'key_benefits', 'sort_order', 'is_active', 'pdf_brochure',
     ];
 

@@ -92,26 +92,25 @@ class PublicApiTest extends TestCase
             ->assertJsonMissing(['title' => 'Draft']);
     }
 
-    public function test_home_dual_focus_sections_are_seeded_for_admin_and_public_api(): void
+    /**
+     * The single dual_focus section was split into study_abroad and skills_focus.
+     * This test still asserted the old key long after, so the suite has been red
+     * and a red suite hides the next real failure.
+     */
+    public function test_home_focus_sections_are_seeded_for_admin_and_public_api(): void
     {
         $this->seed(HomePageSectionSeeder::class);
 
         $this->assertDatabaseHas('page_sections', [
             'page_slug' => 'home',
-            'section_key' => 'dual_focus',
-            'is_active' => true,
-        ]);
-
-        $this->assertDatabaseHas('page_sections', [
-            'page_slug' => 'home',
-            'section_key' => 'dual_focus_study',
+            'section_key' => 'study_abroad',
             'cta_url' => '/study-abroad',
             'is_active' => true,
         ]);
 
         $this->assertDatabaseHas('page_sections', [
             'page_slug' => 'home',
-            'section_key' => 'dual_focus_skills',
+            'section_key' => 'skills_focus',
             'cta_url' => '/skills',
             'is_active' => true,
         ]);
@@ -119,9 +118,8 @@ class PublicApiTest extends TestCase
         $this->getJson('/api/v1/pages/home/sections')
             ->assertOk()
             ->assertJsonPath('success', true)
-            ->assertJsonPath('data.dual_focus.title', 'Pick the pathway that fits your next move.')
-            ->assertJsonPath('data.dual_focus_study.items.country_1_name', 'United Kingdom')
-            ->assertJsonPath('data.dual_focus_skills.items.course_1_title', 'Full Stack Web Development');
+            ->assertJsonPath('data.study_abroad.items.country_1_name', 'United Kingdom')
+            ->assertJsonPath('data.skills_focus.items.course_1_title', 'Full Stack Web Development');
     }
 
     public function test_media_url_normalizes_external_storage_and_plain_paths(): void

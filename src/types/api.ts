@@ -58,6 +58,8 @@ export interface Service {
   details: string;
   color_class: string;
   key_benefits: string[] | null;
+  /** Where the card goes. Empty means it opens the details panel instead. */
+  link_url: string | null;
   /** Brochure with the full details, when the admin has uploaded one. */
   pdf_url: string | null;
 }

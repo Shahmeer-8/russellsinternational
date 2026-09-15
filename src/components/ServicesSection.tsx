@@ -43,12 +43,25 @@ const ServicesSection = () => {
     return {
       key: service.id,
       node: (
+        /*
+         * A card with a destination navigates to it; one without opens the panel.
+         *
+         * These are overview cards, and most of the six already have a whole page
+         * behind them — sending the reader to a summary panel instead was a dead
+         * end. The destination is admin-set, so the client decides where each card
+         * goes, and a service with no page of its own keeps the panel.
+         */
         <FlipCard
           minHeight="min-h-[21rem]"
-          onActivate={() => {
-            setSelected(service);
-            setDrawerOpen(true);
-          }}
+          to={service.link_url || undefined}
+          onActivate={
+            service.link_url
+              ? undefined
+              : () => {
+                  setSelected(service);
+                  setDrawerOpen(true);
+                }
+          }
           className="cursor-pointer"
           front={
             <div className="premium-card h-full overflow-hidden flex flex-col">

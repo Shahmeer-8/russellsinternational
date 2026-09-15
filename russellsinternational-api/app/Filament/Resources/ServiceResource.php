@@ -52,6 +52,12 @@ class ServiceResource extends Resource
                 ->default('bg-blue-50 text-blue-600'),
             Forms\Components\Textarea::make('description')->required()->rows(3)->columnSpanFull(),
             Forms\Components\Textarea::make('details')->required()->rows(5)->columnSpanFull(),
+            Forms\Components\TextInput::make('link_url')
+                ->label('Card links to')
+                ->helperText('Where clicking this card on the home page takes the visitor — for example /skills or /study-abroad. Leave empty to open the details panel instead.')
+                ->maxLength(500)
+                ->placeholder('/skills')
+                ->columnSpanFull(),
             Forms\Components\Repeater::make('key_benefits')
                 ->simple(Forms\Components\TextInput::make('item')->required())
                 ->defaultItems(3)
